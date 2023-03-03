@@ -1,0 +1,19 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.example.mindful_reminder.MainActivity">
+    <item
+        android:id="@+id/start_services"
+        android:orderInCategory="100"
+        android:title="Start Services"
+        app:showAsAction="never"
+        />
+
+    <item
+        android:id="@+id/stop_services"
+        android:orderInCategory="100"
+        android:title="Stop Services"
+        app:showAsAction="never"
+        />
+
+</menu>
