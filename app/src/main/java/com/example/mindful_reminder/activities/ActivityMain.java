@@ -1,25 +1,32 @@
 package com.example.mindful_reminder.activities;
 
+import android.Manifest;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.SwitchCompat;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.work.Constraints;
 import androidx.work.ExistingPeriodicWorkPolicy;
 import androidx.work.NetworkType;
+import androidx.work.OneTimeWorkRequest;
 import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
+import androidx.work.WorkRequest;
 
 import com.example.mindful_reminder.R;
 import com.example.mindful_reminder.fragments.AboutFragment;
@@ -42,13 +49,21 @@ public class ActivityMain extends AppCompatActivity {
     private MenuItem helpMenuItem;
     private HelpFragment helpFragment;
     private AboutFragment aboutFragment;
+    private AppCompatButton skipButton;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        checkPermissions();
         createNotificationChannel();
         setContentView(R.layout.activity_main);
-        setTextViews();
+        setupUi();
+    }
+
+    private void checkPermissions() {
+        if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.POST_NOTIFICATIONS}, 0);
+        }
     }
 
     private void updateAffirmationUi() {
@@ -71,8 +86,38 @@ public class ActivityMain extends AppCompatActivity {
         });
     }
 
-    private void setTextViews() {
+    private void setupUi() {
         affirmationTextView = (TextView) requireViewById(R.id.affirmation);
+        skipButton = (AppCompatButton) requireViewById(R.id.skip_button);
+        runAffirmationOneTime();
+        skipButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                runAffirmationOneTime();
+            }
+        });
+    }
+
+    private void runAffirmationOneTime() {
+        WorkRequest workRequest = OneTimeWorkRequest.from(GetAffirmationWorker.class);
+        WorkManager workManager = WorkManager.getInstance(getApplicationContext());
+        workManager.enqueue(workRequest);
+        workManager.getWorkInfoByIdLiveData(workRequest.getId()).observe(ActivityMain.this, new Observer<WorkInfo>() {
+            @Override
+            public void onChanged(WorkInfo workInfo) {
+                if (null != workInfo && workInfo.getState().equals(WorkInfo.State.SUCCEEDED)) {
+                    GetAffirmationWorker.affirmationObservable.observe(ActivityMain.this,
+                            new Observer<String>() {
+                                @Override
+                                public void onChanged(String s) {
+                                    workManager.getWorkInfosForUniqueWorkLiveData(GetAffirmationWorker.GET_AFFIRMATION_TAG).removeObservers(ActivityMain.this);
+                                    affirmation = s;
+                                    affirmationTextView.setText(affirmation);
+                                }
+                            });
+                }
+            }
+        });
     }
 
     @Override
@@ -113,22 +158,43 @@ public class ActivityMain extends AppCompatActivity {
         return true;
     }
 
+    @Override
+    public void onBackPressed() {
+        if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+            getSupportFragmentManager().popBackStack();
+            mainUi(View.VISIBLE);
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    private void mainUi(int status) {
+        skipButton.setVisibility(status);
+        affirmationTextView.setVisibility(status);
+    }
+
     private void loadFragmentHelpFragment(HelpFragment fragment) {
         if (fragment == null) {
-            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
             fragment = new HelpFragment();
-            fragmentTransaction.replace(R.id.fragment_frame, fragment);
-            fragmentTransaction.commit();
         }
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.fragment_frame, fragment);
+        fragmentTransaction.addToBackStack(TAG);
+        fragmentTransaction.commit();
+        helpFragment = fragment;
+        mainUi(View.GONE);
     }
 
     private void loadFragmentAboutFragment(AboutFragment fragment) {
         if (fragment == null) {
-            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
             fragment = new AboutFragment();
-            fragmentTransaction.replace(R.id.fragment_frame, fragment);
-            fragmentTransaction.commit();
         }
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.fragment_frame, fragment);
+        fragmentTransaction.addToBackStack(TAG);
+        fragmentTransaction.commit();
+        aboutFragment = fragment;
+        mainUi(View.GONE);
     }
 
     private void stopAffirmationWorker() {

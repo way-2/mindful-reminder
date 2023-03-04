@@ -6,4 +6,8 @@
     <string name="aboutGitHubLink">https://github.com/way-2/mindful-reminder</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
+    <string name="helpBody">What does this app do?\nThis app will refresh with a new motivational affirmation every 24 hours.\nIf enabled it will also send a notification as configured with the affirmation to help remind you to be a little more mindful.</string>
+    <string name="skip">Skip</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
 </resources>
