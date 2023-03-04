@@ -12,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.work.Constraints;
 import androidx.work.ExistingPeriodicWorkPolicy;
@@ -21,6 +22,8 @@ import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
 
 import com.example.mindful_reminder.R;
+import com.example.mindful_reminder.fragments.AboutFragment;
+import com.example.mindful_reminder.fragments.HelpFragment;
 import com.example.mindful_reminder.service.GetAffirmationWorker;
 import com.example.mindful_reminder.service.NotificationWorker;
 
@@ -36,6 +39,9 @@ public class ActivityMain extends AppCompatActivity {
     private SwitchCompat switchCompat;
     public static String affirmation;
     private MenuItem aboutMenuItem;
+    private MenuItem helpMenuItem;
+    private HelpFragment helpFragment;
+    private AboutFragment aboutFragment;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -92,13 +98,37 @@ public class ActivityMain extends AppCompatActivity {
         aboutMenuItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(@NonNull MenuItem item) {
-//                NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
-//                NavController navController = navHostFragment.getNavController();
-//                navController.navigate(R.id.aboutFragment);
+                loadFragmentAboutFragment(aboutFragment);
+                return true;
+            }
+        });
+        helpMenuItem = (MenuItem) menu.findItem(R.id.help);
+        helpMenuItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(@NonNull MenuItem item) {
+                loadFragmentHelpFragment(helpFragment);
                 return true;
             }
         });
         return true;
+    }
+
+    private void loadFragmentHelpFragment(HelpFragment fragment) {
+        if (fragment == null) {
+            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            fragment = new HelpFragment();
+            fragmentTransaction.replace(R.id.fragment_frame, fragment);
+            fragmentTransaction.commit();
+        }
+    }
+
+    private void loadFragmentAboutFragment(AboutFragment fragment) {
+        if (fragment == null) {
+            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            fragment = new AboutFragment();
+            fragmentTransaction.replace(R.id.fragment_frame, fragment);
+            fragmentTransaction.commit();
+        }
     }
 
     private void stopAffirmationWorker() {

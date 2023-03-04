@@ -2,7 +2,8 @@
     <string name="mindfulReminder">Mindful Reminder</string>
     <string name="help">Help</string>
     <string name="about">About</string>
-    <string name="dummy_button">Dummy Button</string>
-    <string name="dummy_content">DUMMY\nCONTENT</string>
-    <string name="aboutBody">This is a body text test</string>
+    <string name="aboutBody">When switched on this app will pull a motivational reminder from the remote server every 24 hours and send a notification with that reminder every 30 minutes.</string>
+    <string name="aboutGitHubLink">https://github.com/way-2/mindful-reminder</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
 </resources>
