@@ -8,4 +8,5 @@
         app:actionLayout="@layout/use_switch"
         app:showAsAction="always"
         />
+
 </menu>

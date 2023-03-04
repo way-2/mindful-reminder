@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.lifecycle.Observer;
@@ -26,15 +27,15 @@ import com.example.mindful_reminder.service.NotificationWorker;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
-public class GetMotivation extends AppCompatActivity {
+public class ActivityMain extends AppCompatActivity {
 
-    private static final String TAG = GetMotivation.class.getSimpleName();
+    private static final String TAG = ActivityMain.class.getSimpleName();
     public static final String NOTIFICATION_CHANNEL = "MINDFUL_REMINDER";
     private TextView affirmationTextView;
     private UUID getAffirmationUuid;
     private SwitchCompat switchCompat;
-
     public static String affirmation;
+    private MenuItem aboutMenuItem;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -44,8 +45,28 @@ public class GetMotivation extends AppCompatActivity {
         setTextViews();
     }
 
+    private void updateAffirmationUi() {
+        WorkManager workManager = WorkManager.getInstance(getApplicationContext());
+        workManager.getWorkInfoByIdLiveData(getAffirmationUuid).observe(this, new Observer<WorkInfo>() {
+            @Override
+            public void onChanged(WorkInfo workInfo) {
+                if (null != workInfo && workInfo.getState().equals(WorkInfo.State.RUNNING)) {
+                    GetAffirmationWorker.affirmationObservable.observe(ActivityMain.this,
+                            new Observer<String>() {
+                                @Override
+                                public void onChanged(String s) {
+                                    workManager.getWorkInfosForUniqueWorkLiveData(GetAffirmationWorker.GET_AFFIRMATION_TAG).removeObservers(ActivityMain.this);
+                                    affirmation = s;
+                                    affirmationTextView.setText(affirmation);
+                                }
+                            });
+                }
+            }
+        });
+    }
+
     private void setTextViews() {
-        affirmationTextView = (TextView) findViewById(R.id.affirmation);
+        affirmationTextView = (TextView) requireViewById(R.id.affirmation);
     }
 
     @Override
@@ -63,6 +84,18 @@ public class GetMotivation extends AppCompatActivity {
                     stopNotificationWorker();
                     stopAffirmationWorker();
                 }
+            }
+        });
+
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        aboutMenuItem = (MenuItem) menu.findItem(R.id.about);
+        aboutMenuItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(@NonNull MenuItem item) {
+//                NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+//                NavController navController = navHostFragment.getNavController();
+//                navController.navigate(R.id.aboutFragment);
+                return true;
             }
         });
         return true;
@@ -86,26 +119,6 @@ public class GetMotivation extends AppCompatActivity {
             NotificationManager notificationManager = getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(channel);
         }
-    }
-
-    private void updateAffirmationUi() {
-        WorkManager workManager = WorkManager.getInstance(getApplicationContext());
-        workManager.getWorkInfoByIdLiveData(getAffirmationUuid).observe(this, new Observer<WorkInfo>() {
-            @Override
-            public void onChanged(WorkInfo workInfo) {
-                if (null != workInfo && workInfo.getState().equals(WorkInfo.State.RUNNING)) {
-                    GetAffirmationWorker.affirmationObservable.observe(GetMotivation.this,
-                            new Observer<String>() {
-                                @Override
-                                public void onChanged(String s) {
-                                    workManager.getWorkInfosForUniqueWorkLiveData(GetAffirmationWorker.GET_AFFIRMATION_TAG).removeObservers(GetMotivation.this);
-                                    affirmation = s;
-                                    affirmationTextView.setText(affirmation);
-                                }
-                            });
-                }
-            }
-        });
     }
 
     private void startNotificationWorker() {

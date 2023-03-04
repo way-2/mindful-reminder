@@ -3,16 +3,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.example.mindful_reminder.MainActivity">
     <item
-        android:id="@+id/start_services"
+        android:id="@+id/help"
         android:orderInCategory="100"
-        android:title="Start Services"
+        android:title="@string/help"
         app:showAsAction="never"
         />
 
     <item
-        android:id="@+id/stop_services"
+        android:id="@+id/about"
         android:orderInCategory="100"
-        android:title="Stop Services"
+        android:title="@string/about"
         app:showAsAction="never"
         />
 

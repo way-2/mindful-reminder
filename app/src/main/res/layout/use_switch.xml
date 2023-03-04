@@ -5,20 +5,38 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+<!--    <androidx.appcompat.widget.SwitchCompat-->
+<!--        android:id="@+id/switch2"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:scaleX="1.2"-->
+<!--        android:scaleY="1.2"-->
+<!--        android:switchTextAppearance="@style/TextAppearance.AppCompat.Small"-->
+<!--        android:textOff="Off"-->
+<!--        android:textOn="On"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintHorizontal_bias="0.0"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        app:layout_constraintVertical_bias="0.001"-->
+<!--        app:showText="true" />-->
+
     <androidx.appcompat.widget.SwitchCompat
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:id="@+id/switch2"
+        android:scaleY=".5"
+        android:scaleX=".5"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.001"
-        android:showText="true"
-        android:switchTextAppearance="@style/TextAppearance.AppCompat"
-        android:textOff="Off"
-        android:textOn="On"
+        android:layout_marginTop="5dp"
+        app:track="@drawable/track"
+        android:thumb="@drawable/thumb"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
