@@ -102,13 +102,15 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                 notificationIntervalListPreference.setSummary(entryString);
                 try {
                     List<WorkInfo> workInfo = WorkManager.getInstance(requireContext()).getWorkInfosByTag(NotificationWorker.NOTIFICATION_WORKER_TAG).get();
-                    WorkInfo.State state = workInfo.get(0).getState();
-                    if ((state == WorkInfo.State.RUNNING) || (state == WorkInfo.State.ENQUEUED)) {
-                        startNotificationWorker();
+                    if (!workInfo.isEmpty()) {
+                        WorkInfo.State state = workInfo.get(0).getState();
+                        if ((state == WorkInfo.State.RUNNING) || (state == WorkInfo.State.ENQUEUED)) {
+                            startNotificationWorker();
+                        }
                     }
-                } catch (ExecutionException | InterruptedException ex) {
-                    ex.printStackTrace();
-                }
+                    } catch(ExecutionException | InterruptedException ex){
+                        ex.printStackTrace();
+                    }
                 return true;
             }
         });
