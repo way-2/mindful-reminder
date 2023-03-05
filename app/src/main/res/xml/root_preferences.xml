@@ -1,10 +1,19 @@
-<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <PreferenceCategory app:title="@string/notification_header">
 
         <SwitchPreferenceCompat
             app:key="notification_toggle"
             app:title="@string/notification_title"
+            />
+
+        <ListPreference
+            android:defaultValue="30 minutes"
+            android:entries="@array/notification_times_string"
+            android:entryValues="@array/notification_times_int"
+            android:key="notification_time_interval_list"
+            android:title="Notification Interval"
             />
 
     </PreferenceCategory>
