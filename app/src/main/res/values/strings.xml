@@ -2,9 +2,33 @@
     <string name="mindfulReminder">Mindful Reminder</string>
     <string name="help">Help</string>
     <string name="about">About</string>
-    <string name="aboutBody">When switched on this app will pull a motivational reminder from the remote server every 24 hours and send a notification with that reminder every 30 minutes.</string>
+    <string name="aboutBody">
+        Welcome to Mindful Reminder!
+        \n\n
+        We are excited to introduce our new app that is designed to help you stay mindful and focused on the present moment. Mindful Reminder is the perfect tool for anyone who wants to reduce stress, increase self-awareness, and live a more fulfilling life.
+        \n\n
+        One of the key features of our app is the ability to send you reminders at specified intervals throughout the day. These reminders are designed to help you pause, breathe, and focus on the present moment.
+        \n\n
+        Mindful Reminder is also customizable, so you can select the frequency of reminders and personalize the app to suit your needs. Whether you\'re a beginner or an experienced mindfulness practitioner, our app is perfect for you.
+        \n\n
+        Thank you for choosing Mindful Reminder. We look forward to helping you stay mindful and focused on the present moment!
+    </string>
     <string name="aboutGitHubLink">https://github.com/way-2/mindful-reminder</string>
-    <string name="helpBody">What does this app do?\nThis app will refresh with a new motivational affirmation every 24 hours.\nIf enabled it will also send a notification as configured with the affirmation to help remind you to be a little more mindful.</string>
+    <string name="helpBodyStart">
+        Welcome to the Help Page for Mindful Reminder!
+        \n\n
+        Mindful Reminder is a simple and easy-to-use app designed to help you stay mindful and focused on the present moment. Here are some helpful tips on how to use the app:
+    </string>
+    <string name="helpBodyEnd">We hope that you find Mindful Reminder helpful in cultivating mindfulness and positivity in your daily life. Thank you for choosing Mindful Reminder!</string>
+    <string name="helpBodyList">
+        \u2022 On the main screen, you will see a positive affirmation displayed. If you don\'t like the current affirmation, you can simply click the "skip" button to display a new one.
+        \n
+        \u2022 The Settings menu can be accessed by clicking on the menu icon in the top right corner of the screen. Here you can turn notifications on and off and set the interval for receiving notifications.
+        \n
+        \u2022 If you would like to turn off notifications altogether, simply toggle the notification button to "off" in the Settings menu.
+        \n
+        \u2022 To set the interval for receiving notifications, click on the "Notification Interval" option in the Settings menu.
+    </string>
     <string name="skip">Skip</string>
     <string name="settings">Settings</string>
     <string name="switchTitle">Switch</string>
