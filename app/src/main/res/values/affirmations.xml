@@ -1,70 +1,105 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="affirmation_1">I am worthy of love and respect.</string>
-    <string name="affirmation_2">I am capable of achieving my goals.</string>
-    <string name="affirmation_3">I trust my intuition and make wise decisions.</string>
-    <string name="affirmation_4">I am strong and resilient.</string>
-    <string name="affirmation_5">I am grateful for everything in my life.</string>
-    <string name="affirmation_6">I believe in myself and my abilities.</string>
-    <string name="affirmation_7">I radiate positivity and attract good things.</string>
-    <string name="affirmation_8">I am confident in my unique talents and skills.</string>
-    <string name="affirmation_9">I am deserving of happiness and success.</string>
-    <string name="affirmation_10">I am surrounded by supportive and loving people.</string>
-    <string name="affirmation_11">I am in control of my thoughts and emotions.</string>
-    <string name="affirmation_12">I forgive myself and others easily.</string>
-    <string name="affirmation_13">I am worthy of abundance and prosperity.</string>
-    <string name="affirmation_14">I am constantly improving and growing.</string>
-    <string name="affirmation_15">I am at peace with myself and my past.</string>
-    <string name="affirmation_16">I am always learning and expanding my knowledge.</string>
-    <string name="affirmation_17">I am grateful for my body and treat it with kindness.</string>
-    <string name="affirmation_18">I am worthy of respect and admiration.</string>
-    <string name="affirmation_19">I trust the universe to guide me towards my path.</string>
-    <string name="affirmation_20">I am open to new opportunities and experiences.</string>
-    <string name="affirmation_21">I am free of negative self-talk and limiting beliefs.</string>
-    <string name="affirmation_22">I am grateful for my unique qualities and personality.</string>
-    <string name="affirmation_23">I am kind and compassionate towards myself and others.</string>
-    <string name="affirmation_24">I am confident in my ability to handle challenges.</string>
-    <string name="affirmation_25">I am worthy of love and affection.</string>
-    <string name="affirmation_26">I am successful in all areas of my life.</string>
-    <string name="affirmation_27">I am living my best life.</string>
-    <string name="affirmation_28">I am constantly attracting positive energy.</string>
-    <string name="affirmation_29">I am worthy of achieving my dreams.</string>
-    <string name="affirmation_30">I am proud of my accomplishments.</string>
-    <string name="affirmation_31">I am surrounded by abundance and prosperity.</string>
-    <string name="affirmation_32">I am confident in my ability to achieve my goals.</string>
-    <string name="affirmation_33">I am worthy of respect and admiration.</string>
-    <string name="affirmation_34">I am grateful for the challenges that make me stronger.</string>
-    <string name="affirmation_35">I am surrounded by positive and supportive people.</string>
-    <string name="affirmation_36">I am a magnet for good things.</string>
-    <string name="affirmation_37">I am in charge of my own happiness.</string>
-    <string name="affirmation_38">I am confident in my ability to create the life I want.</string>
-    <string name="affirmation_39">I am grateful for my experiences and lessons learned.</string>
-    <string name="affirmation_40">I am worthy of success and prosperity.</string>
-    <string name="affirmation_41">I am loved unconditionally.</string>
-    <string name="affirmation_42">I am patient and trust the timing of my life.</string>
-    <string name="affirmation_43">I am worthy of trust and honesty from others.</string>
-    <string name="affirmation_44">I am constantly improving my mindset and attitude.</string>
-    <string name="affirmation_45">I am capable of overcoming any obstacle.</string>
-    <string name="affirmation_46">I am grateful for the abundance in my life.</string>
-    <string name="affirmation_47">I am confident in my own abilities and skills.</string>
-    <string name="affirmation_48">I am worthy of respect and kindness from others.</string>
-    <string name="affirmation_49">I am creating a life that brings me joy and fulfillment.</string>
-    <string name="affirmation_50">I am at peace with my past and excited for my future.</string>
-    <string name="affirmation_51">I am capable of achieving my dreams.</string>
-    <string name="affirmation_52">I am worthy of love and affection from others.</string>
-    <string name="affirmation_53">I am surrounded by positive and loving relationships.</string>
-    <string name="affirmation_54">I am grateful for my inner strength and resilience.</string>
-    <string name="affirmation_55">I am confident in my own beauty and worth.</string>
-    <string name="affirmation_56">I am worthy of success and happiness.</string>
-    <string name="affirmation_57">I am surrounded by opportunities for growth and learning.</string>
-    <string name="affirmation_58">I am deserving of all the good things in life.</string>
-    <string name="affirmation_59">I am constantly improving and evolving.</string>
-    <string name="affirmation_60">I am worthy of kindness and compassion from others.</string>
-    <string name="affirmation_61">I am grateful for my body and treat it with love.</string>
-    <string name="affirmation_62">I am confident in my own creativity and imagination.</string>
-    <string name="affirmation_63">I am worthy of trust and respect from others.</string>
-    <string name="affirmation_64">I am living a life that reflects my values and passions.</string>
-    <string name="affirmation_65">I am surrounded by abundance and prosperity.</string>
-    <string name="affirmation_66">I am capable of achieving anything I set my mind to.</string>
-    <string name="affirmation_67">I am grateful for the opportunities to learn and grow.</string>
+    <string-array name="affirmations_array">
+        <item>I am worthy of love and respect.</item>
+        <item>I am capable of achieving my goals.</item>
+        <item>I trust my intuition and make wise decisions.</item>
+        <item>I am strong and resilient.</item>
+        <item>I am grateful for everything in my life.</item>
+        <item>I believe in myself and my abilities.</item>
+        <item>I radiate positivity and attract good things.</item>
+        <item>I am confident in my unique talents and skills.</item>
+        <item>I am deserving of happiness and success.</item>
+        <item>I am surrounded by supportive and loving people.</item>
+        <item>I am in control of my thoughts and emotions.</item>
+        <item>I forgive myself and others easily.</item>
+        <item>I am worthy of abundance and prosperity.</item>
+        <item>I am constantly improving and growing.</item>
+        <item>I am at peace with myself and my past.</item>
+        <item>I am always learning and expanding my knowledge.</item>
+        <item>I am grateful for my body and treat it with kindness.</item>
+        <item>I am worthy of respect and admiration.</item>
+        <item>I trust the universe to guide me towards my path.</item>
+        <item>I am open to new opportunities and experiences.</item>
+        <item>I am free of negative self-talk and limiting beliefs.</item>
+        <item>I am grateful for my unique qualities and personality.</item>
+        <item>I am kind and compassionate towards myself and others.</item>
+        <item>I am confident in my ability to handle challenges.</item>
+        <item>I am worthy of love and affection.</item>
+        <item>I am successful in all areas of my life.</item>
+        <item>I am living my best life.</item>
+        <item>I am constantly attracting positive energy.</item>
+        <item>I am worthy of achieving my dreams.</item>
+        <item>I am proud of my accomplishments.</item>
+        <item>I am surrounded by abundance and prosperity.</item>
+        <item>I am confident in my ability to achieve my goals.</item>
+        <item>I am worthy of respect and admiration.</item>
+        <item>I am grateful for the challenges that make me stronger.</item>
+        <item>I am surrounded by positive and supportive people.</item>
+        <item>I am a magnet for good things.</item>
+        <item>I am in charge of my own happiness.</item>
+        <item>I am confident in my ability to create the life I want.</item>
+        <item>I am grateful for my experiences and lessons learned.</item>
+        <item>I am worthy of success and prosperity.</item>
+        <item>I am loved unconditionally.</item>
+        <item>I am patient and trust the timing of my life.</item>
+        <item>I am worthy of trust and honesty from others.</item>
+        <item>I am constantly improving my mindset and attitude.</item>
+        <item>I am capable of overcoming any obstacle.</item>
+        <item>I am grateful for the abundance in my life.</item>
+        <item>I am confident in my own abilities and skills.</item>
+        <item>I am worthy of respect and kindness from others.</item>
+        <item>I am creating a life that brings me joy and fulfillment.</item>
+        <item>I am at peace with my past and excited for my future.</item>
+        <item>I am capable of achieving my dreams.</item>
+        <item>I am worthy of love and affection from others.</item>
+        <item>I am surrounded by positive and loving relationships.</item>
+        <item>I am grateful for my inner strength and resilience.</item>
+        <item>I am confident in my own beauty and worth.</item>
+        <item>I am worthy of success and happiness.</item>
+        <item>I am surrounded by opportunities for growth and learning.</item>
+        <item>I am deserving of all the good things in life.</item>
+        <item>I am constantly improving and evolving.</item>
+        <item>I am worthy of kindness and compassion from others.</item>
+        <item>I am grateful for my body and treat it with love.</item>
+        <item>I am confident in my own creativity and imagination.</item>
+        <item>I am worthy of trust and respect from others.</item>
+        <item>I am living a life that reflects my values and passions.</item>
+        <item>I am surrounded by abundance and prosperity.</item>
+        <item>I am capable of achieving anything I set my mind to.</item>
+        <item>I am grateful for the opportunities to learn and grow.</item>
+        <item>I am worthy of love and respect.</item>
+        <item>I am capable of achieving anything I set my mind to.</item>
+        <item>I am strong, confident, and resilient.</item>
+        <item>I choose to focus on the good in every situation.</item>
+        <item>I am grateful for everything in my life.</item>
+        <item>I trust in my abilities and instincts.</item>
+        <item>I am surrounded by positive energy and love.</item>
+        <item>I let go of negative thoughts and emotions.</item>
+        <item>I am worthy of success and happiness.</item>
+        <item>I radiate love and positivity wherever I go.</item>
+        <item>I am blessed with abundance and prosperity.</item>
+        <item>I am patient, kind, and compassionate towards myself and others.</item>
+        <item>I am healthy, vibrant, and full of energy.</item>
+        <item>I am proud of myself and my accomplishments.</item>
+        <item>I forgive myself and others for past mistakes.</item>
+        <item>I am at peace with myself and the world around me.</item>
+        <item>I am in control of my thoughts and emotions.</item>
+        <item>I am deserving of love, joy, and abundance.</item>
+        <item>I trust that everything happens for a reason.</item>
+        <item>I attract positive people and opportunities into my life.</item>
+        <item>I am grateful for my body and all that it does for me.</item>
+        <item>I am worthy of self-care and self-love.</item>
+        <item>I am blessed with endless possibilities and opportunities.</item>
+        <item>I am confident in my abilities and talents.</item>
+        <item>I am open to learning and growth.</item>
+        <item>I choose to see the beauty in everything and everyone.</item>
+        <item>I am surrounded by abundance and prosperity.</item>
+        <item>I am grateful for the present moment and all that it holds.</item>
+        <item>I am loved, appreciated, and valued.</item>
+        <item>I trust the journey of my life.</item>
+        <item>I release all fear and embrace love.</item>
+        <item>I am capable of overcoming any obstacle.</item>
+        <item>I am filled with joy, peace, and gratitude</item>
+    </string-array>
 </resources>

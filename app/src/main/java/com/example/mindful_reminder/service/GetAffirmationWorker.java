@@ -12,20 +12,19 @@ import androidx.preference.PreferenceManager;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
-import com.example.mindful_reminder.client.WebClient;
+import com.example.mindful_reminder.R;
 
 import java.time.LocalDateTime;
+import java.util.Random;
 
 public class GetAffirmationWorker extends Worker {
     public static final String GET_AFFIRMATION_TAG = "GetAffirmationWorker";
     private static final String TAG = GetAffirmationWorker.class.getSimpleName();
     public static MutableLiveData<Boolean> updateDone = new MutableLiveData<>();
-    private final WebClient webClient;
     private final SharedPreferences sharedPreferences;
 
     public GetAffirmationWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
-        this.webClient = new WebClient();
         this.sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
     }
 
@@ -33,11 +32,16 @@ public class GetAffirmationWorker extends Worker {
     @Override
     public Result doWork() {
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(AFFIRMATION_SHARED_PREFERENCE, webClient.getMotivated());
+        editor.putString(AFFIRMATION_SHARED_PREFERENCE, getRandomAffirmation());
         editor.apply();
         updateDone.postValue(true);
         Log.i(TAG, LocalDateTime.now() + " | Got affirmation " + sharedPreferences.getString(AFFIRMATION_SHARED_PREFERENCE, ""));
         return Result.success();
+    }
+
+    private String getRandomAffirmation() {
+        String[] affirmationArray = getApplicationContext().getResources().getStringArray(R.array.affirmations_array);
+        return affirmationArray[new Random().nextInt(affirmationArray.length)];
     }
 
 }
