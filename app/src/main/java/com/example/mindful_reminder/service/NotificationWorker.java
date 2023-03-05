@@ -1,7 +1,12 @@
 package com.example.mindful_reminder.service;
 
+import static com.example.mindful_reminder.activities.ActivityMain.AFFIRMATION_SHARED_PREFERENCE;
+
 import android.Manifest;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.provider.Settings;
 import android.util.Log;
@@ -11,6 +16,8 @@ import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
+import androidx.core.app.TaskStackBuilder;
+import androidx.preference.PreferenceManager;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
@@ -21,9 +28,11 @@ import java.util.Random;
 
 public class NotificationWorker extends Worker {
     public static final String NOTIFICATION_WORKER_TAG = "NotificationWorker";
+    private final SharedPreferences sharedPreferences;
 
     public NotificationWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
+        this.sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
     }
 
     @NonNull
@@ -36,10 +45,15 @@ public class NotificationWorker extends Worker {
             Log.w(NOTIFICATION_WORKER_TAG, "Unable to find zen_mode status");
         }
         if (dndStatus == 0) {
-            Log.i(NOTIFICATION_WORKER_TAG, "Sending Notification for affirmation " + ActivityMain.affirmation);
+            Log.i(NOTIFICATION_WORKER_TAG, "Sending Notification for affirmation " + sharedPreferences.getString(AFFIRMATION_SHARED_PREFERENCE, ""));
+            Intent intent = new Intent(getApplicationContext(), ActivityMain.class);
+            TaskStackBuilder taskStackBuilder = TaskStackBuilder.create(getApplicationContext());
+            taskStackBuilder.addNextIntentWithParentStack(intent);
+            PendingIntent pendingIntent = taskStackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
             NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), ActivityMain.NOTIFICATION_CHANNEL)
                     .setSmallIcon(R.drawable.happy_brain)
-                    .setContentTitle(ActivityMain.affirmation)
+                    .setContentTitle(sharedPreferences.getString(AFFIRMATION_SHARED_PREFERENCE, ""))
+                    .setContentIntent(pendingIntent)
                     .setPriority(NotificationCompat.PRIORITY_DEFAULT);
             NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(getApplicationContext());
             if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {

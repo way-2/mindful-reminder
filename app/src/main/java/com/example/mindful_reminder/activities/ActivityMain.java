@@ -3,6 +3,7 @@ package com.example.mindful_reminder.activities;
 import android.Manifest;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import androidx.appcompat.widget.AppCompatButton;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
+import androidx.preference.PreferenceManager;
 import androidx.work.Constraints;
 import androidx.work.ExistingPeriodicWorkPolicy;
 import androidx.work.NetworkType;
@@ -39,9 +41,9 @@ public class ActivityMain extends AppCompatActivity {
 
     private static final String TAG = ActivityMain.class.getSimpleName();
     public static final String NOTIFICATION_CHANNEL = "MINDFUL_REMINDER";
+    public static final String AFFIRMATION_SHARED_PREFERENCE = "affirmation_shared_preference";
     private TextView affirmationTextView;
     public static UUID getAffirmationUuid;
-    public static String affirmation;
     private MenuItem aboutMenuItem;
     private MenuItem helpMenuItem;
     private MenuItem settingsMenuItem;
@@ -49,6 +51,7 @@ public class ActivityMain extends AppCompatActivity {
     private AboutFragment aboutFragment;
     private SettingsFragment settingsFragment;
     private AppCompatButton skipButton;
+    private SharedPreferences sharedPreferences;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -56,8 +59,16 @@ public class ActivityMain extends AppCompatActivity {
         checkPermissions();
         createNotificationChannel();
         setContentView(R.layout.activity_main);
+        setupSharedPreferences();
         startAffirmationWorker();
         setupUi();
+    }
+
+    private void setupSharedPreferences() {
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        if (!sharedPreferences.contains(AFFIRMATION_SHARED_PREFERENCE)) {
+            runAffirmationOneTime();
+        }
     }
 
     private void checkPermissions() {
@@ -66,31 +77,9 @@ public class ActivityMain extends AppCompatActivity {
         }
     }
 
-    private void updateAffirmationUi() {
-        WorkManager workManager = WorkManager.getInstance(getApplicationContext());
-        workManager.getWorkInfoByIdLiveData(getAffirmationUuid).observe(this, new Observer<WorkInfo>() {
-            @Override
-            public void onChanged(WorkInfo workInfo) {
-                if (null != workInfo && workInfo.getState().equals(WorkInfo.State.RUNNING)) {
-                    GetAffirmationWorker.affirmationObservable.observe(ActivityMain.this,
-                            new Observer<String>() {
-                                @Override
-                                public void onChanged(String s) {
-                                    workManager.getWorkInfosForUniqueWorkLiveData(GetAffirmationWorker.GET_AFFIRMATION_TAG).removeObservers(ActivityMain.this);
-                                    affirmation = s;
-                                    affirmationTextView.setText(affirmation);
-                                }
-                            });
-                }
-            }
-        });
-    }
-
     private void setupUi() {
         affirmationTextView = (TextView) requireViewById(R.id.affirmation);
-        if (affirmationTextView.getText().length() < 1) {
-            runAffirmationOneTime();
-        }
+        affirmationTextView.setText(sharedPreferences.getString(AFFIRMATION_SHARED_PREFERENCE,""));
         skipButton = (AppCompatButton) requireViewById(R.id.skip_button);
         skipButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -108,13 +97,12 @@ public class ActivityMain extends AppCompatActivity {
             @Override
             public void onChanged(WorkInfo workInfo) {
                 if (null != workInfo && workInfo.getState().equals(WorkInfo.State.SUCCEEDED)) {
-                    GetAffirmationWorker.affirmationObservable.observe(ActivityMain.this,
-                            new Observer<String>() {
+                    GetAffirmationWorker.updateDone.observe(ActivityMain.this,
+                            new Observer<Boolean>() {
                                 @Override
-                                public void onChanged(String s) {
+                                public void onChanged(Boolean updateDone) {
                                     workManager.getWorkInfosForUniqueWorkLiveData(GetAffirmationWorker.GET_AFFIRMATION_TAG).removeObservers(ActivityMain.this);
-                                    affirmation = s;
-                                    affirmationTextView.setText(affirmation);
+                                    affirmationTextView.setText(sharedPreferences.getString(AFFIRMATION_SHARED_PREFERENCE, ""));
                                 }
                             });
                 }
@@ -224,7 +212,21 @@ public class ActivityMain extends AppCompatActivity {
         WorkManager workManager = WorkManager.getInstance(getApplicationContext());
         workManager.enqueueUniquePeriodicWork(GetAffirmationWorker.GET_AFFIRMATION_TAG, ExistingPeriodicWorkPolicy.KEEP, runWork);
         getAffirmationUuid = runWork.getId();
-        updateAffirmationUi();
+        workManager.getWorkInfoByIdLiveData(getAffirmationUuid).observe(this, new Observer<WorkInfo>() {
+            @Override
+            public void onChanged(WorkInfo workInfo) {
+                if (null != workInfo && workInfo.getState().equals(WorkInfo.State.RUNNING)) {
+                    GetAffirmationWorker.updateDone.observe(ActivityMain.this,
+                            new Observer<Boolean>() {
+                                @Override
+                                public void onChanged(Boolean updateDone) {
+                                    workManager.getWorkInfosForUniqueWorkLiveData(GetAffirmationWorker.GET_AFFIRMATION_TAG).removeObservers(ActivityMain.this);
+                                    affirmationTextView.setText(sharedPreferences.getString(AFFIRMATION_SHARED_PREFERENCE, ""));
+                                }
+                            });
+                }
+            }
+        });
     }
 
 }

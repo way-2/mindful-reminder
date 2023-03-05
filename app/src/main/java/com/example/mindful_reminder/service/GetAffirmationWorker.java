@@ -1,10 +1,14 @@
 package com.example.mindful_reminder.service;
 
+import static com.example.mindful_reminder.activities.ActivityMain.AFFIRMATION_SHARED_PREFERENCE;
+
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
+import androidx.preference.PreferenceManager;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
@@ -15,21 +19,24 @@ import java.time.LocalDateTime;
 public class GetAffirmationWorker extends Worker {
     public static final String GET_AFFIRMATION_TAG = "GetAffirmationWorker";
     private static final String TAG = GetAffirmationWorker.class.getSimpleName();
-    private String affirmation;
-    public static MutableLiveData<String> affirmationObservable = new MutableLiveData<>();
-    private WebClient webClient;
+    public static MutableLiveData<Boolean> updateDone = new MutableLiveData<>();
+    private final WebClient webClient;
+    private final SharedPreferences sharedPreferences;
 
     public GetAffirmationWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
         this.webClient = new WebClient();
+        this.sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
     }
 
     @NonNull
     @Override
     public Result doWork() {
-        affirmation = webClient.getMotivated();
-        affirmationObservable.postValue(affirmation);
-        Log.i(TAG, LocalDateTime.now() + " | Got affirmation " + affirmation);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(AFFIRMATION_SHARED_PREFERENCE, webClient.getMotivated());
+        editor.apply();
+        updateDone.postValue(true);
+        Log.i(TAG, LocalDateTime.now() + " | Got affirmation " + sharedPreferences.getString(AFFIRMATION_SHARED_PREFERENCE, ""));
         return Result.success();
     }
 
