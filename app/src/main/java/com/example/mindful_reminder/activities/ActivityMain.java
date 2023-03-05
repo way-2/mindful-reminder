@@ -9,13 +9,11 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
-import androidx.appcompat.widget.SwitchCompat;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
@@ -31,8 +29,8 @@ import androidx.work.WorkRequest;
 import com.example.mindful_reminder.R;
 import com.example.mindful_reminder.fragments.AboutFragment;
 import com.example.mindful_reminder.fragments.HelpFragment;
+import com.example.mindful_reminder.fragments.SettingsFragment;
 import com.example.mindful_reminder.service.GetAffirmationWorker;
-import com.example.mindful_reminder.service.NotificationWorker;
 
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
@@ -42,13 +40,14 @@ public class ActivityMain extends AppCompatActivity {
     private static final String TAG = ActivityMain.class.getSimpleName();
     public static final String NOTIFICATION_CHANNEL = "MINDFUL_REMINDER";
     private TextView affirmationTextView;
-    private UUID getAffirmationUuid;
-    private SwitchCompat switchCompat;
+    public static UUID getAffirmationUuid;
     public static String affirmation;
     private MenuItem aboutMenuItem;
     private MenuItem helpMenuItem;
+    private MenuItem settingsMenuItem;
     private HelpFragment helpFragment;
     private AboutFragment aboutFragment;
+    private SettingsFragment settingsFragment;
     private AppCompatButton skipButton;
 
     @Override
@@ -57,6 +56,7 @@ public class ActivityMain extends AppCompatActivity {
         checkPermissions();
         createNotificationChannel();
         setContentView(R.layout.activity_main);
+        startAffirmationWorker();
         setupUi();
     }
 
@@ -88,8 +88,10 @@ public class ActivityMain extends AppCompatActivity {
 
     private void setupUi() {
         affirmationTextView = (TextView) requireViewById(R.id.affirmation);
+        if (affirmationTextView.getText().length() < 1) {
+            runAffirmationOneTime();
+        }
         skipButton = (AppCompatButton) requireViewById(R.id.skip_button);
-        runAffirmationOneTime();
         skipButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -122,22 +124,6 @@ public class ActivityMain extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.action_menu, menu);
-        MenuItem itemSwitch = menu.findItem(R.id.switch_action_bar);
-        switchCompat = (SwitchCompat) itemSwitch.getActionView().findViewById(R.id.switch2);
-        switchCompat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    startAffirmationWorker();
-                    startNotificationWorker();
-                } else {
-                    stopNotificationWorker();
-                    stopAffirmationWorker();
-                }
-            }
-        });
-
         getMenuInflater().inflate(R.menu.menu_main, menu);
         aboutMenuItem = (MenuItem) menu.findItem(R.id.about);
         aboutMenuItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
@@ -155,7 +141,27 @@ public class ActivityMain extends AppCompatActivity {
                 return true;
             }
         });
+        settingsMenuItem = (MenuItem) menu.findItem(R.id.settings);
+        settingsMenuItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(@NonNull MenuItem item) {
+                loadFragmentSettingsFragment(settingsFragment);
+                return true;
+            }
+        });
         return true;
+    }
+
+    private void loadFragmentSettingsFragment(SettingsFragment fragment) {
+        if (fragment == null) {
+            fragment = new SettingsFragment();
+        }
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.fragment_frame, fragment);
+        fragmentTransaction.addToBackStack(TAG);
+        fragmentTransaction.commit();
+        settingsFragment = fragment;
+        mainUi(View.GONE);
     }
 
     @Override
@@ -197,16 +203,6 @@ public class ActivityMain extends AppCompatActivity {
         mainUi(View.GONE);
     }
 
-    private void stopAffirmationWorker() {
-        WorkManager workManager = WorkManager.getInstance(getApplicationContext());
-        workManager.cancelUniqueWork(GetAffirmationWorker.GET_AFFIRMATION_TAG);
-    }
-
-    private void stopNotificationWorker() {
-        WorkManager workManager = WorkManager.getInstance(getApplicationContext());
-        workManager.cancelUniqueWork(NotificationWorker.NOTIFICATION_WORKER_TAG);
-    }
-
     private void createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             int importance = NotificationManager.IMPORTANCE_DEFAULT;
@@ -215,18 +211,6 @@ public class ActivityMain extends AppCompatActivity {
             NotificationManager notificationManager = getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(channel);
         }
-    }
-
-    private void startNotificationWorker() {
-        PeriodicWorkRequest.Builder workBuilder = new PeriodicWorkRequest.Builder(NotificationWorker.class, 30, TimeUnit.MINUTES).setInitialDelay(15, TimeUnit.SECONDS).addTag(NotificationWorker.NOTIFICATION_WORKER_TAG);
-        Constraints constraints = new Constraints.Builder()
-                .setRequiredNetworkType(NetworkType.CONNECTED)
-                .setRequiresCharging(false)
-                .setRequiresDeviceIdle(false)
-                .build();
-        PeriodicWorkRequest runWork = workBuilder.setConstraints(constraints).build();
-        WorkManager workManager = WorkManager.getInstance(getApplicationContext());
-        workManager.enqueueUniquePeriodicWork(NotificationWorker.NOTIFICATION_WORKER_TAG, ExistingPeriodicWorkPolicy.KEEP, runWork);
     }
 
     public void startAffirmationWorker() {

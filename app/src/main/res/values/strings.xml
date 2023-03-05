@@ -4,10 +4,10 @@
     <string name="about">About</string>
     <string name="aboutBody">When switched on this app will pull a motivational reminder from the remote server every 24 hours and send a notification with that reminder every 30 minutes.</string>
     <string name="aboutGitHubLink">https://github.com/way-2/mindful-reminder</string>
-    <string name="next">Next</string>
-    <string name="previous">Previous</string>
     <string name="helpBody">What does this app do?\nThis app will refresh with a new motivational affirmation every 24 hours.\nIf enabled it will also send a notification as configured with the affirmation to help remind you to be a little more mindful.</string>
     <string name="skip">Skip</string>
-    <string name="dummy_button">Dummy Button</string>
-    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="settings">Settings</string>
+    <string name="switchTitle">Switch</string>
+    <string name="notification_header">Notification</string>
+    <string name="notification_title">Toggle Notifications</string>
 </resources>
