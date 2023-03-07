@@ -11,12 +11,12 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/mindfulReminder"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Design"
+        android:theme="@style/Theme.Material3.Dark"
         tools:targetApi="31">
         <activity
             android:name=".activities.ActivityMain"
             android:exported="true"
-            android:theme="@style/Theme.Design">
+            android:theme="@style/Theme.Material3.Dark">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
