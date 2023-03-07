@@ -45,9 +45,6 @@ public class ActivityMain extends AppCompatActivity {
     public static final String AFFIRMATION_SHARED_PREFERENCE = "affirmation_shared_preference";
     private TextView affirmationTextView;
     public static UUID getAffirmationUuid;
-    private MenuItem aboutMenuItem;
-    private MenuItem helpMenuItem;
-    private MenuItem settingsMenuItem;
     private HelpFragment helpFragment;
     private AboutFragment aboutFragment;
     private SettingsFragment settingsFragment;
@@ -114,7 +111,7 @@ public class ActivityMain extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
-        aboutMenuItem = (MenuItem) menu.findItem(R.id.about);
+        MenuItem aboutMenuItem = (MenuItem) menu.findItem(R.id.about);
         aboutMenuItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(@NonNull MenuItem item) {
@@ -122,7 +119,7 @@ public class ActivityMain extends AppCompatActivity {
                 return true;
             }
         });
-        helpMenuItem = (MenuItem) menu.findItem(R.id.help);
+        MenuItem helpMenuItem = (MenuItem) menu.findItem(R.id.help);
         helpMenuItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(@NonNull MenuItem item) {
@@ -130,7 +127,7 @@ public class ActivityMain extends AppCompatActivity {
                 return true;
             }
         });
-        settingsMenuItem = (MenuItem) menu.findItem(R.id.settings);
+        MenuItem settingsMenuItem = (MenuItem) menu.findItem(R.id.settings);
         settingsMenuItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(@NonNull MenuItem item) {
@@ -205,7 +202,7 @@ public class ActivityMain extends AppCompatActivity {
     public void startAffirmationWorker() {
         Calendar calendar = Calendar.getInstance();
         long nowMillis = calendar.getTimeInMillis();
-        calendar.set(Calendar.HOUR_OF_DAY, 8);
+        calendar.set(Calendar.HOUR_OF_DAY, 1);
         calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.SECOND, 0);
         calendar.set(Calendar.MILLISECOND, 0);
