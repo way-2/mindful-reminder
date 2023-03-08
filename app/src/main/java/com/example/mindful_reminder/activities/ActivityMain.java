@@ -168,6 +168,7 @@ public class ActivityMain extends AppCompatActivity {
     private void mainUi(int status) {
         skipButton.setVisibility(status);
         affirmationTextView.setVisibility(status);
+        affirmationUpdatedTextView.setVisibility(status);
     }
 
     private void loadFragmentHelpFragment(HelpFragment fragment) {

@@ -17,6 +17,7 @@
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/help_text_1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/helpBodyStart"
@@ -26,6 +27,7 @@
                 android:visibility="visible" />
 
             <TextView
+                android:id="@+id/help_text_2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/helpBodyList"
@@ -38,6 +40,7 @@
                 />
 
             <TextView
+                android:id="@+id/help_text_3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/helpBodyEnd"
