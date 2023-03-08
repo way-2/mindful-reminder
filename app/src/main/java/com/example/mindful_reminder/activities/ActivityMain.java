@@ -43,7 +43,9 @@ public class ActivityMain extends AppCompatActivity {
     private static final String TAG = ActivityMain.class.getSimpleName();
     public static final String NOTIFICATION_CHANNEL = "MINDFUL_REMINDER";
     public static final String AFFIRMATION_SHARED_PREFERENCE = "affirmation_shared_preference";
+    public static final String AFFIRMATION_UPDATED_SHARED_PREFERENCE = "affirmation_updated_shared_preference";
     private TextView affirmationTextView;
+    private TextView affirmationUpdatedTextView;
     public static UUID getAffirmationUuid;
     private HelpFragment helpFragment;
     private AboutFragment aboutFragment;
@@ -76,8 +78,10 @@ public class ActivityMain extends AppCompatActivity {
     }
 
     private void setupUi() {
+        affirmationUpdatedTextView = (TextView) requireViewById(R.id.affirmation_updated);
         affirmationTextView = (TextView) requireViewById(R.id.affirmation);
         affirmationTextView.setText(sharedPreferences.getString(AFFIRMATION_SHARED_PREFERENCE,""));
+        affirmationUpdatedTextView.setText(sharedPreferences.getString(AFFIRMATION_UPDATED_SHARED_PREFERENCE, ""));
         skipButton = (AppCompatButton) requireViewById(R.id.skip_button);
         skipButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -101,6 +105,7 @@ public class ActivityMain extends AppCompatActivity {
                                 public void onChanged(Boolean updateDone) {
                                     workManager.getWorkInfosForUniqueWorkLiveData(GetAffirmationWorker.GET_AFFIRMATION_TAG).removeObservers(ActivityMain.this);
                                     affirmationTextView.setText(sharedPreferences.getString(AFFIRMATION_SHARED_PREFERENCE, ""));
+                                    affirmationUpdatedTextView.setText(sharedPreferences.getString(AFFIRMATION_UPDATED_SHARED_PREFERENCE, ""));
                                 }
                             });
                 }
@@ -230,6 +235,7 @@ public class ActivityMain extends AppCompatActivity {
                                 public void onChanged(Boolean updateDone) {
                                     workManager.getWorkInfosForUniqueWorkLiveData(GetAffirmationWorker.GET_AFFIRMATION_TAG).removeObservers(ActivityMain.this);
                                     affirmationTextView.setText(sharedPreferences.getString(AFFIRMATION_SHARED_PREFERENCE, ""));
+                                    affirmationUpdatedTextView.setText(sharedPreferences.getString(AFFIRMATION_UPDATED_SHARED_PREFERENCE, ""));
                                 }
                             });
                 }

@@ -1,6 +1,7 @@
 package com.example.mindful_reminder.service;
 
 import static com.example.mindful_reminder.activities.ActivityMain.AFFIRMATION_SHARED_PREFERENCE;
+import static com.example.mindful_reminder.activities.ActivityMain.AFFIRMATION_UPDATED_SHARED_PREFERENCE;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -15,6 +16,7 @@ import androidx.work.WorkerParameters;
 import com.example.mindful_reminder.R;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Random;
 
 public class GetAffirmationWorker extends Worker {
@@ -33,6 +35,7 @@ public class GetAffirmationWorker extends Worker {
     public Result doWork() {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(AFFIRMATION_SHARED_PREFERENCE, getRandomAffirmation());
+        editor.putString(AFFIRMATION_UPDATED_SHARED_PREFERENCE, "Last Updated: " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy hh:mm a")));
         editor.apply();
         updateDone.postValue(true);
         Log.i(TAG, LocalDateTime.now() + " | Got affirmation " + sharedPreferences.getString(AFFIRMATION_SHARED_PREFERENCE, ""));
