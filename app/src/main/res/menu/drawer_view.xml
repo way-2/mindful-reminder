@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group
+        android:checkableBehavior="single" >
+        <item
+            android:id="@+id/nav_main"
+            android:title="@string/home"
+            />
+        <item
+            android:id="@+id/nav_breathe_helper"
+            android:title="@string/breathing_helper"
+            />
+
+    </group>
+
+    <group
+        android:checkableBehavior="single" >
+        <item
+            android:id="@+id/nav_help"
+            android:title="@string/help"
+            />
+        <item
+            android:id="@+id/nav_about"
+            android:title="@string/about"
+            />
+    </group>
+
+</menu>

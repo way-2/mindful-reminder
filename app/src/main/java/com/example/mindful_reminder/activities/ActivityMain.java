@@ -3,38 +3,38 @@ package com.example.mindful_reminder.activities;
 import android.Manifest;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
-import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatButton;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.Observer;
-import androidx.preference.PreferenceManager;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.work.Constraints;
 import androidx.work.ExistingPeriodicWorkPolicy;
 import androidx.work.NetworkType;
-import androidx.work.OneTimeWorkRequest;
 import androidx.work.PeriodicWorkRequest;
-import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
-import androidx.work.WorkRequest;
 
 import com.example.mindful_reminder.R;
 import com.example.mindful_reminder.fragments.AboutFragment;
+import com.example.mindful_reminder.fragments.BreatheFragment;
 import com.example.mindful_reminder.fragments.HelpFragment;
-import com.example.mindful_reminder.fragments.SettingsFragment;
+import com.example.mindful_reminder.fragments.MainFragment;
 import com.example.mindful_reminder.service.GetAffirmationWorker;
+import com.google.android.material.navigation.NavigationView;
 
 import java.util.Calendar;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
@@ -44,14 +44,11 @@ public class ActivityMain extends AppCompatActivity {
     public static final String NOTIFICATION_CHANNEL = "MINDFUL_REMINDER";
     public static final String AFFIRMATION_SHARED_PREFERENCE = "affirmation_shared_preference";
     public static final String AFFIRMATION_UPDATED_SHARED_PREFERENCE = "affirmation_updated_shared_preference";
-    private TextView affirmationTextView;
-    private TextView affirmationUpdatedTextView;
     public static UUID getAffirmationUuid;
-    private HelpFragment helpFragment;
-    private AboutFragment aboutFragment;
-    private SettingsFragment settingsFragment;
-    private AppCompatButton skipButton;
-    private SharedPreferences sharedPreferences;
+    private DrawerLayout drawerLayout;
+    private Toolbar toolbar;
+    private NavigationView navigationView;
+    private ActionBarDrawerToggle actionBarDrawerToggle;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -59,16 +56,57 @@ public class ActivityMain extends AppCompatActivity {
         checkPermissions();
         createNotificationChannel();
         setContentView(R.layout.activity_main);
-        setupSharedPreferences();
+        toolbar = (Toolbar) requireViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        drawerLayout = (DrawerLayout) requireViewById(R.id.drawer_layout);
+        navigationView = (NavigationView) requireViewById(R.id.nView);
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                selectDrawerItem(item);
+                return true;
+            }
+        });
+        actionBarDrawerToggle = setupDrawerToggele();
+        actionBarDrawerToggle.setDrawerIndicatorEnabled(true);
+        actionBarDrawerToggle.syncState();
+        drawerLayout.addDrawerListener(actionBarDrawerToggle);
         startAffirmationWorker();
-        setupUi();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.fragment_frame, new MainFragment()).commit();
     }
 
-    private void setupSharedPreferences() {
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        if (!sharedPreferences.contains(AFFIRMATION_SHARED_PREFERENCE)) {
-            runAffirmationOneTime();
+    private ActionBarDrawerToggle setupDrawerToggele() {
+        return new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.drawer_open, R.string.drawer_close);
+    }
+
+    private void selectDrawerItem(MenuItem item) {
+        Fragment fragment = null;
+        Class fragmentClass = null;
+        switch (item.getItemId()) {
+            case R.id.nav_breathe_helper:
+                fragmentClass = BreatheFragment.class;
+                break;
+            case R.id.nav_about:
+                fragmentClass = AboutFragment.class;
+                break;
+            case R.id.nav_help:
+                fragmentClass = HelpFragment.class;
+                break;
+            case R.id.nav_main:
+                fragmentClass = MainFragment.class;
+                break;
         }
+        try {
+            fragment = (Fragment) fragmentClass.newInstance();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.fragment_frame, fragment).addToBackStack(null).commit();
+        item.setChecked(true);
+        drawerLayout.closeDrawers();
     }
 
     private void checkPermissions() {
@@ -77,122 +115,12 @@ public class ActivityMain extends AppCompatActivity {
         }
     }
 
-    private void setupUi() {
-        affirmationUpdatedTextView = (TextView) requireViewById(R.id.affirmation_updated);
-        affirmationTextView = (TextView) requireViewById(R.id.affirmation);
-        affirmationTextView.setText(sharedPreferences.getString(AFFIRMATION_SHARED_PREFERENCE,""));
-        affirmationUpdatedTextView.setText(sharedPreferences.getString(AFFIRMATION_UPDATED_SHARED_PREFERENCE, ""));
-        skipButton = (AppCompatButton) requireViewById(R.id.skip_button);
-        skipButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                runAffirmationOneTime();
-            }
-        });
-    }
-
-    private void runAffirmationOneTime() {
-        WorkRequest workRequest = OneTimeWorkRequest.from(GetAffirmationWorker.class);
-        WorkManager workManager = WorkManager.getInstance(getApplicationContext());
-        workManager.enqueue(workRequest);
-        workManager.getWorkInfoByIdLiveData(workRequest.getId()).observe(ActivityMain.this, new Observer<WorkInfo>() {
-            @Override
-            public void onChanged(WorkInfo workInfo) {
-                if (null != workInfo && workInfo.getState().equals(WorkInfo.State.SUCCEEDED)) {
-                    GetAffirmationWorker.updateDone.observe(ActivityMain.this,
-                            new Observer<Boolean>() {
-                                @Override
-                                public void onChanged(Boolean updateDone) {
-                                    workManager.getWorkInfosForUniqueWorkLiveData(GetAffirmationWorker.GET_AFFIRMATION_TAG).removeObservers(ActivityMain.this);
-                                    affirmationTextView.setText(sharedPreferences.getString(AFFIRMATION_SHARED_PREFERENCE, ""));
-                                    affirmationUpdatedTextView.setText(sharedPreferences.getString(AFFIRMATION_UPDATED_SHARED_PREFERENCE, ""));
-                                }
-                            });
-                }
-            }
-        });
-    }
-
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        MenuItem aboutMenuItem = (MenuItem) menu.findItem(R.id.about);
-        aboutMenuItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(@NonNull MenuItem item) {
-                loadFragmentAboutFragment(aboutFragment);
-                return true;
-            }
-        });
-        MenuItem helpMenuItem = (MenuItem) menu.findItem(R.id.help);
-        helpMenuItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(@NonNull MenuItem item) {
-                loadFragmentHelpFragment(helpFragment);
-                return true;
-            }
-        });
-        MenuItem settingsMenuItem = (MenuItem) menu.findItem(R.id.settings);
-        settingsMenuItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(@NonNull MenuItem item) {
-                loadFragmentSettingsFragment(settingsFragment);
-                return true;
-            }
-        });
-        return true;
-    }
-
-    private void loadFragmentSettingsFragment(SettingsFragment fragment) {
-        if (fragment == null) {
-            fragment = new SettingsFragment();
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (actionBarDrawerToggle.onOptionsItemSelected(item)) {
+            return true;
         }
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.fragment_frame, fragment);
-        fragmentTransaction.addToBackStack(TAG);
-        fragmentTransaction.commit();
-        settingsFragment = fragment;
-        mainUi(View.GONE);
-    }
-
-    @Override
-    public void onBackPressed() {
-        if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
-            getSupportFragmentManager().popBackStack();
-            mainUi(View.VISIBLE);
-        } else {
-            super.onBackPressed();
-        }
-    }
-
-    private void mainUi(int status) {
-        skipButton.setVisibility(status);
-        affirmationTextView.setVisibility(status);
-        affirmationUpdatedTextView.setVisibility(status);
-    }
-
-    private void loadFragmentHelpFragment(HelpFragment fragment) {
-        if (fragment == null) {
-            fragment = new HelpFragment();
-        }
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.fragment_frame, fragment);
-        fragmentTransaction.addToBackStack(TAG);
-        fragmentTransaction.commit();
-        helpFragment = fragment;
-        mainUi(View.GONE);
-    }
-
-    private void loadFragmentAboutFragment(AboutFragment fragment) {
-        if (fragment == null) {
-            fragment = new AboutFragment();
-        }
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.fragment_frame, fragment);
-        fragmentTransaction.addToBackStack(TAG);
-        fragmentTransaction.commit();
-        aboutFragment = fragment;
-        mainUi(View.GONE);
+        return super.onOptionsItemSelected(item);
     }
 
     private void createNotificationChannel() {
@@ -226,22 +154,44 @@ public class ActivityMain extends AppCompatActivity {
         WorkManager workManager = WorkManager.getInstance(getApplicationContext());
         workManager.enqueueUniquePeriodicWork(GetAffirmationWorker.GET_AFFIRMATION_TAG, ExistingPeriodicWorkPolicy.KEEP, runWork);
         getAffirmationUuid = runWork.getId();
-        workManager.getWorkInfoByIdLiveData(getAffirmationUuid).observe(this, new Observer<WorkInfo>() {
-            @Override
-            public void onChanged(WorkInfo workInfo) {
-                if (null != workInfo && workInfo.getState().equals(WorkInfo.State.RUNNING)) {
-                    GetAffirmationWorker.updateDone.observe(ActivityMain.this,
-                            new Observer<Boolean>() {
-                                @Override
-                                public void onChanged(Boolean updateDone) {
-                                    workManager.getWorkInfosForUniqueWorkLiveData(GetAffirmationWorker.GET_AFFIRMATION_TAG).removeObservers(ActivityMain.this);
-                                    affirmationTextView.setText(sharedPreferences.getString(AFFIRMATION_SHARED_PREFERENCE, ""));
-                                    affirmationUpdatedTextView.setText(sharedPreferences.getString(AFFIRMATION_UPDATED_SHARED_PREFERENCE, ""));
-                                }
-                            });
-                }
-            }
-        });
+//        workManager.getWorkInfoByIdLiveData(getAffirmationUuid).observe(this, new Observer<WorkInfo>() {
+//            @Override
+//            public void onChanged(WorkInfo workInfo) {
+//                if (null != workInfo && workInfo.getState().equals(WorkInfo.State.RUNNING)) {
+//                    GetAffirmationWorker.updateDone.observe(this,
+//                            new Observer<Boolean>() {
+//                                @Override
+//                                public void onChanged(Boolean updateDone) {
+//                                    workManager.getWorkInfosForUniqueWorkLiveData(GetAffirmationWorker.GET_AFFIRMATION_TAG).removeObservers(ActivityMain.this);
+//                                    affirmationTextView.setText(sharedPreferences.getString(AFFIRMATION_SHARED_PREFERENCE, ""));
+//                                    affirmationUpdatedTextView.setText(sharedPreferences.getString(AFFIRMATION_UPDATED_SHARED_PREFERENCE, ""));
+//                                }
+//                            });
+//                }
+//            }
+//        });
     }
 
+    @Override
+    public void onConfigurationChanged(@NonNull Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        actionBarDrawerToggle.onConfigurationChanged(newConfig);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawer(GravityCompat.START);
+        } else if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+            getSupportFragmentManager().popBackStack();
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    @Override
+    protected void onPostCreate(@Nullable Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        actionBarDrawerToggle.syncState();
+    }
 }

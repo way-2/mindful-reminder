@@ -34,4 +34,8 @@
     <string name="switchTitle">Switch</string>
     <string name="notification_header">Notification</string>
     <string name="notification_title">Toggle Notifications</string>
+    <string name="breathing_helper">Breathing Helper</string>
+    <string name="home">Home</string>
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
 </resources>
