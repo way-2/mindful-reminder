@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.GroundingFragment"
+    android:id="@+id/fragment_grounding">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextSwitcher
+            android:id="@+id/grounding_text_switcher"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="120dp"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="50dp"
+            android:layout_marginEnd="50dp"
+            android:inAnimation="@anim/nav_default_enter_anim"
+            android:outAnimation="@anim/nav_default_exit_anim"
+            >
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:lineSpacingMultiplier="1.25"
+                android:textAlignment="center"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textSize="18sp"
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:lineSpacingMultiplier="1.25"
+                android:textAlignment="center"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textSize="18sp"
+                />
+        </TextSwitcher>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:hapticFeedbackEnabled="true"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:background="@drawable/round_button_style"
+                android:layout_marginBottom="200dp"
+                android:id="@+id/counter_button"
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentBottom="true"
+                android:textSize="24sp"
+                android:text="@string/start"
+                />
+
+    </RelativeLayout>
+
+</FrameLayout>

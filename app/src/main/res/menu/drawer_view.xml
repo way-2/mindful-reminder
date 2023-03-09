@@ -11,14 +11,17 @@
             android:id="@+id/nav_breathe_helper"
             android:title="@string/breathing_helper"
             />
-
+        <item
+            android:id="@+id/nav_grounding"
+            android:title="@string/grounding"
+            />
     </group>
 
     <group
         android:checkableBehavior="single" >
         <item
-            android:id="@+id/nav_help"
-            android:title="@string/help"
+            android:id="@+id/nav_settings"
+            android:title="@string/settings"
             />
         <item
             android:id="@+id/nav_about"

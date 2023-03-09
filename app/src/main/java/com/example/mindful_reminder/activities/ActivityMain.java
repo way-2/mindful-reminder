@@ -28,8 +28,9 @@ import androidx.work.WorkManager;
 import com.example.mindful_reminder.R;
 import com.example.mindful_reminder.fragments.AboutFragment;
 import com.example.mindful_reminder.fragments.BreatheFragment;
-import com.example.mindful_reminder.fragments.HelpFragment;
+import com.example.mindful_reminder.fragments.GroundingFragment;
 import com.example.mindful_reminder.fragments.MainFragment;
+import com.example.mindful_reminder.fragments.SettingsFragment;
 import com.example.mindful_reminder.service.GetAffirmationWorker;
 import com.google.android.material.navigation.NavigationView;
 
@@ -91,11 +92,14 @@ public class ActivityMain extends AppCompatActivity {
             case R.id.nav_about:
                 fragmentClass = AboutFragment.class;
                 break;
-            case R.id.nav_help:
-                fragmentClass = HelpFragment.class;
-                break;
             case R.id.nav_main:
                 fragmentClass = MainFragment.class;
+                break;
+            case R.id.nav_grounding:
+                fragmentClass = GroundingFragment.class;
+                break;
+            case R.id.nav_settings:
+                fragmentClass = SettingsFragment.class;
                 break;
         }
         try {
@@ -110,8 +114,11 @@ public class ActivityMain extends AppCompatActivity {
     }
 
     private void checkPermissions() {
-        if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.POST_NOTIFICATIONS}, 0);
+        String[] requestedPermissions = new String[]{Manifest.permission.POST_NOTIFICATIONS};
+        for (String s: requestedPermissions) {
+            if (ActivityCompat.checkSelfPermission(getApplicationContext(), s) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, new String[]{s}, 0);
+            }
         }
     }
 
@@ -154,22 +161,6 @@ public class ActivityMain extends AppCompatActivity {
         WorkManager workManager = WorkManager.getInstance(getApplicationContext());
         workManager.enqueueUniquePeriodicWork(GetAffirmationWorker.GET_AFFIRMATION_TAG, ExistingPeriodicWorkPolicy.KEEP, runWork);
         getAffirmationUuid = runWork.getId();
-//        workManager.getWorkInfoByIdLiveData(getAffirmationUuid).observe(this, new Observer<WorkInfo>() {
-//            @Override
-//            public void onChanged(WorkInfo workInfo) {
-//                if (null != workInfo && workInfo.getState().equals(WorkInfo.State.RUNNING)) {
-//                    GetAffirmationWorker.updateDone.observe(this,
-//                            new Observer<Boolean>() {
-//                                @Override
-//                                public void onChanged(Boolean updateDone) {
-//                                    workManager.getWorkInfosForUniqueWorkLiveData(GetAffirmationWorker.GET_AFFIRMATION_TAG).removeObservers(ActivityMain.this);
-//                                    affirmationTextView.setText(sharedPreferences.getString(AFFIRMATION_SHARED_PREFERENCE, ""));
-//                                    affirmationUpdatedTextView.setText(sharedPreferences.getString(AFFIRMATION_UPDATED_SHARED_PREFERENCE, ""));
-//                                }
-//                            });
-//                }
-//            }
-//        });
     }
 
     @Override

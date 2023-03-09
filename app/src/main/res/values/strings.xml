@@ -38,4 +38,24 @@
     <string name="home">Home</string>
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
+    <string name="breath_steps">Find a comfortable and quiet place where you can sit or lie down, then press the Start button
+    \n\n
+    1) Take a deep breath in through your nose, filling your lungs with air for a count of 4 seconds.
+    \n
+    2) Hold your breath for a count of 7 seconds.
+    \n
+    3) Exhale slowly through your mouth for a count of 8 seconds, making a whooshing sound as you exhale.
+    \n
+    4) Repeat the cycle of inhaling for 4 seconds, holding for 7 seconds, and exhaling for 8 seconds.</string>
+    <string name="start">Start</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="groundingBody">5–4–3–2–1 Grounding is a mindfulness technique that can help you to feel more present and centered. Take a deep breath in and out, now lets get started.</string>
+    <string name="groundingSee">Look around you and identify 5 things you can see. They can be anything from a piece of furniture to a plant or picture on the wall.</string>
+    <string name="groundingTouch">Now notice 4 things you can touch. This can be anything from the ground beneath your feet to the fabric of your clothes.</string>
+    <string name="groundingHear">Listen for 3 sounds that you can hear. This can be the sound of traffic outside to the hum of a fan or the ticking of a clock.</string>
+    <string name="groundingSmell">Identify 2 things that you can smell. This can be things like the aroma of coffee, or food, or the scent of flowers.</string>
+    <string name="groundingTaste">Finally, focus on 1 thing you can taste. This can be a sip of water or a piece of fruit or anything else that you can taste in your mouth.</string>
+    <string name="groundingComplete">You can repeat this exercise as many times as necessary to feel more centered and present, press the Start button to begin again.</string>
+    <string name="grounding">Grounding Exercise</string>
 </resources>

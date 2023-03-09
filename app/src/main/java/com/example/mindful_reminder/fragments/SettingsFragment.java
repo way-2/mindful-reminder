@@ -4,7 +4,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -53,19 +52,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         getUiElements();
-        setHasOptionsMenu(true);
         return super.onCreateView(inflater, container, savedInstanceState);
-    }
-
-    @Override
-    public void onPrepareOptionsMenu(@NonNull Menu menu) {
-        menu.findItem(R.id.settings).setVisible(false);
-        menu.findItem(R.id.settings).setEnabled(false);
-        menu.findItem(R.id.help).setVisible(false);
-        menu.findItem(R.id.help).setEnabled(false);
-        menu.findItem(R.id.about).setVisible(false);
-        menu.findItem(R.id.about).setEnabled(false);
-        super.onPrepareOptionsMenu(menu);
     }
 
     private void getUiElements() {
