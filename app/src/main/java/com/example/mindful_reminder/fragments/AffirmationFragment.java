@@ -5,6 +5,7 @@ import static com.example.mindful_reminder.activities.ActivityMain.AFFIRMATION_U
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.transition.TransitionInflater;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,6 +38,7 @@ public class AffirmationFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_affirmation, container, false);
         setupSharedPreferences();
         setupUi(view);
+        TransitionInflater transitionInflater = TransitionInflater.from(requireContext());
         return view;
     }
 

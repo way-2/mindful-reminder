@@ -57,8 +57,10 @@ public class DailyMindfulnessActivity extends Fragment {
         activityDetailsTextView = (TextView) view.findViewById(R.id.daily_mindfulness_activity_details);
         activityTextView.setText(sharedPreferences.getString(DAILY_MINDFULNESS_ACTIVITY_SHARED_PREFERENCE,""));
         activityUpdatedTextView.setText(sharedPreferences.getString(DAILY_MINDFULNESS_ACTIVITY_UPDATED_SHARED_PREFERENCE, ""));
-        int index = Arrays.asList(getResources().getStringArray(R.array.activity_name)).indexOf(sharedPreferences.getString(DAILY_MINDFULNESS_ACTIVITY_SHARED_PREFERENCE, ""));
-        activityDetailsTextView.setText(getResources().getStringArray(R.array.activity_text)[index]);
+        if (sharedPreferences.contains(DAILY_MINDFULNESS_ACTIVITY_SHARED_PREFERENCE)) {
+            int index = Arrays.asList(getResources().getStringArray(R.array.activity_name)).indexOf(sharedPreferences.getString(DAILY_MINDFULNESS_ACTIVITY_SHARED_PREFERENCE, ""));
+            activityDetailsTextView.setText(getResources().getStringArray(R.array.activity_text)[index]);
+        }
         skipButton = (AppCompatButton) view.findViewById(R.id.skip_button);
         skipButton.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -27,10 +27,10 @@ import androidx.work.WorkManager;
 
 import com.example.mindful_reminder.R;
 import com.example.mindful_reminder.fragments.AboutFragment;
+import com.example.mindful_reminder.fragments.AffirmationFragment;
 import com.example.mindful_reminder.fragments.BreatheFragment;
 import com.example.mindful_reminder.fragments.DailyMindfulnessActivity;
 import com.example.mindful_reminder.fragments.GroundingFragment;
-import com.example.mindful_reminder.fragments.AffirmationFragment;
 import com.example.mindful_reminder.fragments.SettingsFragment;
 import com.example.mindful_reminder.service.DailyWorker;
 import com.google.android.material.navigation.NavigationView;
@@ -112,7 +112,14 @@ public class ActivityMain extends AppCompatActivity {
             ex.printStackTrace();
         }
         FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.fragment_frame, fragment).addToBackStack(null).commit();
+        fragmentManager.beginTransaction()
+                .setCustomAnimations(
+                        R.anim.slide_in,
+                        R.anim.fade_out
+                )
+                .replace(R.id.fragment_frame, fragment)
+                .addToBackStack(null)
+                .commit();
         item.setChecked(true);
         drawerLayout.closeDrawers();
     }
