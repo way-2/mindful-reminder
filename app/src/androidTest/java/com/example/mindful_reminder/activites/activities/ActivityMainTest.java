@@ -1,4 +1,4 @@
-package com.example.mindful_reminder.activites;
+package com.example.mindful_reminder.activites.activities;
 
 import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentation;
 import static org.junit.Assert.assertEquals;

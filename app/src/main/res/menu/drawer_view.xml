@@ -4,8 +4,12 @@
     <group
         android:checkableBehavior="single" >
         <item
-            android:id="@+id/nav_main"
-            android:title="@string/home"
+            android:id="@+id/nav_affirmation"
+            android:title="@string/affirmation"
+            />
+        <item
+            android:id="@+id/nav_activity"
+            android:title="@string/mindfulness_activity"
             />
         <item
             android:id="@+id/nav_breathe_helper"

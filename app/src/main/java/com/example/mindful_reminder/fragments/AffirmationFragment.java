@@ -24,7 +24,7 @@ import androidx.work.WorkRequest;
 import com.example.mindful_reminder.R;
 import com.example.mindful_reminder.service.GetAffirmationWorker;
 
-public class MainFragment extends Fragment {
+public class AffirmationFragment extends Fragment {
 
     private SharedPreferences sharedPreferences;
     private AppCompatButton skipButton;
@@ -34,7 +34,7 @@ public class MainFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_main, container, false);
+        View view = inflater.inflate(R.layout.fragment_affirmation, container, false);
         setupSharedPreferences();
         setupUi(view);
         return view;

@@ -36,6 +36,8 @@
     <string name="notification_title">Toggle Notifications</string>
     <string name="breathing_helper">Breathing Helper</string>
     <string name="home">Home</string>
+    <string name="affirmation">Daily Affirmation</string>
+    <string name="mindfulness_activity">Daily Mindfulness Activity</string>
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
     <string name="breath_steps">Find a comfortable and quiet place where you can sit or lie down, then press the Start button
@@ -58,4 +60,5 @@
     <string name="groundingTaste">Finally, focus on 1 thing you can taste. This can be a sip of water or a piece of fruit or anything else that you can taste in your mouth.</string>
     <string name="groundingComplete">You can repeat this exercise as many times as necessary to feel more centered and present, press the Start button to begin again.</string>
     <string name="grounding">Grounding Exercise</string>
+    <string name="daily_activity_notifications">Daily Activity Notification</string>
 </resources>

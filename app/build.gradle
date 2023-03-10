@@ -52,4 +52,5 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
     androidTestImplementation 'com.linkedin.dexmaker:dexmaker-mockito:2.28.3'
     androidTestImplementation 'androidx.test.uiautomator:uiautomator:2.2.0'
+    androidTestImplementation 'androidx.fragment:fragment-testing:1.5.5'
 }

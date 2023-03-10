@@ -28,10 +28,11 @@ import androidx.work.WorkManager;
 import com.example.mindful_reminder.R;
 import com.example.mindful_reminder.fragments.AboutFragment;
 import com.example.mindful_reminder.fragments.BreatheFragment;
+import com.example.mindful_reminder.fragments.DailyMindfulnessActivity;
 import com.example.mindful_reminder.fragments.GroundingFragment;
-import com.example.mindful_reminder.fragments.MainFragment;
+import com.example.mindful_reminder.fragments.AffirmationFragment;
 import com.example.mindful_reminder.fragments.SettingsFragment;
-import com.example.mindful_reminder.service.GetAffirmationWorker;
+import com.example.mindful_reminder.service.DailyWorker;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.Calendar;
@@ -40,12 +41,12 @@ import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 public class ActivityMain extends AppCompatActivity {
-
-    private static final String TAG = ActivityMain.class.getSimpleName();
     public static final String NOTIFICATION_CHANNEL = "MINDFUL_REMINDER";
+    public static final String DAILY_MINDFULNESS_ACTIVITY_SHARED_PREFERENCE = "daily_mindfulness_activity_shared_preference";
     public static final String AFFIRMATION_SHARED_PREFERENCE = "affirmation_shared_preference";
     public static final String AFFIRMATION_UPDATED_SHARED_PREFERENCE = "affirmation_updated_shared_preference";
-    public static UUID getAffirmationUuid;
+    public static final String DAILY_MINDFULNESS_ACTIVITY_UPDATED_SHARED_PREFERENCE = "daily_mindfulness_activity_updated_shared_preference";
+    public static UUID dailyActivityUuid;
     private DrawerLayout drawerLayout;
     private Toolbar toolbar;
     private NavigationView navigationView;
@@ -73,9 +74,9 @@ public class ActivityMain extends AppCompatActivity {
         actionBarDrawerToggle.setDrawerIndicatorEnabled(true);
         actionBarDrawerToggle.syncState();
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
-        startAffirmationWorker();
+        startDailyActivityWorker();
         FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.fragment_frame, new MainFragment()).commit();
+        fragmentManager.beginTransaction().replace(R.id.fragment_frame, new AffirmationFragment()).commit();
     }
 
     private ActionBarDrawerToggle setupDrawerToggele() {
@@ -92,8 +93,11 @@ public class ActivityMain extends AppCompatActivity {
             case R.id.nav_about:
                 fragmentClass = AboutFragment.class;
                 break;
-            case R.id.nav_main:
-                fragmentClass = MainFragment.class;
+            case R.id.nav_affirmation:
+                fragmentClass = AffirmationFragment.class;
+                break;
+            case R.id.nav_activity:
+                fragmentClass = DailyMindfulnessActivity.class;
                 break;
             case R.id.nav_grounding:
                 fragmentClass = GroundingFragment.class;
@@ -140,7 +144,7 @@ public class ActivityMain extends AppCompatActivity {
         }
     }
 
-    public void startAffirmationWorker() {
+    public void startDailyActivityWorker() {
         Calendar calendar = Calendar.getInstance();
         long nowMillis = calendar.getTimeInMillis();
         calendar.set(Calendar.HOUR_OF_DAY, 1);
@@ -151,7 +155,7 @@ public class ActivityMain extends AppCompatActivity {
             calendar.add(Calendar.DATE, 1);
         }
         long diff = calendar.getTimeInMillis() - nowMillis;
-        PeriodicWorkRequest.Builder workBuilder = new PeriodicWorkRequest.Builder(GetAffirmationWorker.class, 24, TimeUnit.HOURS).setInitialDelay(diff, TimeUnit.MILLISECONDS).addTag(GetAffirmationWorker.GET_AFFIRMATION_TAG).setId(UUID.randomUUID());
+        PeriodicWorkRequest.Builder workBuilder = new PeriodicWorkRequest.Builder(DailyWorker.class, 24, TimeUnit.HOURS).setInitialDelay(diff, TimeUnit.MILLISECONDS).addTag(DailyWorker.DAILY_ACTIVITY_TAG).setId(UUID.randomUUID());
         Constraints constraints = new Constraints.Builder()
                 .setRequiredNetworkType(NetworkType.CONNECTED)
                 .setRequiresCharging(false)
@@ -159,8 +163,8 @@ public class ActivityMain extends AppCompatActivity {
                 .build();
         PeriodicWorkRequest runWork = workBuilder.setConstraints(constraints).build();
         WorkManager workManager = WorkManager.getInstance(getApplicationContext());
-        workManager.enqueueUniquePeriodicWork(GetAffirmationWorker.GET_AFFIRMATION_TAG, ExistingPeriodicWorkPolicy.KEEP, runWork);
-        getAffirmationUuid = runWork.getId();
+        workManager.enqueueUniquePeriodicWork(DailyWorker.DAILY_ACTIVITY_TAG, ExistingPeriodicWorkPolicy.KEEP, runWork);
+        dailyActivityUuid = runWork.getId();
     }
 
     @Override

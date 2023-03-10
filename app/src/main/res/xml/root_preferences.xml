@@ -9,11 +9,28 @@
             />
 
         <ListPreference
+            android:enabled="false"
             android:defaultValue="30"
             android:entries="@array/notification_times_string"
             android:entryValues="@array/notification_times_int"
             android:key="notification_time_interval_list"
             android:title="Notification Interval"
+            />
+
+        <SwitchPreferenceCompat
+            app:key="daily_activity_notification_toggle"
+            app:title="@string/daily_activity_notifications"
+            android:summary="Send notification every day with your daily mindfulness activity"
+            />
+
+        <ListPreference
+            android:enabled="false"
+            android:defaultValue="08"
+            android:entries="@array/hour_string"
+            android:entryValues="@array/hour_int"
+            android:key="daily_notification_hour_list"
+            android:title="Hour for daily mindfulness activity reminder"
+            android:summary="Hour of the day to send notification for daily mindfulness activity"
             />
 
     </PreferenceCategory>

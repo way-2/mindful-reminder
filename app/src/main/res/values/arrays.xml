@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="hour_string">
+        <item>12 AM</item>
+        <item>01 AM</item>
+        <item>02 AM</item>
+        <item>03 AM</item>
+        <item>04 AM</item>
+        <item>05 AM</item>
+        <item>06 AM</item>
+        <item>07 AM</item>
+        <item>08 AM</item>
+        <item>09 AM</item>
+        <item>10 AM</item>
+        <item>11 AM</item>
+        <item>12 PM</item>
+        <item>01 PM</item>
+        <item>02 PM</item>
+        <item>03 PM</item>
+        <item>04 PM</item>
+        <item>05 PM</item>
+        <item>06 PM</item>
+        <item>07 PM</item>
+        <item>08 PM</item>
+        <item>09 PM</item>
+        <item>10 PM</item>
+        <item>11 PM</item>
+    </string-array>
+    <string-array name="hour_int">
+        <item>00</item>
+        <item>01</item>
+        <item>02</item>
+        <item>03</item>
+        <item>04</item>
+        <item>05</item>
+        <item>06</item>
+        <item>07</item>
+        <item>08</item>
+        <item>09</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+        <item>13</item>
+        <item>14</item>
+        <item>15</item>
+        <item>16</item>
+        <item>17</item>
+        <item>18</item>
+        <item>19</item>
+        <item>20</item>
+        <item>21</item>
+        <item>22</item>
+        <item>23</item>
+    </string-array>
+</resources>

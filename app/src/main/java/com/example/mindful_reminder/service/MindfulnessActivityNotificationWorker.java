@@ -1,6 +1,7 @@
 package com.example.mindful_reminder.service;
 
 import static com.example.mindful_reminder.activities.ActivityMain.AFFIRMATION_SHARED_PREFERENCE;
+import static com.example.mindful_reminder.activities.ActivityMain.DAILY_MINDFULNESS_ACTIVITY_SHARED_PREFERENCE;
 
 import android.Manifest;
 import android.app.PendingIntent;
@@ -26,11 +27,11 @@ import com.example.mindful_reminder.activities.ActivityMain;
 
 import java.util.Random;
 
-public class NotificationWorker extends Worker {
-    public static final String NOTIFICATION_WORKER_TAG = "NotificationWorker";
+public class MindfulnessActivityNotificationWorker extends Worker {
+    public static final String ACTIVITY_NOTIFICATION_WORKER_TAG = "ActivityNotificationWorker";
     private final SharedPreferences sharedPreferences;
 
-    public NotificationWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
+    public MindfulnessActivityNotificationWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
         this.sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
     }
@@ -42,17 +43,17 @@ public class NotificationWorker extends Worker {
         try {
             dndStatus = Settings.Global.getInt(getApplicationContext().getContentResolver(), "zen_mode");
         } catch (Settings.SettingNotFoundException ex) {
-            Log.w(NOTIFICATION_WORKER_TAG, "Unable to find zen_mode status");
+            Log.w(ACTIVITY_NOTIFICATION_WORKER_TAG, "Unable to find zen_mode status");
         }
         if (dndStatus == 0) {
-            Log.i(NOTIFICATION_WORKER_TAG, "Sending Notification for affirmation " + sharedPreferences.getString(AFFIRMATION_SHARED_PREFERENCE, ""));
+            Log.i(ACTIVITY_NOTIFICATION_WORKER_TAG, "Sending Notification for affirmation " + sharedPreferences.getString(AFFIRMATION_SHARED_PREFERENCE, ""));
             Intent intent = new Intent(getApplicationContext(), ActivityMain.class);
             TaskStackBuilder taskStackBuilder = TaskStackBuilder.create(getApplicationContext());
             taskStackBuilder.addNextIntentWithParentStack(intent);
             PendingIntent pendingIntent = taskStackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
             NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), ActivityMain.NOTIFICATION_CHANNEL)
                     .setSmallIcon(R.drawable.happy_brain)
-                    .setContentTitle(sharedPreferences.getString(AFFIRMATION_SHARED_PREFERENCE, ""))
+                    .setContentTitle(sharedPreferences.getString(DAILY_MINDFULNESS_ACTIVITY_SHARED_PREFERENCE, ""))
                     .setContentIntent(pendingIntent)
                     .setPriority(NotificationCompat.PRIORITY_DEFAULT);
             NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(getApplicationContext());

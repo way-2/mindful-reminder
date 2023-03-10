@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="activity_name" >
+        <item>Mindful Breathing</item>
+        <item>Body Scan</item>
+        <item>Mindful Walking</item>
+        <item>Mindful Eating</item>
+        <item>Mindful Listening</item>
+        <item>Mindful Pause</item>
+        <item>Gratitude Practice</item>
+        <item>Mindful Shower</item>
+        <item>Mindful Tea/Coffee</item>
+        <item>Mindful Cleaning</item>
+        <item>Mindful Stretching</item>
+        <item>Mindful Mind Mapping</item>
+        <item>Mindful Reading</item>
+    </string-array>
+    <string-array name="activity_text">
+        <item>Take a few moments to focus on your breath, noticing the sensation of the air moving in and out of your body. You can count your breaths or just focus on the sensation.</item>
+        <item>Close your eyes and bring your attention to each part of your body, starting at your toes and moving up to your head. Notice any sensations without judgment.</item>
+        <item>Take a walk outside and focus on the sensation of your feet hitting the ground. Notice the sights, sounds, and smells around you.</item>
+        <item>Take a few moments to fully focus on the food you\'re eating. Notice the colors, textures, and flavors. Eat slowly and savor each bite.</item>
+        <item>Choose a piece of music or a sound and listen to it mindfully, paying attention to each note or sound.</item>
+        <item>Take a few moments throughout the day to pause and bring your attention to the present moment. Take a few deep breaths and notice your surroundings.</item>
+        <item>Take a few moments to reflect on something you\'re grateful for, and allow yourself to feel the emotions that come with it.</item>
+        <item>Take a shower mindfully, paying attention to the sensations of the water on your skin and the smells of the soap.</item>
+        <item>Make a cup of tea or coffee and focus on the aroma, taste, and sensation of warmth as you sip it.</item>
+        <item>Engage in a task mindfully, such as cleaning or organizing, paying attention to the sensations and movements involved.</item>
+        <item>Take a few moments to stretch your body, noticing the sensations in your muscles and joints.</item>
+        <item>Write down your thoughts and ideas in a mind map, focusing on each idea and connection as you create it.</item>
+        <item>Choose a book or article and read it mindfully, paying attention to the words and ideas presented.</item>
+    </string-array>
+</resources>
