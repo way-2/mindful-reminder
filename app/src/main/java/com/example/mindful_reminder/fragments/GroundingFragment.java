@@ -6,14 +6,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextSwitcher;
 
-import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
 
 import com.example.mindful_reminder.R;
+import com.github.lzyzsd.circleprogress.DonutProgress;
 
 public class GroundingFragment extends Fragment {
     private TextSwitcher textSwitcher;
-    private AppCompatButton button;
+    private DonutProgress donutProgress;
     private int counter;
 
     @Override
@@ -22,8 +22,8 @@ public class GroundingFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_grounding, container, false);
         textSwitcher = (TextSwitcher) view.findViewById(R.id.grounding_text_switcher);
         textSwitcher.setText(getString(R.string.groundingBody));
-        button = (AppCompatButton) view.findViewById(R.id.counter_button);
-        button.setOnClickListener(new View.OnClickListener() {
+        donutProgress = (DonutProgress) view.findViewById(R.id.progress_donut);
+        donutProgress.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 seeStep();
@@ -35,14 +35,18 @@ public class GroundingFragment extends Fragment {
     private void seeStep() {
         textSwitcher.setText(getString(R.string.groundingSee));
         counter = 0;
-        button.setText(String.valueOf(counter));
-        button.setOnClickListener(new View.OnClickListener() {
+        donutProgress.setProgress(0);
+        donutProgress.setText(String.valueOf(counter));
+        donutProgress.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (counter < 5) {
                     counter++;
-                    button.setText(String.valueOf(counter));
+                    float percent = ((float) counter/ (float) 5) * 100;
+                    donutProgress.setProgress(percent);
+                    donutProgress.setText(String.valueOf(counter));
                 } else {
+                    donutProgress.setProgress(0);
                     touchStep();
                 }
             }
@@ -52,14 +56,17 @@ public class GroundingFragment extends Fragment {
     private void touchStep() {
         textSwitcher.setText(getString(R.string.groundingTouch));
         counter = 0;
-        button.setText(String.valueOf(counter));
-        button.setOnClickListener(new View.OnClickListener() {
+        donutProgress.setText(String.valueOf(counter));
+        donutProgress.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (counter < 4) {
                     counter++;
-                    button.setText(String.valueOf(counter));
+                    float percent = ((float) counter/ (float) 4) * 100;
+                    donutProgress.setProgress(percent);
+                    donutProgress.setText(String.valueOf(counter));
                 } else {
+                    donutProgress.setProgress(0);
                     hearStep();
                 }
             }
@@ -69,14 +76,17 @@ public class GroundingFragment extends Fragment {
     private void hearStep() {
         textSwitcher.setText(getString(R.string.groundingHear));
         counter = 0;
-        button.setText(String.valueOf(counter));
-        button.setOnClickListener(new View.OnClickListener() {
+        donutProgress.setText(String.valueOf(counter));
+        donutProgress.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (counter < 3) {
                     counter++;
-                    button.setText(String.valueOf(counter));
+                    float percent = ((float) counter/ (float) 3) * 100;
+                    donutProgress.setProgress(percent);
+                    donutProgress.setText(String.valueOf(counter));
                 } else {
+                    donutProgress.setProgress(0);
                     smellStep();
                 }
             }
@@ -86,14 +96,17 @@ public class GroundingFragment extends Fragment {
     private void smellStep() {
         textSwitcher.setText(getString(R.string.groundingSmell));
         counter = 0;
-        button.setText(String.valueOf(counter));
-        button.setOnClickListener(new View.OnClickListener() {
+        donutProgress.setText(String.valueOf(counter));
+        donutProgress.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (counter < 2) {
                     counter++;
-                    button.setText(String.valueOf(counter));
+                    float percent = ((float) counter/ (float) 2) * 100;
+                    donutProgress.setProgress(percent);
+                    donutProgress.setText(String.valueOf(counter));
                 } else {
+                    donutProgress.setProgress(0);
                     tasteStep();
                 }
             }
@@ -103,14 +116,17 @@ public class GroundingFragment extends Fragment {
     private void tasteStep() {
         textSwitcher.setText(getString(R.string.groundingTaste));
         counter = 0;
-        button.setText(String.valueOf(counter));
-        button.setOnClickListener(new View.OnClickListener() {
+        donutProgress.setText(String.valueOf(counter));
+        donutProgress.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (counter < 1) {
                     counter++;
-                    button.setText(String.valueOf(counter));
+                    float percent = ((float) counter) * 100;
+                    donutProgress.setProgress(percent);
+                    donutProgress.setText(String.valueOf(counter));
                 } else {
+                    donutProgress.setProgress(0);
                     completeStep();
                 }
             }
@@ -119,10 +135,11 @@ public class GroundingFragment extends Fragment {
 
     private void completeStep() {
         textSwitcher.setText(getString(R.string.groundingComplete));
-        button.setText(getString(R.string.start));
-        button.setOnClickListener(new View.OnClickListener() {
+        donutProgress.setText(getString(R.string.start));
+        donutProgress.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                donutProgress.setProgress(0);
                 seeStep();
             }
         });
