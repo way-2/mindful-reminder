@@ -61,4 +61,5 @@
     <string name="groundingComplete">You can repeat this exercise as many times as necessary to feel more centered and present, press the Start button to begin again.</string>
     <string name="grounding">Grounding Exercise</string>
     <string name="daily_activity_notifications">Daily Activity Notification</string>
+    <string name="daily_affirmation">Your daily reminder</string>
 </resources>
