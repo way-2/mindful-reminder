@@ -1,12 +1,19 @@
 package com.example.mindful_reminder.activities;
 
+import static com.example.mindful_reminder.fragments.SettingsFragment.DAILY_ACTIVITY_TOGGLE_SWITCH_KEY;
+import static com.example.mindful_reminder.fragments.SettingsFragment.DAILY_NOTIFICATION_HOUR_LIST;
+import static com.example.mindful_reminder.fragments.SettingsFragment.NOTIFICATION_TIME_INTERVAL_LIST;
+import static com.example.mindful_reminder.fragments.SettingsFragment.NOTIFICATION_TOGGLE_SWITCH_KEY;
+
 import android.Manifest;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
@@ -19,6 +26,7 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.preference.PreferenceManager;
 import androidx.work.Constraints;
 import androidx.work.ExistingPeriodicWorkPolicy;
 import androidx.work.NetworkType;
@@ -32,7 +40,9 @@ import com.example.mindful_reminder.fragments.BreatheFragment;
 import com.example.mindful_reminder.fragments.DailyMindfulnessActivity;
 import com.example.mindful_reminder.fragments.GroundingFragment;
 import com.example.mindful_reminder.fragments.SettingsFragment;
+import com.example.mindful_reminder.service.AffirmationNotificationWorker;
 import com.example.mindful_reminder.service.DailyWorker;
+import com.example.mindful_reminder.service.MindfulnessActivityNotificationWorker;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.Calendar;
@@ -57,6 +67,8 @@ public class ActivityMain extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         checkPermissions();
         createNotificationChannel();
+        startMindfulnessNotificationWorker();
+        startAffirmationNotificationWorker();
         setContentView(R.layout.activity_main);
         toolbar = (Toolbar) requireViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -76,7 +88,14 @@ public class ActivityMain extends AppCompatActivity {
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
         startDailyActivityWorker();
         FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.fragment_frame, new AffirmationFragment()).commit();
+        if ((null != getIntent().getExtras()) && (null != getIntent().getExtras().get("redirect"))) {
+            String intentRedirectValue = getIntent().getExtras().get("redirect").toString();
+            if ("dailyMindfulnessFragment".equals(intentRedirectValue)) {
+                fragmentManager.beginTransaction().replace(R.id.fragment_frame, new DailyMindfulnessActivity()).commit();
+            }
+        } else {
+            fragmentManager.beginTransaction().replace(R.id.fragment_frame, new AffirmationFragment()).commit();
+        }
     }
 
     private ActionBarDrawerToggle setupDrawerToggele() {
@@ -172,6 +191,50 @@ public class ActivityMain extends AppCompatActivity {
         WorkManager workManager = WorkManager.getInstance(getApplicationContext());
         workManager.enqueueUniquePeriodicWork(DailyWorker.DAILY_ACTIVITY_TAG, ExistingPeriodicWorkPolicy.KEEP, runWork);
         dailyActivityUuid = runWork.getId();
+    }
+
+    private void startMindfulnessNotificationWorker() {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        if (sharedPreferences.getBoolean(DAILY_ACTIVITY_TOGGLE_SWITCH_KEY, false)) {
+            int notificationInterval = Integer.parseInt(sharedPreferences.getString(DAILY_NOTIFICATION_HOUR_LIST, "8"));
+            Log.i("notificationSetting", "Setting notifications to daily at " + notificationInterval);
+            Calendar calendar = Calendar.getInstance();
+            long nowMillis = calendar.getTimeInMillis();
+            calendar.set(Calendar.HOUR_OF_DAY, notificationInterval);
+            calendar.set(Calendar.MINUTE, 0);
+            calendar.set(Calendar.SECOND, 0);
+            calendar.set(Calendar.MILLISECOND, 0);
+            if (calendar.before(Calendar.getInstance())) {
+                calendar.add(Calendar.DATE, 1);
+            }
+            long diff = calendar.getTimeInMillis() - nowMillis;
+            PeriodicWorkRequest.Builder workBuilder = new PeriodicWorkRequest.Builder(MindfulnessActivityNotificationWorker.class, 24, TimeUnit.HOURS).setInitialDelay(diff, TimeUnit.SECONDS).addTag(MindfulnessActivityNotificationWorker.ACTIVITY_NOTIFICATION_WORKER_TAG);
+            Constraints constraints = new Constraints.Builder()
+                    .setRequiredNetworkType(NetworkType.CONNECTED)
+                    .setRequiresCharging(false)
+                    .setRequiresDeviceIdle(false)
+                    .build();
+            PeriodicWorkRequest runWork = workBuilder.setConstraints(constraints).build();
+            WorkManager workManager = WorkManager.getInstance(getApplicationContext());
+            workManager.enqueueUniquePeriodicWork(MindfulnessActivityNotificationWorker.ACTIVITY_NOTIFICATION_WORKER_TAG, ExistingPeriodicWorkPolicy.KEEP, runWork);
+        }
+    }
+
+    private void startAffirmationNotificationWorker() {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        if (sharedPreferences.getBoolean(NOTIFICATION_TOGGLE_SWITCH_KEY, false)) {
+            long notificationInterval = Long.parseLong(sharedPreferences.getString(NOTIFICATION_TIME_INTERVAL_LIST, "30"));
+            Log.i("notificationSetting", "Setting notifications to every " + notificationInterval + " minutes");
+            PeriodicWorkRequest.Builder workBuilder = new PeriodicWorkRequest.Builder(AffirmationNotificationWorker.class, notificationInterval, TimeUnit.MINUTES).setInitialDelay(15, TimeUnit.SECONDS).addTag(AffirmationNotificationWorker.AFFIRMATION_NOTIFICATION_WORKER_TAG);
+            Constraints constraints = new Constraints.Builder()
+                    .setRequiredNetworkType(NetworkType.CONNECTED)
+                    .setRequiresCharging(false)
+                    .setRequiresDeviceIdle(false)
+                    .build();
+            PeriodicWorkRequest runWork = workBuilder.setConstraints(constraints).build();
+            WorkManager workManager = WorkManager.getInstance(getApplicationContext());
+            workManager.enqueueUniquePeriodicWork(AffirmationNotificationWorker.AFFIRMATION_NOTIFICATION_WORKER_TAG, ExistingPeriodicWorkPolicy.KEEP, runWork);
+        }
     }
 
     @Override

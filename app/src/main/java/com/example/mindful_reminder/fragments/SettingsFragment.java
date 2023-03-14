@@ -37,12 +37,10 @@ public class SettingsFragment extends PreferenceFragmentCompat {
     private SwitchPreferenceCompat dailyReminderSwitch;
     private ListPreference dailyReminderHourListPreference;
     private SharedPreferences sharedPreferences;
-    private static final String NOTIFICATION_TOGGLE_SWITCH_KEY = "notification_toggle";
-    private static final String DAILY_ACTIVITY_TOGGLE_SWITCH_KEY = "daily_activity_notification_toggle";
-    private static final String NOTIFICATION_TIME_INTERVAL_LIST = "notification_time_interval_list";
-    private static final String DAILY_NOTIFICATION_HOUR_LIST = "daily_notification_hour_list";
-    private static final String NOTIFICATION_INTERVAL_LONG = "notification_interval_long";
-    private static final String DAILY_REMINDER_HOUR = "daily_reminder_hour";
+    public static final String NOTIFICATION_TOGGLE_SWITCH_KEY = "notification_toggle";
+    public static final String DAILY_ACTIVITY_TOGGLE_SWITCH_KEY = "daily_activity_notification_toggle";
+    public static final String NOTIFICATION_TIME_INTERVAL_LIST = "notification_time_interval_list";
+    public static final String DAILY_NOTIFICATION_HOUR_LIST = "daily_notification_hour_list";
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -51,8 +49,8 @@ public class SettingsFragment extends PreferenceFragmentCompat {
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-        setPreferencesFromResource(R.xml.root_preferences, rootKey);
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext());
+        addPreferencesFromResource(R.xml.root_preferences);
     }
 
     @NonNull
@@ -92,7 +90,6 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                 if ((Boolean) newValue) {
                     startMindfulnessNotificationWorker();
                     dailyReminderHourListPreference.setEnabled(true);
-
                 } else {
                     stopActivityNotificationWorker();
                     dailyReminderHourListPreference.setEnabled(false);
@@ -100,16 +97,6 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                 return true;
             }
         });
-        if (!sharedPreferences.contains(NOTIFICATION_INTERVAL_LONG)) {
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putLong(NOTIFICATION_INTERVAL_LONG, Long.parseLong(notificationIntervalListPreference.getValue()));
-            editor.apply();
-        }
-        if (!sharedPreferences.contains(DAILY_REMINDER_HOUR)) {
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putInt(DAILY_REMINDER_HOUR, Integer.parseInt(dailyReminderHourListPreference.getValue()));
-            editor.apply();
-        }
         notificationIntervalListPreference.setSummary(notificationIntervalListPreference.getEntry());
         dailyReminderHourListPreference.setSummary(dailyReminderHourListPreference.getEntry());
         notificationIntervalListPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
@@ -118,11 +105,6 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                 String textValue = newValue.toString();
                 int index = notificationIntervalListPreference.findIndexOfValue(textValue);
                 String entryString = notificationIntervalListPreference.getEntries()[index].toString();
-                String entryValue = notificationIntervalListPreference.getEntryValues()[index].toString();
-                long longValue = Long.parseLong(entryValue);
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putLong(NOTIFICATION_INTERVAL_LONG, longValue);
-                editor.apply();
                 notificationIntervalListPreference.setSummary(entryString);
                 try {
                     List<WorkInfo> workInfo = WorkManager.getInstance(requireContext()).getWorkInfosByTag(AffirmationNotificationWorker.AFFIRMATION_NOTIFICATION_WORKER_TAG).get();
@@ -144,11 +126,6 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                 String textValue = newValue.toString();
                 int index = dailyReminderHourListPreference.findIndexOfValue(textValue);
                 String entryString = dailyReminderHourListPreference.getEntries()[index].toString();
-                String entryValue = dailyReminderHourListPreference.getEntryValues()[index].toString();
-                int intValue = Integer.parseInt(entryValue);
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putInt(DAILY_REMINDER_HOUR, intValue);
-                editor.apply();
                 dailyReminderHourListPreference.setSummary(entryString);
                 try {
                     List<WorkInfo> workInfo = WorkManager.getInstance(requireContext()).getWorkInfosByTag(MindfulnessActivityNotificationWorker.ACTIVITY_NOTIFICATION_WORKER_TAG).get();
@@ -167,11 +144,11 @@ public class SettingsFragment extends PreferenceFragmentCompat {
     }
 
     private void startMindfulnessNotificationWorker() {
-        int notificationInterval = sharedPreferences.getInt(DAILY_REMINDER_HOUR, Integer.parseInt("8"));
+        int notificationInterval = Integer.parseInt(sharedPreferences.getString(DAILY_NOTIFICATION_HOUR_LIST, "8"));
         Log.i("notificationSetting", "Setting notifications to every " + notificationInterval + " minutes");
         Calendar calendar = Calendar.getInstance();
         long nowMillis = calendar.getTimeInMillis();
-//        calendar.set(Calendar.HOUR_OF_DAY, notificationInterval);
+        calendar.set(Calendar.HOUR_OF_DAY, notificationInterval);
         calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.SECOND, 0);
         calendar.set(Calendar.MILLISECOND, 0);
@@ -201,7 +178,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
     }
 
     private void startNotificationWorker() {
-        long notificationInterval = sharedPreferences.getLong(NOTIFICATION_INTERVAL_LONG, 30);
+        long notificationInterval = Long.parseLong(sharedPreferences.getString(NOTIFICATION_TIME_INTERVAL_LIST, "30"));
         Log.i("notificationSetting", "Setting notifications to every " + notificationInterval + " minutes");
         PeriodicWorkRequest.Builder workBuilder = new PeriodicWorkRequest.Builder(AffirmationNotificationWorker.class, notificationInterval, TimeUnit.MINUTES).setInitialDelay(15, TimeUnit.SECONDS).addTag(AffirmationNotificationWorker.AFFIRMATION_NOTIFICATION_WORKER_TAG);
         Constraints constraints = new Constraints.Builder()

@@ -37,6 +37,7 @@ public class MindfulnessActivityNotificationWorker extends Worker {
     @Override
     public Result doWork() {
         Intent intent = new Intent(getApplicationContext(), ActivityMain.class);
+        intent.putExtra("redirect", "dailyMindfulnessFragment");
         TaskStackBuilder taskStackBuilder = TaskStackBuilder.create(getApplicationContext());
         taskStackBuilder.addNextIntentWithParentStack(intent);
         PendingIntent pendingIntent = taskStackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);

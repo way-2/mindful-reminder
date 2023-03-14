@@ -30,7 +30,6 @@
             android:entryValues="@array/hour_int"
             android:key="daily_notification_hour_list"
             android:title="Hour for daily mindfulness activity reminder"
-            android:summary="Hour of the day to send notification for daily mindfulness activity"
             />
 
     </PreferenceCategory>
