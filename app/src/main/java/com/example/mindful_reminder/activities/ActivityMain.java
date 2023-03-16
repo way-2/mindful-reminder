@@ -38,6 +38,8 @@ import com.example.mindful_reminder.fragments.AboutFragment;
 import com.example.mindful_reminder.fragments.AffirmationFragment;
 import com.example.mindful_reminder.fragments.BreatheFragment;
 import com.example.mindful_reminder.fragments.DailyMindfulnessActivity;
+import com.example.mindful_reminder.fragments.GratitudeJournalCalendar;
+import com.example.mindful_reminder.fragments.GratitudeJournalNewEntry;
 import com.example.mindful_reminder.fragments.GroundingFragment;
 import com.example.mindful_reminder.fragments.SettingsFragment;
 import com.example.mindful_reminder.service.AffirmationNotificationWorker;
@@ -123,6 +125,12 @@ public class ActivityMain extends AppCompatActivity {
                 break;
             case R.id.nav_settings:
                 fragmentClass = SettingsFragment.class;
+                break;
+            case R.id.nav_new_journal_entry:
+                fragmentClass = GratitudeJournalNewEntry.class;
+                break;
+            case R.id.nav_review_journal:
+                fragmentClass = GratitudeJournalCalendar.class;
                 break;
         }
         try {

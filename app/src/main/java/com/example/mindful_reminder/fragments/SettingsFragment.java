@@ -41,6 +41,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
     public static final String DAILY_ACTIVITY_TOGGLE_SWITCH_KEY = "daily_activity_notification_toggle";
     public static final String NOTIFICATION_TIME_INTERVAL_LIST = "notification_time_interval_list";
     public static final String DAILY_NOTIFICATION_HOUR_LIST = "daily_notification_hour_list";
+    public static final String ENABLE_GRATITUDE_TUTORIAL = "enable_gratitude_tutorial";
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {

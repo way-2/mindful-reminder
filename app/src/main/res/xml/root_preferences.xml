@@ -32,6 +32,14 @@
             android:title="Hour for daily mindfulness activity reminder"
             />
 
+        <CheckBoxPreference
+            android:enabled="true"
+            android:defaultValue="true"
+            android:key="enable_gratitude_tutorial"
+            android:title="Enable Gratitude Journal Tutorial"
+            android:summary="This should uncheck itself if you have viewed the tutorial for the gratitude journal. To display the tutorial again, check the box."
+            />
+
     </PreferenceCategory>
 
 </PreferenceScreen>

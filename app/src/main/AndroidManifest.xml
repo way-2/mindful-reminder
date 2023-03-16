@@ -17,7 +17,9 @@
         <activity
             android:name=".activities.ActivityMain"
             android:exported="true"
-            android:theme="@style/Theme.Material3.Dark.NoActionBar">
+            android:theme="@style/Theme.Material3.Dark.NoActionBar"
+            android:windowSoftInputMode="adjustResize"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
