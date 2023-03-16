@@ -63,7 +63,7 @@
     <string name="daily_activity_notifications">Daily Activity Notification</string>
     <string name="daily_affirmation">Your daily reminder</string>
     <string name="gratitude_journal">Gratitude Journal</string>
-    <string name="new_journal_entry">New Journal Entry</string>
+    <string name="todays_journal_entry">Today\'s Journal Entry</string>
     <string name="review_previous_entries">Review Previous Entries</string>
     <string name="gratitude_journal_intro_1">A gratitude journal is used to practice gratitude and appreciation by writing down things from the day that you are thankful for.  The idea behind it is to push you to focus on the good things in your life, in this way you can train yourself to be more optimistic.
         \n\nBy regularly writing down the things you are grateful for, you can start to shift your focus away from negative thoughts and emotions.</string>

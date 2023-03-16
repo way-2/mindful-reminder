@@ -159,13 +159,13 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         long diff = calendar.getTimeInMillis() - nowMillis;
         PeriodicWorkRequest.Builder workBuilder = new PeriodicWorkRequest.Builder(MindfulnessActivityNotificationWorker.class, 24, TimeUnit.HOURS).setInitialDelay(diff, TimeUnit.SECONDS).addTag(MindfulnessActivityNotificationWorker.ACTIVITY_NOTIFICATION_WORKER_TAG);
         Constraints constraints = new Constraints.Builder()
-                .setRequiredNetworkType(NetworkType.CONNECTED)
+                .setRequiredNetworkType(NetworkType.NOT_REQUIRED)
                 .setRequiresCharging(false)
                 .setRequiresDeviceIdle(false)
                 .build();
         PeriodicWorkRequest runWork = workBuilder.setConstraints(constraints).build();
         WorkManager workManager = WorkManager.getInstance(requireContext().getApplicationContext());
-        workManager.enqueueUniquePeriodicWork(MindfulnessActivityNotificationWorker.ACTIVITY_NOTIFICATION_WORKER_TAG, ExistingPeriodicWorkPolicy.KEEP, runWork);
+        workManager.enqueueUniquePeriodicWork(MindfulnessActivityNotificationWorker.ACTIVITY_NOTIFICATION_WORKER_TAG, ExistingPeriodicWorkPolicy.UPDATE, runWork);
     }
 
     private void stopActivityNotificationWorker() {
@@ -183,7 +183,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         Log.i("notificationSetting", "Setting notifications to every " + notificationInterval + " minutes");
         PeriodicWorkRequest.Builder workBuilder = new PeriodicWorkRequest.Builder(AffirmationNotificationWorker.class, notificationInterval, TimeUnit.MINUTES).setInitialDelay(15, TimeUnit.SECONDS).addTag(AffirmationNotificationWorker.AFFIRMATION_NOTIFICATION_WORKER_TAG);
         Constraints constraints = new Constraints.Builder()
-                .setRequiredNetworkType(NetworkType.CONNECTED)
+                .setRequiredNetworkType(NetworkType.NOT_REQUIRED)
                 .setRequiresCharging(false)
                 .setRequiresDeviceIdle(false)
                 .build();

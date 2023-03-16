@@ -60,7 +60,7 @@ public class GratitudeJournalStart extends Fragment {
                 SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext());
                 sharedPreferences.edit().putBoolean(ENABLE_GRATITUDE_TUTORIAL, false).apply();
                 FragmentManager fragmentManager = getParentFragmentManager();
-                fragmentManager.beginTransaction().replace(R.id.fragment_frame, new GratitudeJournalNewEntry()).commit();
+                fragmentManager.beginTransaction().replace(R.id.fragment_frame, new GratitudeJournalTodaysEntry()).commit();
             }
         };
     }

@@ -22,6 +22,7 @@ import androidx.work.WorkerParameters;
 import com.example.mindful_reminder.R;
 import com.example.mindful_reminder.activities.ActivityMain;
 
+import java.util.Arrays;
 import java.util.Random;
 
 public class MindfulnessActivityNotificationWorker extends Worker {
@@ -36,14 +37,17 @@ public class MindfulnessActivityNotificationWorker extends Worker {
     @NonNull
     @Override
     public Result doWork() {
+        int index = Arrays.asList(getApplicationContext().getResources().getStringArray(R.array.activity_name)).indexOf(sharedPreferences.getString(DAILY_MINDFULNESS_ACTIVITY_SHARED_PREFERENCE, ""));
+        String activityDesc = getApplicationContext().getResources().getStringArray(R.array.activity_text)[index];
         Intent intent = new Intent(getApplicationContext(), ActivityMain.class);
         intent.putExtra("redirect", "dailyMindfulnessFragment");
         TaskStackBuilder taskStackBuilder = TaskStackBuilder.create(getApplicationContext());
         taskStackBuilder.addNextIntentWithParentStack(intent);
         PendingIntent pendingIntent = taskStackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), ActivityMain.NOTIFICATION_CHANNEL)
-                .setSmallIcon(R.drawable.happy_brain)
+                .setSmallIcon(R.drawable.mindful_reminder_icon)
                 .setContentTitle(sharedPreferences.getString(DAILY_MINDFULNESS_ACTIVITY_SHARED_PREFERENCE, ""))
+                .setContentText(activityDesc)
                 .setContentIntent(pendingIntent)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT);
         NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(getApplicationContext());

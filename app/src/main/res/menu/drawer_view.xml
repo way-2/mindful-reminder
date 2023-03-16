@@ -26,8 +26,8 @@
         android:id="@+id/nav_gratitude_group"
         android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_new_journal_entry"
-            android:title="@string/new_journal_entry"
+            android:id="@+id/nav_todays_journal_entry"
+            android:title="@string/todays_journal_entry"
             />
         <item
             android:id="@+id/nav_review_journal"

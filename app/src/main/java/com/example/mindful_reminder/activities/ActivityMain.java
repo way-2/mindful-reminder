@@ -39,7 +39,7 @@ import com.example.mindful_reminder.fragments.AffirmationFragment;
 import com.example.mindful_reminder.fragments.BreatheFragment;
 import com.example.mindful_reminder.fragments.DailyMindfulnessActivity;
 import com.example.mindful_reminder.fragments.GratitudeJournalCalendar;
-import com.example.mindful_reminder.fragments.GratitudeJournalNewEntry;
+import com.example.mindful_reminder.fragments.GratitudeJournalTodaysEntry;
 import com.example.mindful_reminder.fragments.GroundingFragment;
 import com.example.mindful_reminder.fragments.SettingsFragment;
 import com.example.mindful_reminder.service.AffirmationNotificationWorker;
@@ -126,8 +126,8 @@ public class ActivityMain extends AppCompatActivity {
             case R.id.nav_settings:
                 fragmentClass = SettingsFragment.class;
                 break;
-            case R.id.nav_new_journal_entry:
-                fragmentClass = GratitudeJournalNewEntry.class;
+            case R.id.nav_todays_journal_entry:
+                fragmentClass = GratitudeJournalTodaysEntry.class;
                 break;
             case R.id.nav_review_journal:
                 fragmentClass = GratitudeJournalCalendar.class;
@@ -191,7 +191,7 @@ public class ActivityMain extends AppCompatActivity {
         long diff = calendar.getTimeInMillis() - nowMillis;
         PeriodicWorkRequest.Builder workBuilder = new PeriodicWorkRequest.Builder(DailyWorker.class, 24, TimeUnit.HOURS).setInitialDelay(diff, TimeUnit.MILLISECONDS).addTag(DailyWorker.DAILY_ACTIVITY_TAG).setId(UUID.randomUUID());
         Constraints constraints = new Constraints.Builder()
-                .setRequiredNetworkType(NetworkType.CONNECTED)
+                .setRequiredNetworkType(NetworkType.NOT_REQUIRED)
                 .setRequiresCharging(false)
                 .setRequiresDeviceIdle(false)
                 .build();
@@ -218,13 +218,13 @@ public class ActivityMain extends AppCompatActivity {
             long diff = calendar.getTimeInMillis() - nowMillis;
             PeriodicWorkRequest.Builder workBuilder = new PeriodicWorkRequest.Builder(MindfulnessActivityNotificationWorker.class, 24, TimeUnit.HOURS).setInitialDelay(diff, TimeUnit.SECONDS).addTag(MindfulnessActivityNotificationWorker.ACTIVITY_NOTIFICATION_WORKER_TAG);
             Constraints constraints = new Constraints.Builder()
-                    .setRequiredNetworkType(NetworkType.CONNECTED)
+                    .setRequiredNetworkType(NetworkType.NOT_REQUIRED)
                     .setRequiresCharging(false)
                     .setRequiresDeviceIdle(false)
                     .build();
             PeriodicWorkRequest runWork = workBuilder.setConstraints(constraints).build();
             WorkManager workManager = WorkManager.getInstance(getApplicationContext());
-            workManager.enqueueUniquePeriodicWork(MindfulnessActivityNotificationWorker.ACTIVITY_NOTIFICATION_WORKER_TAG, ExistingPeriodicWorkPolicy.KEEP, runWork);
+            workManager.enqueueUniquePeriodicWork(MindfulnessActivityNotificationWorker.ACTIVITY_NOTIFICATION_WORKER_TAG, ExistingPeriodicWorkPolicy.UPDATE, runWork);
         }
     }
 
@@ -235,7 +235,7 @@ public class ActivityMain extends AppCompatActivity {
             Log.i("notificationSetting", "Setting notifications to every " + notificationInterval + " minutes");
             PeriodicWorkRequest.Builder workBuilder = new PeriodicWorkRequest.Builder(AffirmationNotificationWorker.class, notificationInterval, TimeUnit.MINUTES).setInitialDelay(15, TimeUnit.SECONDS).addTag(AffirmationNotificationWorker.AFFIRMATION_NOTIFICATION_WORKER_TAG);
             Constraints constraints = new Constraints.Builder()
-                    .setRequiredNetworkType(NetworkType.CONNECTED)
+                    .setRequiredNetworkType(NetworkType.NOT_REQUIRED)
                     .setRequiresCharging(false)
                     .setRequiresDeviceIdle(false)
                     .build();

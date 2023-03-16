@@ -51,7 +51,7 @@ public class AffirmationNotificationWorker extends Worker {
             taskStackBuilder.addNextIntentWithParentStack(intent);
             PendingIntent pendingIntent = taskStackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
             NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), ActivityMain.NOTIFICATION_CHANNEL)
-                    .setSmallIcon(R.drawable.happy_brain)
+                    .setSmallIcon(R.drawable.mindful_reminder_icon)
                     .setContentTitle(sharedPreferences.getString(AFFIRMATION_SHARED_PREFERENCE, ""))
                     .setContentIntent(pendingIntent)
                     .setPriority(NotificationCompat.PRIORITY_DEFAULT);
