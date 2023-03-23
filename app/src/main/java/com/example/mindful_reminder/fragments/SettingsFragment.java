@@ -12,7 +12,6 @@ import static com.example.mindful_reminder.config.Constants.NOTIFICATION_TIME_IN
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,22 +23,14 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
 import androidx.preference.SwitchPreferenceCompat;
-import androidx.work.Constraints;
-import androidx.work.ExistingPeriodicWorkPolicy;
-import androidx.work.NetworkType;
-import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
 
 import com.example.mindful_reminder.R;
-import com.example.mindful_reminder.service.AffirmationNotificationWorker;
-import com.example.mindful_reminder.service.GratitudeNotificationWorker;
-import com.example.mindful_reminder.service.MindfulnessActivityNotificationWorker;
+import com.example.mindful_reminder.service.WorkerManager;
 
-import java.util.Calendar;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
 
 public class SettingsFragment extends PreferenceFragmentCompat {
 
@@ -50,6 +41,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
     private SwitchPreferenceCompat gratitudeReminderSwitch;
     private ListPreference gratitudeReminderHourListPreference;
     private SharedPreferences sharedPreferences;
+    private WorkerManager workerManager;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -65,8 +57,15 @@ public class SettingsFragment extends PreferenceFragmentCompat {
     @NonNull
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        workerManager = WorkerManager.getInstance();
         getUiElements();
         return super.onCreateView(inflater, container, savedInstanceState);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        workerManager.cleanUp();
     }
 
     private void getUiElements() {
@@ -85,10 +84,10 @@ public class SettingsFragment extends PreferenceFragmentCompat {
             @Override
             public boolean onPreferenceChange(@NonNull Preference preference, Object newValue) {
                 if ((Boolean) newValue) {
-                    startGratitudeNotificationWorker();
+                    workerManager.startGratitudeNotificationWorkerAlways(requireContext());
                     gratitudeReminderHourListPreference.setEnabled(true);
                 } else {
-                    stopGratitudeNotificationWorker();
+                    workerManager.stopGratitudeNotificationWorker(requireContext());
                     gratitudeReminderHourListPreference.setEnabled(false);
                 }
                 return true;
@@ -107,7 +106,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                     if (!workInfo.isEmpty()) {
                         WorkInfo.State state = workInfo.get(0).getState();
                         if ((state == WorkInfo.State.RUNNING) || (state == WorkInfo.State.ENQUEUED)) {
-                            startGratitudeNotificationWorker();
+                            workerManager.startGratitudeNotificationWorker(requireContext());
                         }
                     }
                 } catch(ExecutionException | InterruptedException ex){
@@ -116,36 +115,6 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                 return true;
             }
         });
-    }
-
-    private void startGratitudeNotificationWorker() {
-        int notificationInterval = Integer.parseInt(sharedPreferences.getString(GRATITUDE_NOTIFICATION_HOUR_LIST, "20"));
-        Calendar calendar = Calendar.getInstance();
-        long nowMillis = calendar.getTimeInMillis();
-        calendar.set(Calendar.HOUR_OF_DAY, notificationInterval);
-        calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.SECOND, 0);
-        calendar.set(Calendar.MILLISECOND, 0);
-        if (calendar.before(Calendar.getInstance())) {
-            calendar.add(Calendar.DATE, 1);
-        }
-        Log.i(GRATITUDE_NOTIFICATION_WORKER, "Setting gratitude notification to daily at " + calendar.getTime());
-        long diff = calendar.getTimeInMillis() - nowMillis;
-        PeriodicWorkRequest.Builder workBuilder = new PeriodicWorkRequest.Builder(GratitudeNotificationWorker.class, 24, TimeUnit.HOURS).setInitialDelay(diff, TimeUnit.MILLISECONDS).addTag(GRATITUDE_NOTIFICATION_WORKER);
-        Constraints constraints = new Constraints.Builder()
-                .setRequiredNetworkType(NetworkType.NOT_REQUIRED)
-                .setRequiresCharging(false)
-                .setRequiresDeviceIdle(false)
-                .build();
-        PeriodicWorkRequest runWork = workBuilder.setConstraints(constraints).build();
-        WorkManager workManager = WorkManager.getInstance(requireContext().getApplicationContext());
-        workManager.enqueueUniquePeriodicWork(GRATITUDE_NOTIFICATION_WORKER, ExistingPeriodicWorkPolicy.UPDATE, runWork);
-    }
-
-    private void stopGratitudeNotificationWorker() {
-        WorkManager workManager = WorkManager.getInstance(requireContext().getApplicationContext());
-        workManager.cancelUniqueWork(GRATITUDE_NOTIFICATION_WORKER);
-
     }
 
     private void activitySettings() {
@@ -158,10 +127,10 @@ public class SettingsFragment extends PreferenceFragmentCompat {
             @Override
             public boolean onPreferenceChange(@NonNull Preference preference, Object newValue) {
                 if ((Boolean) newValue) {
-                    startMindfulnessNotificationWorker();
+                    workerManager.startMindfulnessNotificationWorkerAlways(requireContext());
                     dailyReminderHourListPreference.setEnabled(true);
                 } else {
-                    stopActivityNotificationWorker();
+                    workerManager.stopActivityNotificationWorker(requireContext());
                     dailyReminderHourListPreference.setEnabled(false);
                 }
                 return true;
@@ -180,7 +149,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                     if (!workInfo.isEmpty()) {
                         WorkInfo.State state = workInfo.get(0).getState();
                         if ((state == WorkInfo.State.RUNNING) || (state == WorkInfo.State.ENQUEUED)) {
-                            startMindfulnessNotificationWorker();
+                            workerManager.startMindfulnessNotificationWorker(requireContext());
                         }
                     }
                 } catch(ExecutionException | InterruptedException ex){
@@ -201,10 +170,10 @@ public class SettingsFragment extends PreferenceFragmentCompat {
             @Override
             public boolean onPreferenceChange(@NonNull Preference preference, Object newValue) {
                 if ((Boolean) newValue) {
-                    startNotificationWorker();
+                    workerManager.startAffirmationNotificationWorkerAlways(requireContext());
                     notificationIntervalListPreference.setEnabled(true);
                 } else {
-                    stopNotificationWorker();
+                    workerManager.stopNotificationWorker(requireContext());
                     notificationIntervalListPreference.setEnabled(false);
                 }
                 return true;
@@ -223,7 +192,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                     if (!workInfo.isEmpty()) {
                         WorkInfo.State state = workInfo.get(0).getState();
                         if ((state == WorkInfo.State.RUNNING) || (state == WorkInfo.State.ENQUEUED)) {
-                            startNotificationWorker();
+                            workerManager.startAffirmationNotificationWorker(requireContext());
                         }
                     }
                 } catch(ExecutionException | InterruptedException ex){
@@ -232,54 +201,6 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                 return true;
             }
         });
-    }
-
-    private void startMindfulnessNotificationWorker() {
-        int notificationInterval = Integer.parseInt(sharedPreferences.getString(DAILY_NOTIFICATION_HOUR_LIST, "8"));
-        Calendar calendar = Calendar.getInstance();
-        long nowMillis = calendar.getTimeInMillis();
-        calendar.set(Calendar.HOUR_OF_DAY, notificationInterval);
-        calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.SECOND, 0);
-        calendar.set(Calendar.MILLISECOND, 0);
-        if (calendar.before(Calendar.getInstance())) {
-            calendar.add(Calendar.DATE, 1);
-        }
-        Log.i(ACTIVITY_NOTIFICATION_WORKER_TAG, "Setting activity notification to daily at " + calendar.getTime());
-        long diff = calendar.getTimeInMillis() - nowMillis;
-        PeriodicWorkRequest.Builder workBuilder = new PeriodicWorkRequest.Builder(MindfulnessActivityNotificationWorker.class, 24, TimeUnit.HOURS).setInitialDelay(diff, TimeUnit.MILLISECONDS).addTag(ACTIVITY_NOTIFICATION_WORKER_TAG);
-        Constraints constraints = new Constraints.Builder()
-                .setRequiredNetworkType(NetworkType.NOT_REQUIRED)
-                .setRequiresCharging(false)
-                .setRequiresDeviceIdle(false)
-                .build();
-        PeriodicWorkRequest runWork = workBuilder.setConstraints(constraints).build();
-        WorkManager workManager = WorkManager.getInstance(requireContext().getApplicationContext());
-        workManager.enqueueUniquePeriodicWork(ACTIVITY_NOTIFICATION_WORKER_TAG, ExistingPeriodicWorkPolicy.UPDATE, runWork);
-    }
-
-    private void stopActivityNotificationWorker() {
-        WorkManager workManager = WorkManager.getInstance(requireContext().getApplicationContext());
-        workManager.cancelUniqueWork(ACTIVITY_NOTIFICATION_WORKER_TAG);
-    }
-
-    private void stopNotificationWorker() {
-        WorkManager workManager = WorkManager.getInstance(requireContext().getApplicationContext());
-        workManager.cancelUniqueWork(AFFIRMATION_NOTIFICATION_WORKER_TAG);
-    }
-
-    private void startNotificationWorker() {
-        long notificationInterval = Long.parseLong(sharedPreferences.getString(NOTIFICATION_TIME_INTERVAL_LIST, "30"));
-        Log.i("notificationSetting", "Setting notifications to every " + notificationInterval + " minutes");
-        PeriodicWorkRequest.Builder workBuilder = new PeriodicWorkRequest.Builder(AffirmationNotificationWorker.class, notificationInterval, TimeUnit.MINUTES).setInitialDelay(15, TimeUnit.SECONDS).addTag(AFFIRMATION_NOTIFICATION_WORKER_TAG);
-        Constraints constraints = new Constraints.Builder()
-                .setRequiredNetworkType(NetworkType.NOT_REQUIRED)
-                .setRequiresCharging(false)
-                .setRequiresDeviceIdle(false)
-                .build();
-        PeriodicWorkRequest runWork = workBuilder.setConstraints(constraints).build();
-        WorkManager workManager = WorkManager.getInstance(requireContext().getApplicationContext());
-        workManager.enqueueUniquePeriodicWork(AFFIRMATION_NOTIFICATION_WORKER_TAG, ExistingPeriodicWorkPolicy.KEEP, runWork);
     }
 
 }
