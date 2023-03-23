@@ -1,6 +1,7 @@
 package com.example.mindful_reminder.service;
 
-import static com.example.mindful_reminder.activities.ActivityMain.DAILY_MINDFULNESS_ACTIVITY_SHARED_PREFERENCE;
+import static com.example.mindful_reminder.config.Constants.DAILY_MINDFULNESS_ACTIVITY_SHARED_PREFERENCE;
+import static com.example.mindful_reminder.config.Constants.NOTIFICATION_CHANNEL;
 
 import android.Manifest;
 import android.app.PendingIntent;
@@ -26,7 +27,6 @@ import java.util.Arrays;
 import java.util.Random;
 
 public class MindfulnessActivityNotificationWorker extends Worker {
-    public static final String ACTIVITY_NOTIFICATION_WORKER_TAG = "ActivityNotificationWorker";
     private final SharedPreferences sharedPreferences;
 
     public MindfulnessActivityNotificationWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
@@ -44,7 +44,7 @@ public class MindfulnessActivityNotificationWorker extends Worker {
         TaskStackBuilder taskStackBuilder = TaskStackBuilder.create(getApplicationContext());
         taskStackBuilder.addNextIntentWithParentStack(intent);
         PendingIntent pendingIntent = taskStackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), ActivityMain.NOTIFICATION_CHANNEL)
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), NOTIFICATION_CHANNEL)
                 .setSmallIcon(R.drawable.mindful_reminder_icon)
                 .setContentTitle(sharedPreferences.getString(DAILY_MINDFULNESS_ACTIVITY_SHARED_PREFERENCE, ""))
                 .setContentText(activityDesc)

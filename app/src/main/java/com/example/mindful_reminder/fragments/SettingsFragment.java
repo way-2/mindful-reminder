@@ -1,5 +1,15 @@
 package com.example.mindful_reminder.fragments;
 
+import static com.example.mindful_reminder.config.Constants.ACTIVITY_NOTIFICATION_WORKER_TAG;
+import static com.example.mindful_reminder.config.Constants.AFFIRMATION_NOTIFICATION_TOGGLE;
+import static com.example.mindful_reminder.config.Constants.AFFIRMATION_NOTIFICATION_WORKER_TAG;
+import static com.example.mindful_reminder.config.Constants.DAILY_ACTIVITY_TOGGLE;
+import static com.example.mindful_reminder.config.Constants.DAILY_NOTIFICATION_HOUR_LIST;
+import static com.example.mindful_reminder.config.Constants.GRATITUDE_NOTIFICATION_HOUR_LIST;
+import static com.example.mindful_reminder.config.Constants.GRATITUDE_NOTIFICATION_TOGGLE;
+import static com.example.mindful_reminder.config.Constants.GRATITUDE_NOTIFICATION_WORKER;
+import static com.example.mindful_reminder.config.Constants.NOTIFICATION_TIME_INTERVAL_LIST;
+
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -23,6 +33,7 @@ import androidx.work.WorkManager;
 
 import com.example.mindful_reminder.R;
 import com.example.mindful_reminder.service.AffirmationNotificationWorker;
+import com.example.mindful_reminder.service.GratitudeNotificationWorker;
 import com.example.mindful_reminder.service.MindfulnessActivityNotificationWorker;
 
 import java.util.Calendar;
@@ -36,12 +47,9 @@ public class SettingsFragment extends PreferenceFragmentCompat {
     private ListPreference notificationIntervalListPreference;
     private SwitchPreferenceCompat dailyReminderSwitch;
     private ListPreference dailyReminderHourListPreference;
+    private SwitchPreferenceCompat gratitudeReminderSwitch;
+    private ListPreference gratitudeReminderHourListPreference;
     private SharedPreferences sharedPreferences;
-    public static final String NOTIFICATION_TOGGLE_SWITCH_KEY = "notification_toggle";
-    public static final String DAILY_ACTIVITY_TOGGLE_SWITCH_KEY = "daily_activity_notification_toggle";
-    public static final String NOTIFICATION_TIME_INTERVAL_LIST = "notification_time_interval_list";
-    public static final String DAILY_NOTIFICATION_HOUR_LIST = "daily_notification_hour_list";
-    public static final String ENABLE_GRATITUDE_TUTORIAL = "enable_gratitude_tutorial";
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -62,29 +70,90 @@ public class SettingsFragment extends PreferenceFragmentCompat {
     }
 
     private void getUiElements() {
-        notificationSwitch = (SwitchPreferenceCompat) findPreference(NOTIFICATION_TOGGLE_SWITCH_KEY);
-        dailyReminderSwitch = (SwitchPreferenceCompat) findPreference(DAILY_ACTIVITY_TOGGLE_SWITCH_KEY);
-        notificationIntervalListPreference = (ListPreference) findPreference(NOTIFICATION_TIME_INTERVAL_LIST);
-        dailyReminderHourListPreference = (ListPreference) findPreference(DAILY_NOTIFICATION_HOUR_LIST);
-        if (notificationSwitch.isChecked()) {
-            notificationIntervalListPreference.setEnabled(true);
+        affirmationSettings();
+        activitySettings();
+        gratitudeSettings();
+    }
+
+    private void gratitudeSettings() {
+        gratitudeReminderSwitch = (SwitchPreferenceCompat) findPreference(GRATITUDE_NOTIFICATION_TOGGLE);
+        gratitudeReminderHourListPreference = (ListPreference) findPreference(GRATITUDE_NOTIFICATION_HOUR_LIST);
+        if (gratitudeReminderSwitch.isChecked()) {
+            gratitudeReminderHourListPreference.setEnabled(true);
         }
-        if (dailyReminderSwitch.isChecked()) {
-            dailyReminderHourListPreference.setEnabled(true);
-        }
-        notificationSwitch.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+        gratitudeReminderSwitch.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(@NonNull Preference preference, Object newValue) {
                 if ((Boolean) newValue) {
-                    startNotificationWorker();
-                    notificationIntervalListPreference.setEnabled(true);
+                    startGratitudeNotificationWorker();
+                    gratitudeReminderHourListPreference.setEnabled(true);
                 } else {
-                    stopNotificationWorker();
-                    notificationIntervalListPreference.setEnabled(false);
+                    stopGratitudeNotificationWorker();
+                    gratitudeReminderHourListPreference.setEnabled(false);
                 }
                 return true;
             }
         });
+        gratitudeReminderHourListPreference.setSummary(gratitudeReminderHourListPreference.getEntry());
+        gratitudeReminderHourListPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(@NonNull Preference preference, Object newValue) {
+                String textValue = newValue.toString();
+                int index = gratitudeReminderHourListPreference.findIndexOfValue(textValue);
+                String entryString = gratitudeReminderHourListPreference.getEntries()[index].toString();
+                gratitudeReminderHourListPreference.setSummary(entryString);
+                try {
+                    List<WorkInfo> workInfo = WorkManager.getInstance(requireContext()).getWorkInfosByTag(GRATITUDE_NOTIFICATION_WORKER).get();
+                    if (!workInfo.isEmpty()) {
+                        WorkInfo.State state = workInfo.get(0).getState();
+                        if ((state == WorkInfo.State.RUNNING) || (state == WorkInfo.State.ENQUEUED)) {
+                            startGratitudeNotificationWorker();
+                        }
+                    }
+                } catch(ExecutionException | InterruptedException ex){
+                    ex.printStackTrace();
+                }
+                return true;
+            }
+        });
+    }
+
+    private void startGratitudeNotificationWorker() {
+        int notificationInterval = Integer.parseInt(sharedPreferences.getString(GRATITUDE_NOTIFICATION_HOUR_LIST, "20"));
+        Calendar calendar = Calendar.getInstance();
+        long nowMillis = calendar.getTimeInMillis();
+        calendar.set(Calendar.HOUR_OF_DAY, notificationInterval);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        if (calendar.before(Calendar.getInstance())) {
+            calendar.add(Calendar.DATE, 1);
+        }
+        Log.i(GRATITUDE_NOTIFICATION_WORKER, "Setting gratitude notification to daily at " + calendar.getTime());
+        long diff = calendar.getTimeInMillis() - nowMillis;
+        PeriodicWorkRequest.Builder workBuilder = new PeriodicWorkRequest.Builder(GratitudeNotificationWorker.class, 24, TimeUnit.HOURS).setInitialDelay(diff, TimeUnit.MILLISECONDS).addTag(GRATITUDE_NOTIFICATION_WORKER);
+        Constraints constraints = new Constraints.Builder()
+                .setRequiredNetworkType(NetworkType.NOT_REQUIRED)
+                .setRequiresCharging(false)
+                .setRequiresDeviceIdle(false)
+                .build();
+        PeriodicWorkRequest runWork = workBuilder.setConstraints(constraints).build();
+        WorkManager workManager = WorkManager.getInstance(requireContext().getApplicationContext());
+        workManager.enqueueUniquePeriodicWork(GRATITUDE_NOTIFICATION_WORKER, ExistingPeriodicWorkPolicy.UPDATE, runWork);
+    }
+
+    private void stopGratitudeNotificationWorker() {
+        WorkManager workManager = WorkManager.getInstance(requireContext().getApplicationContext());
+        workManager.cancelUniqueWork(GRATITUDE_NOTIFICATION_WORKER);
+
+    }
+
+    private void activitySettings() {
+        dailyReminderSwitch = (SwitchPreferenceCompat) findPreference(DAILY_ACTIVITY_TOGGLE);
+        dailyReminderHourListPreference = (ListPreference) findPreference(DAILY_NOTIFICATION_HOUR_LIST);
+        if (dailyReminderSwitch.isChecked()) {
+            dailyReminderHourListPreference.setEnabled(true);
+        }
         dailyReminderSwitch.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(@NonNull Preference preference, Object newValue) {
@@ -98,29 +167,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                 return true;
             }
         });
-        notificationIntervalListPreference.setSummary(notificationIntervalListPreference.getEntry());
         dailyReminderHourListPreference.setSummary(dailyReminderHourListPreference.getEntry());
-        notificationIntervalListPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-            @Override
-            public boolean onPreferenceChange(@NonNull Preference preference, Object newValue) {
-                String textValue = newValue.toString();
-                int index = notificationIntervalListPreference.findIndexOfValue(textValue);
-                String entryString = notificationIntervalListPreference.getEntries()[index].toString();
-                notificationIntervalListPreference.setSummary(entryString);
-                try {
-                    List<WorkInfo> workInfo = WorkManager.getInstance(requireContext()).getWorkInfosByTag(AffirmationNotificationWorker.AFFIRMATION_NOTIFICATION_WORKER_TAG).get();
-                    if (!workInfo.isEmpty()) {
-                        WorkInfo.State state = workInfo.get(0).getState();
-                        if ((state == WorkInfo.State.RUNNING) || (state == WorkInfo.State.ENQUEUED)) {
-                            startNotificationWorker();
-                        }
-                    }
-                    } catch(ExecutionException | InterruptedException ex){
-                        ex.printStackTrace();
-                    }
-                return true;
-            }
-        });
         dailyReminderHourListPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(@NonNull Preference preference, Object newValue) {
@@ -129,7 +176,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                 String entryString = dailyReminderHourListPreference.getEntries()[index].toString();
                 dailyReminderHourListPreference.setSummary(entryString);
                 try {
-                    List<WorkInfo> workInfo = WorkManager.getInstance(requireContext()).getWorkInfosByTag(MindfulnessActivityNotificationWorker.ACTIVITY_NOTIFICATION_WORKER_TAG).get();
+                    List<WorkInfo> workInfo = WorkManager.getInstance(requireContext()).getWorkInfosByTag(ACTIVITY_NOTIFICATION_WORKER_TAG).get();
                     if (!workInfo.isEmpty()) {
                         WorkInfo.State state = workInfo.get(0).getState();
                         if ((state == WorkInfo.State.RUNNING) || (state == WorkInfo.State.ENQUEUED)) {
@@ -144,9 +191,51 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         });
     }
 
+    private void affirmationSettings() {
+        notificationSwitch = (SwitchPreferenceCompat) findPreference(AFFIRMATION_NOTIFICATION_TOGGLE);
+        notificationIntervalListPreference = (ListPreference) findPreference(NOTIFICATION_TIME_INTERVAL_LIST);
+        if (notificationSwitch.isChecked()) {
+            notificationIntervalListPreference.setEnabled(true);
+        }
+        notificationSwitch.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(@NonNull Preference preference, Object newValue) {
+                if ((Boolean) newValue) {
+                    startNotificationWorker();
+                    notificationIntervalListPreference.setEnabled(true);
+                } else {
+                    stopNotificationWorker();
+                    notificationIntervalListPreference.setEnabled(false);
+                }
+                return true;
+            }
+        });
+        notificationIntervalListPreference.setSummary(notificationIntervalListPreference.getEntry());
+        notificationIntervalListPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(@NonNull Preference preference, Object newValue) {
+                String textValue = newValue.toString();
+                int index = notificationIntervalListPreference.findIndexOfValue(textValue);
+                String entryString = notificationIntervalListPreference.getEntries()[index].toString();
+                notificationIntervalListPreference.setSummary(entryString);
+                try {
+                    List<WorkInfo> workInfo = WorkManager.getInstance(requireContext()).getWorkInfosByTag(AFFIRMATION_NOTIFICATION_WORKER_TAG).get();
+                    if (!workInfo.isEmpty()) {
+                        WorkInfo.State state = workInfo.get(0).getState();
+                        if ((state == WorkInfo.State.RUNNING) || (state == WorkInfo.State.ENQUEUED)) {
+                            startNotificationWorker();
+                        }
+                    }
+                } catch(ExecutionException | InterruptedException ex){
+                    ex.printStackTrace();
+                }
+                return true;
+            }
+        });
+    }
+
     private void startMindfulnessNotificationWorker() {
         int notificationInterval = Integer.parseInt(sharedPreferences.getString(DAILY_NOTIFICATION_HOUR_LIST, "8"));
-        Log.i("notificationSetting", "Setting notifications to every " + notificationInterval + " minutes");
         Calendar calendar = Calendar.getInstance();
         long nowMillis = calendar.getTimeInMillis();
         calendar.set(Calendar.HOUR_OF_DAY, notificationInterval);
@@ -156,8 +245,9 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         if (calendar.before(Calendar.getInstance())) {
             calendar.add(Calendar.DATE, 1);
         }
+        Log.i(ACTIVITY_NOTIFICATION_WORKER_TAG, "Setting activity notification to daily at " + calendar.getTime());
         long diff = calendar.getTimeInMillis() - nowMillis;
-        PeriodicWorkRequest.Builder workBuilder = new PeriodicWorkRequest.Builder(MindfulnessActivityNotificationWorker.class, 24, TimeUnit.HOURS).setInitialDelay(diff, TimeUnit.SECONDS).addTag(MindfulnessActivityNotificationWorker.ACTIVITY_NOTIFICATION_WORKER_TAG);
+        PeriodicWorkRequest.Builder workBuilder = new PeriodicWorkRequest.Builder(MindfulnessActivityNotificationWorker.class, 24, TimeUnit.HOURS).setInitialDelay(diff, TimeUnit.MILLISECONDS).addTag(ACTIVITY_NOTIFICATION_WORKER_TAG);
         Constraints constraints = new Constraints.Builder()
                 .setRequiredNetworkType(NetworkType.NOT_REQUIRED)
                 .setRequiresCharging(false)
@@ -165,23 +255,23 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                 .build();
         PeriodicWorkRequest runWork = workBuilder.setConstraints(constraints).build();
         WorkManager workManager = WorkManager.getInstance(requireContext().getApplicationContext());
-        workManager.enqueueUniquePeriodicWork(MindfulnessActivityNotificationWorker.ACTIVITY_NOTIFICATION_WORKER_TAG, ExistingPeriodicWorkPolicy.UPDATE, runWork);
+        workManager.enqueueUniquePeriodicWork(ACTIVITY_NOTIFICATION_WORKER_TAG, ExistingPeriodicWorkPolicy.UPDATE, runWork);
     }
 
     private void stopActivityNotificationWorker() {
         WorkManager workManager = WorkManager.getInstance(requireContext().getApplicationContext());
-        workManager.cancelUniqueWork(MindfulnessActivityNotificationWorker.ACTIVITY_NOTIFICATION_WORKER_TAG);
+        workManager.cancelUniqueWork(ACTIVITY_NOTIFICATION_WORKER_TAG);
     }
 
     private void stopNotificationWorker() {
         WorkManager workManager = WorkManager.getInstance(requireContext().getApplicationContext());
-        workManager.cancelUniqueWork(AffirmationNotificationWorker.AFFIRMATION_NOTIFICATION_WORKER_TAG);
+        workManager.cancelUniqueWork(AFFIRMATION_NOTIFICATION_WORKER_TAG);
     }
 
     private void startNotificationWorker() {
         long notificationInterval = Long.parseLong(sharedPreferences.getString(NOTIFICATION_TIME_INTERVAL_LIST, "30"));
         Log.i("notificationSetting", "Setting notifications to every " + notificationInterval + " minutes");
-        PeriodicWorkRequest.Builder workBuilder = new PeriodicWorkRequest.Builder(AffirmationNotificationWorker.class, notificationInterval, TimeUnit.MINUTES).setInitialDelay(15, TimeUnit.SECONDS).addTag(AffirmationNotificationWorker.AFFIRMATION_NOTIFICATION_WORKER_TAG);
+        PeriodicWorkRequest.Builder workBuilder = new PeriodicWorkRequest.Builder(AffirmationNotificationWorker.class, notificationInterval, TimeUnit.MINUTES).setInitialDelay(15, TimeUnit.SECONDS).addTag(AFFIRMATION_NOTIFICATION_WORKER_TAG);
         Constraints constraints = new Constraints.Builder()
                 .setRequiredNetworkType(NetworkType.NOT_REQUIRED)
                 .setRequiresCharging(false)
@@ -189,7 +279,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                 .build();
         PeriodicWorkRequest runWork = workBuilder.setConstraints(constraints).build();
         WorkManager workManager = WorkManager.getInstance(requireContext().getApplicationContext());
-        workManager.enqueueUniquePeriodicWork(AffirmationNotificationWorker.AFFIRMATION_NOTIFICATION_WORKER_TAG, ExistingPeriodicWorkPolicy.KEEP, runWork);
+        workManager.enqueueUniquePeriodicWork(AFFIRMATION_NOTIFICATION_WORKER_TAG, ExistingPeriodicWorkPolicy.KEEP, runWork);
     }
 
 }

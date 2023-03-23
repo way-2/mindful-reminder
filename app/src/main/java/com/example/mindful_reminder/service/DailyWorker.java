@@ -1,9 +1,10 @@
 package com.example.mindful_reminder.service;
 
-import static com.example.mindful_reminder.activities.ActivityMain.AFFIRMATION_SHARED_PREFERENCE;
-import static com.example.mindful_reminder.activities.ActivityMain.AFFIRMATION_UPDATED_SHARED_PREFERENCE;
-import static com.example.mindful_reminder.activities.ActivityMain.DAILY_MINDFULNESS_ACTIVITY_SHARED_PREFERENCE;
-import static com.example.mindful_reminder.activities.ActivityMain.DAILY_MINDFULNESS_ACTIVITY_UPDATED_SHARED_PREFERENCE;
+import static com.example.mindful_reminder.config.Constants.AFFIRMATION_SHARED_PREFERENCE;
+import static com.example.mindful_reminder.config.Constants.AFFIRMATION_UPDATED_SHARED_PREFERENCE;
+import static com.example.mindful_reminder.config.Constants.DAILY_ACTIVITY_TAG;
+import static com.example.mindful_reminder.config.Constants.DAILY_MINDFULNESS_ACTIVITY_SHARED_PREFERENCE;
+import static com.example.mindful_reminder.config.Constants.DAILY_MINDFULNESS_ACTIVITY_UPDATED_SHARED_PREFERENCE;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -24,7 +25,6 @@ import java.util.Random;
 
 public class DailyWorker extends Worker {
 
-    public static final String DAILY_ACTIVITY_TAG = "DailyActivityTag";
     public static MutableLiveData<Boolean> updateDone = new MutableLiveData<>();
     private final SharedPreferences sharedPreferences;
 

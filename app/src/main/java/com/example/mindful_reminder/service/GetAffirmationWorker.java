@@ -1,7 +1,8 @@
 package com.example.mindful_reminder.service;
 
-import static com.example.mindful_reminder.activities.ActivityMain.AFFIRMATION_SHARED_PREFERENCE;
-import static com.example.mindful_reminder.activities.ActivityMain.AFFIRMATION_UPDATED_SHARED_PREFERENCE;
+import static com.example.mindful_reminder.config.Constants.AFFIRMATION_SHARED_PREFERENCE;
+import static com.example.mindful_reminder.config.Constants.AFFIRMATION_UPDATED_SHARED_PREFERENCE;
+import static com.example.mindful_reminder.config.Constants.GET_AFFIRMATION_TAG;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -20,8 +21,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.Random;
 
 public class GetAffirmationWorker extends Worker {
-    public static final String GET_AFFIRMATION_TAG = "GetAffirmationWorker";
-    private static final String TAG = GetAffirmationWorker.class.getSimpleName();
     public static MutableLiveData<Boolean> updateDone = new MutableLiveData<>();
     private final SharedPreferences sharedPreferences;
 
@@ -38,7 +37,7 @@ public class GetAffirmationWorker extends Worker {
         editor.putString(AFFIRMATION_UPDATED_SHARED_PREFERENCE, "Last Updated: " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy hh:mm a")));
         editor.apply();
         updateDone.postValue(true);
-        Log.i(TAG, LocalDateTime.now() + " | Got affirmation " + sharedPreferences.getString(AFFIRMATION_SHARED_PREFERENCE, ""));
+        Log.i(GET_AFFIRMATION_TAG, LocalDateTime.now() + " | Got affirmation " + sharedPreferences.getString(AFFIRMATION_SHARED_PREFERENCE, ""));
         return Result.success();
     }
 

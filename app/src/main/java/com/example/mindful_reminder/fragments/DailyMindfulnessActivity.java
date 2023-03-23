@@ -1,7 +1,8 @@
 package com.example.mindful_reminder.fragments;
 
-import static com.example.mindful_reminder.activities.ActivityMain.DAILY_MINDFULNESS_ACTIVITY_SHARED_PREFERENCE;
-import static com.example.mindful_reminder.activities.ActivityMain.DAILY_MINDFULNESS_ACTIVITY_UPDATED_SHARED_PREFERENCE;
+import static com.example.mindful_reminder.config.Constants.DAILY_MINDFULNESS_ACTIVITY_SHARED_PREFERENCE;
+import static com.example.mindful_reminder.config.Constants.DAILY_MINDFULNESS_ACTIVITY_UPDATED_SHARED_PREFERENCE;
+import static com.example.mindful_reminder.config.Constants.GET_ACTIVITY_TAG;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -83,7 +84,7 @@ public class DailyMindfulnessActivity extends Fragment {
                             new Observer<Boolean>() {
                                 @Override
                                 public void onChanged(Boolean updateDone) {
-                                    workManager.getWorkInfosForUniqueWorkLiveData(GetMindfulnessActivityWorker.GET_ACTIVITY_TAG).removeObservers(getViewLifecycleOwner());
+                                    workManager.getWorkInfosForUniqueWorkLiveData(GET_ACTIVITY_TAG).removeObservers(getViewLifecycleOwner());
                                     activityTextView.setText(sharedPreferences.getString(DAILY_MINDFULNESS_ACTIVITY_SHARED_PREFERENCE, ""));
                                     activityUpdatedTextView.setText(sharedPreferences.getString(DAILY_MINDFULNESS_ACTIVITY_UPDATED_SHARED_PREFERENCE, ""));
                                     int index = Arrays.asList(getResources().getStringArray(R.array.activity_name)).indexOf(sharedPreferences.getString(DAILY_MINDFULNESS_ACTIVITY_SHARED_PREFERENCE, ""));

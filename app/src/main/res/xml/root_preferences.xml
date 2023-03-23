@@ -14,13 +14,26 @@
             android:entries="@array/notification_times_string"
             android:entryValues="@array/notification_times_int"
             android:key="notification_time_interval_list"
-            android:title="Notification Interval"
+            android:title="Affirmation Notification Interval"
+            />
+
+        <SwitchPreferenceCompat
+            app:key="gratitude_notification_toggle"
+            app:title="@string/gratitude_notification_title"
+            />
+
+        <ListPreference
+            android:enabled="false"
+            android:defaultValue="20"
+            android:entries="@array/hour_string"
+            android:entryValues="@array/hour_int"
+            android:key="gratitude_notification_time_interval_list"
+            android:title="Gratitude Journal Notification Time"
             />
 
         <SwitchPreferenceCompat
             app:key="daily_activity_notification_toggle"
             app:title="@string/daily_activity_notifications"
-            android:summary="Send notification every day with your daily mindfulness activity"
             />
 
         <ListPreference

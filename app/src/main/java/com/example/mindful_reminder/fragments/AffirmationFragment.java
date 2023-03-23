@@ -1,7 +1,8 @@
 package com.example.mindful_reminder.fragments;
 
-import static com.example.mindful_reminder.activities.ActivityMain.AFFIRMATION_SHARED_PREFERENCE;
-import static com.example.mindful_reminder.activities.ActivityMain.AFFIRMATION_UPDATED_SHARED_PREFERENCE;
+import static com.example.mindful_reminder.config.Constants.AFFIRMATION_SHARED_PREFERENCE;
+import static com.example.mindful_reminder.config.Constants.AFFIRMATION_UPDATED_SHARED_PREFERENCE;
+import static com.example.mindful_reminder.config.Constants.GET_AFFIRMATION_TAG;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -75,7 +76,7 @@ public class AffirmationFragment extends Fragment {
                             new Observer<Boolean>() {
                                 @Override
                                 public void onChanged(Boolean updateDone) {
-                                    workManager.getWorkInfosForUniqueWorkLiveData(GetAffirmationWorker.GET_AFFIRMATION_TAG).removeObservers(getViewLifecycleOwner());
+                                    workManager.getWorkInfosForUniqueWorkLiveData(GET_AFFIRMATION_TAG).removeObservers(getViewLifecycleOwner());
                                     affirmationTextView.setText(sharedPreferences.getString(AFFIRMATION_SHARED_PREFERENCE, ""));
                                     affirmationUpdatedTextView.setText(sharedPreferences.getString(AFFIRMATION_UPDATED_SHARED_PREFERENCE, ""));
                                 }

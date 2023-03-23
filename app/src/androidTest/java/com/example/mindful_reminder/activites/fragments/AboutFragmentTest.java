@@ -14,7 +14,7 @@
 //
 //    @Before
 //    public void setup() {
-//        aboutFragmentFragmentScenario = FragmentScenario.launchInContainer(com.example.mindful_reminder.fragments.AboutFragment.class);
+//        aboutFragmentFragmentScenario = FragmentScenario.launchInContainer(com.example.mindful_reminder.fragments.AboutFragment.class,null);
 //    }
 //
 //    @Test

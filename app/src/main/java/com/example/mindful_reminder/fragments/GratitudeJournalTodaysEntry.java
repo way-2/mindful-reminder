@@ -1,6 +1,6 @@
 package com.example.mindful_reminder.fragments;
 
-import static com.example.mindful_reminder.fragments.SettingsFragment.ENABLE_GRATITUDE_TUTORIAL;
+import static com.example.mindful_reminder.config.Constants.ENABLE_GRATITUDE_TUTORIAL;
 
 import android.content.Context;
 import android.content.SharedPreferences;

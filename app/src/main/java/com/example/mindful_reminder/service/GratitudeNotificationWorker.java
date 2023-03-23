@@ -1,14 +1,14 @@
 package com.example.mindful_reminder.service;
 
-import static com.example.mindful_reminder.config.Constants.AFFIRMATION_NOTIFICATION_WORKER_TAG;
-import static com.example.mindful_reminder.config.Constants.AFFIRMATION_SHARED_PREFERENCE;
+import static com.example.mindful_reminder.config.Constants.GRATITUDE_NOTIFICATION_WORKER;
+import static com.example.mindful_reminder.config.Constants.GRATITUDE_REDIRECT;
 import static com.example.mindful_reminder.config.Constants.NOTIFICATION_CHANNEL;
+import static com.example.mindful_reminder.config.Constants.REDIRECT;
 
 import android.Manifest;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.provider.Settings;
 import android.util.Log;
@@ -19,21 +19,23 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.core.app.TaskStackBuilder;
-import androidx.preference.PreferenceManager;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
 import com.example.mindful_reminder.R;
 import com.example.mindful_reminder.activities.ActivityMain;
+import com.example.mindful_reminder.databases.AppDatabase;
 
+import java.time.LocalDate;
 import java.util.Random;
+import java.util.concurrent.ExecutionException;
 
-public class AffirmationNotificationWorker extends Worker {
-    private final SharedPreferences sharedPreferences;
+public class GratitudeNotificationWorker extends Worker {
 
-    public AffirmationNotificationWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
+    private AppDatabase database;
+
+    public GratitudeNotificationWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
-        this.sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
     }
 
     @NonNull
@@ -43,17 +45,18 @@ public class AffirmationNotificationWorker extends Worker {
         try {
             dndStatus = Settings.Global.getInt(getApplicationContext().getContentResolver(), "zen_mode");
         } catch (Settings.SettingNotFoundException ex) {
-            Log.w(AFFIRMATION_NOTIFICATION_WORKER_TAG, "Unable to find zen_mode status");
+            Log.w(GRATITUDE_NOTIFICATION_WORKER, "Unable to find zen_mode status");
         }
-        if (dndStatus == 0) {
-            Log.i(AFFIRMATION_NOTIFICATION_WORKER_TAG, "Sending Notification for affirmation " + sharedPreferences.getString(AFFIRMATION_SHARED_PREFERENCE, ""));
+        if (dndStatus == 0 && isJournalEntryDone()) {
+            Log.i(GRATITUDE_NOTIFICATION_WORKER, "Sending Notification Gratitude Journal Reminder");
             Intent intent = new Intent(getApplicationContext(), ActivityMain.class);
+            intent.putExtra(REDIRECT, GRATITUDE_REDIRECT);
             TaskStackBuilder taskStackBuilder = TaskStackBuilder.create(getApplicationContext());
             taskStackBuilder.addNextIntentWithParentStack(intent);
             PendingIntent pendingIntent = taskStackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
             NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), NOTIFICATION_CHANNEL)
                     .setSmallIcon(R.drawable.mindful_reminder_icon)
-                    .setContentTitle(sharedPreferences.getString(AFFIRMATION_SHARED_PREFERENCE, ""))
+                    .setContentTitle("Don't forget to take a few moments to reflect on what you are grateful for today!")
                     .setContentIntent(pendingIntent)
                     .setPriority(NotificationCompat.PRIORITY_DEFAULT);
             NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(getApplicationContext());
@@ -64,6 +67,22 @@ public class AffirmationNotificationWorker extends Worker {
             }
         }
         return Result.success();
+    }
+
+    private boolean isJournalEntryDone() {
+        boolean isDone = false;
+        try {
+            database = AppDatabase.getInstance(getApplicationContext());
+            String todaysEntry = database.gratitudeJournalDao().getEntryForDate(LocalDate.now()).get();
+            if ((null != todaysEntry) && (todaysEntry.length() > 0)) {
+                isDone = true;
+            }
+        } catch (ExecutionException | InterruptedException ex) {
+            ex.printStackTrace();
+        } finally {
+            database.cleanUp();
+        }
+        return isDone;
     }
 
 }

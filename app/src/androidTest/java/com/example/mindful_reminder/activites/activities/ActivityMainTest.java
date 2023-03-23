@@ -8,6 +8,8 @@ import static org.junit.Assert.assertTrue;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Rect;
+import android.widget.TextView;
 
 import androidx.lifecycle.Lifecycle;
 import androidx.test.core.app.ActivityScenario;
@@ -49,7 +51,7 @@ public class ActivityMainTest {
     }
 
     @Test
-    public void onCreateInitialUi() throws UiObjectNotFoundException {
+    public void onCreateInitialUi() {
         UiObject2 affirmationTextView = device.findObject(By.res(PACKAGE_NAME, "affirmation"));
         assertNotNull(affirmationTextView.getText());
         UiObject2 skipButton = device.findObject(By.res(PACKAGE_NAME, "skip_button"));
@@ -75,29 +77,92 @@ public class ActivityMainTest {
     }
 
     @Test
-    public void testMenuHelpOption() throws InterruptedException {
-        device.pressMenu();
-        Thread.sleep(25);
-        device.findObject(By.text("Help")).click();
-        device.wait(Until.hasObject(By.clazz(PACKAGE_NAME, "HelpFragment").depth(0)), 5000);
-        UiObject2 helpText1 = device.findObject(By.res(PACKAGE_NAME, "help_text_1"));
-        UiObject2 helpText2 = device.findObject(By.res(PACKAGE_NAME, "help_text_2"));
-        UiObject2 helpText3 = device.findObject(By.res(PACKAGE_NAME, "help_text_3"));
-        assertEquals(ApplicationProvider.getApplicationContext().getString(R.string.helpBodyStart), helpText1.getText());
-        assertEquals(ApplicationProvider.getApplicationContext().getString(R.string.helpBodyList), helpText2.getText());
-        assertEquals(ApplicationProvider.getApplicationContext().getString(R.string.helpBodyEnd), helpText3.getText());
+    public void testMenuAboutOption() {
+        UiObject2 view = device.findObject(By.res(PACKAGE_NAME, "drawer_layout"));
+        Rect bounds = view.getVisibleBounds();
+        int centerX = bounds.centerX();
+        int centerY = bounds.centerY();
+        device.drag(0, 100, centerX, centerY, 100);
+        device.findObject(By.text("About")).click();
+        device.wait(Until.hasObject(By.clazz(PACKAGE_NAME, "AboutFragment").depth(0)), 5000);
+        UiObject2 aboutText = device.findObject(By.res(PACKAGE_NAME, "about_text_1"));
+        assertEquals(ApplicationProvider.getApplicationContext().getString(R.string.aboutBody), aboutText.getText());
         device.pressBack();
         device.wait(Until.hasObject(By.pkg(device.getLauncherPackageName()).depth(0)), 5000);
     }
 
     @Test
-    public void testMenuAboutOption() throws InterruptedException {
-        device.pressMenu();
-        Thread.sleep(25);
-        device.findObject(By.text("About")).click();
-        device.wait(Until.hasObject(By.clazz(PACKAGE_NAME, "AboutFragment").depth(0)), 5000);
-        UiObject2 aboutText = device.findObject(By.res(PACKAGE_NAME, "about_text_1"));
-        assertEquals(ApplicationProvider.getApplicationContext().getString(R.string.aboutBody), aboutText.getText());
+    public void testMenuBreatheOption() {
+        UiObject2 view = device.findObject(By.res(PACKAGE_NAME, "drawer_layout"));
+        Rect bounds = view.getVisibleBounds();
+        int centerX = bounds.centerX();
+        int centerY = bounds.centerY();
+        device.drag(0, 100, centerX, centerY, 100);
+        device.findObject(By.text("Breathing Helper")).click();
+        device.wait(Until.hasObject(By.clazz(PACKAGE_NAME, "BreatheFragment").depth(0)), 5000);
+        UiObject2 aboutText = device.findObject(By.res(PACKAGE_NAME, "breath_help_steps_text"));
+        assertEquals(ApplicationProvider.getApplicationContext().getString(R.string.breath_steps), aboutText.getText());
+        device.pressBack();
+        device.wait(Until.hasObject(By.pkg(device.getLauncherPackageName()).depth(0)), 5000);
+    }
+
+    @Test
+    public void testMenuActivityOption() {
+        UiObject2 view = device.findObject(By.res(PACKAGE_NAME, "drawer_layout"));
+        Rect bounds = view.getVisibleBounds();
+        int centerX = bounds.centerX();
+        int centerY = bounds.centerY();
+        device.drag(0, 100, centerX, centerY, 100);
+        device.findObject(By.text("Daily Mindfulness Activity")).click();
+        device.wait(Until.hasObject(By.clazz(PACKAGE_NAME, "DailyMindfulnessActivity").depth(0)), 5000);
+        UiObject2 aboutText = device.findObject(By.res(PACKAGE_NAME, "daily_mindfulness_activity"));
+        assertNotNull(aboutText.getText());
+        device.pressBack();
+        device.wait(Until.hasObject(By.pkg(device.getLauncherPackageName()).depth(0)), 5000);
+    }
+
+    @Test
+    public void testMenuGroundingOption() throws UiObjectNotFoundException {
+        UiObject2 view = device.findObject(By.res(PACKAGE_NAME, "drawer_layout"));
+        Rect bounds = view.getVisibleBounds();
+        int centerX = bounds.centerX();
+        int centerY = bounds.centerY();
+        device.drag(0, 100, centerX, centerY, 100);
+        device.findObject(By.text("Grounding Exercise")).click();
+        device.wait(Until.hasObject(By.clazz(PACKAGE_NAME, "GroundingFragment").depth(0)), 5000);
+        UiObject2 textSwitcher = device.findObject(By.res(PACKAGE_NAME, "grounding_text_switcher"));
+        UiObject2 textView = textSwitcher.findObjects(By.clazz(TextView.class.getName())).get(0);
+        assertEquals(ApplicationProvider.getApplicationContext().getString(R.string.groundingBody), textView.getText());
+        device.pressBack();
+        device.wait(Until.hasObject(By.pkg(device.getLauncherPackageName()).depth(0)), 5000);
+    }
+
+    @Test
+    public void testMenuTodayEntryOption() {
+        UiObject2 view = device.findObject(By.res(PACKAGE_NAME, "drawer_layout"));
+        Rect bounds = view.getVisibleBounds();
+        int centerX = bounds.centerX();
+        int centerY = bounds.centerY();
+        device.drag(0, 100, centerX, centerY, 100);
+        device.findObject(By.text("Today's Journal Entry")).click();
+        device.wait(Until.hasObject(By.clazz(PACKAGE_NAME, "GratitudeJournalTodaysEntry").depth(0)), 5000);
+        UiObject2 aboutText = device.findObject(By.res(PACKAGE_NAME, "header_text_view"));
+        assertNotNull(aboutText.getText());
+        device.pressBack();
+        device.wait(Until.hasObject(By.pkg(device.getLauncherPackageName()).depth(0)), 5000);
+    }
+
+    @Test
+    public void testMenuReviewJournalOption() {
+        UiObject2 view = device.findObject(By.res(PACKAGE_NAME, "drawer_layout"));
+        Rect bounds = view.getVisibleBounds();
+        int centerX = bounds.centerX();
+        int centerY = bounds.centerY();
+        device.drag(0, 100, centerX, centerY, 100);
+        device.findObject(By.text("Review Previous Entries")).click();
+        device.wait(Until.hasObject(By.clazz(PACKAGE_NAME, "GratitudeJournalStart").depth(0)), 5000);
+        UiObject2 aboutText = device.findObject(By.res(PACKAGE_NAME, "calendar_header_text_view"));
+        assertEquals(ApplicationProvider.getApplicationContext().getString(R.string.your_gratitude_journal), aboutText.getText());
         device.pressBack();
         device.wait(Until.hasObject(By.pkg(device.getLauncherPackageName()).depth(0)), 5000);
     }
