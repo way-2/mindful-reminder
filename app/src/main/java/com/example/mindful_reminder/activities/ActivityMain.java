@@ -129,6 +129,7 @@ public class ActivityMain extends AppCompatActivity {
             ex.printStackTrace();
         }
         FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.popBackStack();
         fragmentManager.beginTransaction()
                 .setCustomAnimations(
                         R.anim.slide_in,
@@ -179,6 +180,7 @@ public class ActivityMain extends AppCompatActivity {
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START);
         } else if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+            navigationView.setCheckedItem(R.id.nav_affirmation);
             getSupportFragmentManager().popBackStack();
         } else {
             super.onBackPressed();
