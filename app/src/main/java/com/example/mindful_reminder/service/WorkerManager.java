@@ -64,7 +64,7 @@ public class WorkerManager {
                     .build();
             PeriodicWorkRequest runWork = workBuilder.setConstraints(constraints).build();
             WorkManager workManager = WorkManager.getInstance(context);
-            workManager.enqueueUniquePeriodicWork(GRATITUDE_NOTIFICATION_WORKER, ExistingPeriodicWorkPolicy.UPDATE, runWork);
+            workManager.enqueueUniquePeriodicWork(GRATITUDE_NOTIFICATION_WORKER, ExistingPeriodicWorkPolicy.CANCEL_AND_REENQUEUE, runWork);
         }
     }
 
@@ -92,7 +92,7 @@ public class WorkerManager {
                 .build();
         PeriodicWorkRequest runWork = workBuilder.setConstraints(constraints).build();
         WorkManager workManager = WorkManager.getInstance(context);
-        workManager.enqueueUniquePeriodicWork(DAILY_ACTIVITY_TAG, ExistingPeriodicWorkPolicy.KEEP, runWork);
+        workManager.enqueueUniquePeriodicWork(DAILY_ACTIVITY_TAG, ExistingPeriodicWorkPolicy.CANCEL_AND_REENQUEUE, runWork);
     }
 
     public void stopActivityNotificationWorker(Context context) {
@@ -128,7 +128,7 @@ public class WorkerManager {
                     .build();
             PeriodicWorkRequest runWork = workBuilder.setConstraints(constraints).build();
             WorkManager workManager = WorkManager.getInstance(context);
-            workManager.enqueueUniquePeriodicWork(ACTIVITY_NOTIFICATION_WORKER_TAG, ExistingPeriodicWorkPolicy.UPDATE, runWork);
+            workManager.enqueueUniquePeriodicWork(ACTIVITY_NOTIFICATION_WORKER_TAG, ExistingPeriodicWorkPolicy.CANCEL_AND_REENQUEUE, runWork);
         }
     }
 
@@ -145,7 +145,7 @@ public class WorkerManager {
                     .build();
             PeriodicWorkRequest runWork = workBuilder.setConstraints(constraints).build();
             WorkManager workManager = WorkManager.getInstance(context);
-            workManager.enqueueUniquePeriodicWork(AFFIRMATION_NOTIFICATION_WORKER_TAG, ExistingPeriodicWorkPolicy.KEEP, runWork);
+            workManager.enqueueUniquePeriodicWork(AFFIRMATION_NOTIFICATION_WORKER_TAG, ExistingPeriodicWorkPolicy.CANCEL_AND_REENQUEUE, runWork);
         }
     }
 
@@ -171,7 +171,7 @@ public class WorkerManager {
                 .build();
         PeriodicWorkRequest runWork = workBuilder.setConstraints(constraints).build();
         WorkManager workManager = WorkManager.getInstance(context);
-        workManager.enqueueUniquePeriodicWork(ACTIVITY_NOTIFICATION_WORKER_TAG, ExistingPeriodicWorkPolicy.UPDATE, runWork);
+        workManager.enqueueUniquePeriodicWork(ACTIVITY_NOTIFICATION_WORKER_TAG, ExistingPeriodicWorkPolicy.CANCEL_AND_REENQUEUE, runWork);
     }
 
     public void startAffirmationNotificationWorkerAlways(Context context) {
@@ -186,7 +186,7 @@ public class WorkerManager {
                 .build();
         PeriodicWorkRequest runWork = workBuilder.setConstraints(constraints).build();
         WorkManager workManager = WorkManager.getInstance(context);
-        workManager.enqueueUniquePeriodicWork(AFFIRMATION_NOTIFICATION_WORKER_TAG, ExistingPeriodicWorkPolicy.KEEP, runWork);
+        workManager.enqueueUniquePeriodicWork(AFFIRMATION_NOTIFICATION_WORKER_TAG, ExistingPeriodicWorkPolicy.CANCEL_AND_REENQUEUE, runWork);
     }
 
     public void startGratitudeNotificationWorkerAlways(Context context) {
@@ -211,7 +211,7 @@ public class WorkerManager {
                 .build();
         PeriodicWorkRequest runWork = workBuilder.setConstraints(constraints).build();
         WorkManager workManager = WorkManager.getInstance(context);
-        workManager.enqueueUniquePeriodicWork(GRATITUDE_NOTIFICATION_WORKER, ExistingPeriodicWorkPolicy.UPDATE, runWork);
+        workManager.enqueueUniquePeriodicWork(GRATITUDE_NOTIFICATION_WORKER, ExistingPeriodicWorkPolicy.CANCEL_AND_REENQUEUE, runWork);
     }
 
 }

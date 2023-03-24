@@ -30,6 +30,7 @@ import com.example.mindful_reminder.fragments.AffirmationFragment;
 import com.example.mindful_reminder.fragments.BreatheFragment;
 import com.example.mindful_reminder.fragments.DailyMindfulnessActivity;
 import com.example.mindful_reminder.fragments.GratitudeJournalCalendar;
+import com.example.mindful_reminder.fragments.GratitudeJournalStart;
 import com.example.mindful_reminder.fragments.GratitudeJournalTodaysEntry;
 import com.example.mindful_reminder.fragments.GroundingFragment;
 import com.example.mindful_reminder.fragments.SettingsFragment;
@@ -177,13 +178,17 @@ public class ActivityMain extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-            drawerLayout.closeDrawer(GravityCompat.START);
-        } else if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
-            navigationView.setCheckedItem(R.id.nav_affirmation);
-            getSupportFragmentManager().popBackStack();
-        } else {
-            super.onBackPressed();
+        Fragment f = getSupportFragmentManager().findFragmentById(R.id.fragment_frame);
+        if (!(f instanceof GratitudeJournalStart)) {
+            if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+                drawerLayout.closeDrawer(GravityCompat.START);
+            } else if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                navigationView.setCheckedItem(R.id.nav_affirmation);
+                getSupportFragmentManager().popBackStack();
+            } else {
+                super.onBackPressed();
+            }
         }
     }
 

@@ -70,7 +70,8 @@ public class GratitudeJournalCalendar extends Fragment {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext());
         if (sharedPreferences.getBoolean(ENABLE_GRATITUDE_TUTORIAL, true)) {
             FragmentManager fragmentManager = getParentFragmentManager();
-            fragmentManager.beginTransaction().replace(R.id.fragment_frame, new GratitudeJournalStart()).commit();
+            fragmentManager.popBackStack();
+            fragmentManager.beginTransaction().replace(R.id.fragment_frame, new GratitudeJournalStart()).addToBackStack(null).commit();
         }
     }
 

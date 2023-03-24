@@ -30,6 +30,7 @@
         android:id="@+id/new_entry_editor"
         android:gravity="top"
         android:background="@drawable/edit_text_background"
+        android:inputType="textCapSentences|textMultiLine"
         />
 
         <androidx.appcompat.widget.AppCompatButton
