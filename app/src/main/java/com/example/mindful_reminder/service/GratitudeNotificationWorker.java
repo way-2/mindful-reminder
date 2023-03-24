@@ -10,7 +10,6 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.provider.Settings;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -41,13 +40,7 @@ public class GratitudeNotificationWorker extends Worker {
     @NonNull
     @Override
     public Result doWork() {
-        int dndStatus = 0;
-        try {
-            dndStatus = Settings.Global.getInt(getApplicationContext().getContentResolver(), "zen_mode");
-        } catch (Settings.SettingNotFoundException ex) {
-            Log.w(GRATITUDE_NOTIFICATION_WORKER, "Unable to find zen_mode status");
-        }
-        if (dndStatus == 0 && isJournalEntryDone()) {
+        if (!isJournalEntryDone()) {
             Log.i(GRATITUDE_NOTIFICATION_WORKER, "Sending Notification Gratitude Journal Reminder");
             Intent intent = new Intent(getApplicationContext(), ActivityMain.class);
             intent.putExtra(REDIRECT, GRATITUDE_REDIRECT);
