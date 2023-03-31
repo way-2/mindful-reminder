@@ -18,7 +18,7 @@
             />
 
         <SwitchPreferenceCompat
-            app:key="gratitude_notification_toggle"
+            app:key="mindfulness_journal_notification_toggle"
             app:title="@string/gratitude_notification_title"
             />
 
@@ -27,8 +27,8 @@
             android:defaultValue="20"
             android:entries="@array/hour_string"
             android:entryValues="@array/hour_int"
-            android:key="gratitude_notification_time_interval_list"
-            android:title="Gratitude Journal Notification Time"
+            android:key="mindfulness_journal_notification_time_interval_list"
+            android:title="Mindfulness Journal Notification Time"
             />
 
         <SwitchPreferenceCompat
@@ -48,9 +48,9 @@
         <CheckBoxPreference
             android:enabled="true"
             android:defaultValue="true"
-            android:key="enable_gratitude_tutorial"
-            android:title="Enable Gratitude Journal Tutorial"
-            android:summary="This should uncheck itself if you have viewed the tutorial for the gratitude journal. To display the tutorial again, check the box."
+            android:key="enable_mindfulness_journal_tutorial"
+            android:title="Enable Mindfulness Journal Tutorial"
+            android:summary="This should uncheck itself if you have viewed the tutorial for the mindfulness journal. To display the tutorial again, check the box."
             />
 
     </PreferenceCategory>

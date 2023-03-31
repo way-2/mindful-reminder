@@ -6,9 +6,9 @@ import static com.example.mindful_reminder.config.Constants.AFFIRMATION_NOTIFICA
 import static com.example.mindful_reminder.config.Constants.DAILY_ACTIVITY_TAG;
 import static com.example.mindful_reminder.config.Constants.DAILY_ACTIVITY_TOGGLE;
 import static com.example.mindful_reminder.config.Constants.DAILY_NOTIFICATION_HOUR_LIST;
-import static com.example.mindful_reminder.config.Constants.GRATITUDE_NOTIFICATION_HOUR_LIST;
-import static com.example.mindful_reminder.config.Constants.GRATITUDE_NOTIFICATION_TOGGLE;
-import static com.example.mindful_reminder.config.Constants.GRATITUDE_NOTIFICATION_WORKER;
+import static com.example.mindful_reminder.config.Constants.MINDFULNESS_JOURNAL_NOTIFICATION_HOUR_LIST;
+import static com.example.mindful_reminder.config.Constants.MINDFULNESS_JOURNAL_NOTIFICATION_TOGGLE;
+import static com.example.mindful_reminder.config.Constants.MINDFULNESS_JOURNAL_NOTIFICATION_WORKER;
 import static com.example.mindful_reminder.config.Constants.NOTIFICATION_TIME_INTERVAL_LIST;
 
 import android.content.Context;
@@ -43,8 +43,8 @@ public class WorkerManager {
 
     public void startGratitudeNotificationWorker(Context context) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        if (sharedPreferences.getBoolean(GRATITUDE_NOTIFICATION_TOGGLE, false)) {
-            int notificationInterval = Integer.parseInt(sharedPreferences.getString(GRATITUDE_NOTIFICATION_HOUR_LIST, "20"));
+        if (sharedPreferences.getBoolean(MINDFULNESS_JOURNAL_NOTIFICATION_TOGGLE, false)) {
+            int notificationInterval = Integer.parseInt(sharedPreferences.getString(MINDFULNESS_JOURNAL_NOTIFICATION_HOUR_LIST, "20"));
             Calendar calendar = Calendar.getInstance();
             long nowMillis = calendar.getTimeInMillis();
             calendar.set(Calendar.HOUR_OF_DAY, notificationInterval);
@@ -54,9 +54,9 @@ public class WorkerManager {
             if (calendar.before(Calendar.getInstance())) {
                 calendar.add(Calendar.DATE, 1);
             }
-            Log.i(GRATITUDE_NOTIFICATION_WORKER, "Setting gratitude notification to daily at " + calendar.getTime());
+            Log.i(MINDFULNESS_JOURNAL_NOTIFICATION_WORKER, "Setting gratitude notification to daily at " + calendar.getTime());
             long diff = calendar.getTimeInMillis() - nowMillis;
-            PeriodicWorkRequest.Builder workBuilder = new PeriodicWorkRequest.Builder(GratitudeNotificationWorker.class, 24, TimeUnit.HOURS).setInitialDelay(diff, TimeUnit.MILLISECONDS).addTag(GRATITUDE_NOTIFICATION_WORKER);
+            PeriodicWorkRequest.Builder workBuilder = new PeriodicWorkRequest.Builder(GratitudeNotificationWorker.class, 24, TimeUnit.HOURS).setInitialDelay(diff, TimeUnit.MILLISECONDS).addTag(MINDFULNESS_JOURNAL_NOTIFICATION_WORKER);
             Constraints constraints = new Constraints.Builder()
                     .setRequiredNetworkType(NetworkType.NOT_REQUIRED)
                     .setRequiresCharging(false)
@@ -64,13 +64,13 @@ public class WorkerManager {
                     .build();
             PeriodicWorkRequest runWork = workBuilder.setConstraints(constraints).build();
             WorkManager workManager = WorkManager.getInstance(context);
-            workManager.enqueueUniquePeriodicWork(GRATITUDE_NOTIFICATION_WORKER, ExistingPeriodicWorkPolicy.CANCEL_AND_REENQUEUE, runWork);
+            workManager.enqueueUniquePeriodicWork(MINDFULNESS_JOURNAL_NOTIFICATION_WORKER, ExistingPeriodicWorkPolicy.CANCEL_AND_REENQUEUE, runWork);
         }
     }
 
     public void stopGratitudeNotificationWorker(Context context) {
         WorkManager workManager = WorkManager.getInstance(context);
-        workManager.cancelUniqueWork(GRATITUDE_NOTIFICATION_WORKER);
+        workManager.cancelUniqueWork(MINDFULNESS_JOURNAL_NOTIFICATION_WORKER);
     }
 
     public void startDailyActivityWorker(Context context) {
@@ -191,7 +191,7 @@ public class WorkerManager {
 
     public void startGratitudeNotificationWorkerAlways(Context context) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        int notificationInterval = Integer.parseInt(sharedPreferences.getString(GRATITUDE_NOTIFICATION_HOUR_LIST, "20"));
+        int notificationInterval = Integer.parseInt(sharedPreferences.getString(MINDFULNESS_JOURNAL_NOTIFICATION_HOUR_LIST, "20"));
         Calendar calendar = Calendar.getInstance();
         long nowMillis = calendar.getTimeInMillis();
         calendar.set(Calendar.HOUR_OF_DAY, notificationInterval);
@@ -201,9 +201,9 @@ public class WorkerManager {
         if (calendar.before(Calendar.getInstance())) {
             calendar.add(Calendar.DATE, 1);
         }
-        Log.i(GRATITUDE_NOTIFICATION_WORKER, "Setting gratitude notification to daily at " + calendar.getTime());
+        Log.i(MINDFULNESS_JOURNAL_NOTIFICATION_WORKER, "Setting gratitude notification to daily at " + calendar.getTime());
         long diff = calendar.getTimeInMillis() - nowMillis;
-        PeriodicWorkRequest.Builder workBuilder = new PeriodicWorkRequest.Builder(GratitudeNotificationWorker.class, 24, TimeUnit.HOURS).setInitialDelay(diff, TimeUnit.MILLISECONDS).addTag(GRATITUDE_NOTIFICATION_WORKER);
+        PeriodicWorkRequest.Builder workBuilder = new PeriodicWorkRequest.Builder(GratitudeNotificationWorker.class, 24, TimeUnit.HOURS).setInitialDelay(diff, TimeUnit.MILLISECONDS).addTag(MINDFULNESS_JOURNAL_NOTIFICATION_WORKER);
         Constraints constraints = new Constraints.Builder()
                 .setRequiredNetworkType(NetworkType.NOT_REQUIRED)
                 .setRequiresCharging(false)
@@ -211,7 +211,7 @@ public class WorkerManager {
                 .build();
         PeriodicWorkRequest runWork = workBuilder.setConstraints(constraints).build();
         WorkManager workManager = WorkManager.getInstance(context);
-        workManager.enqueueUniquePeriodicWork(GRATITUDE_NOTIFICATION_WORKER, ExistingPeriodicWorkPolicy.CANCEL_AND_REENQUEUE, runWork);
+        workManager.enqueueUniquePeriodicWork(MINDFULNESS_JOURNAL_NOTIFICATION_WORKER, ExistingPeriodicWorkPolicy.CANCEL_AND_REENQUEUE, runWork);
     }
 
 }

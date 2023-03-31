@@ -1,6 +1,7 @@
 package com.example.mindful_reminder.activities;
 
-import static com.example.mindful_reminder.config.Constants.GRATITUDE_REDIRECT;
+import static com.example.mindful_reminder.config.Constants.DAILY_MINDFULNESS_REDIRECT;
+import static com.example.mindful_reminder.config.Constants.MINDFULNESS_JOURNAL_REDIRECT;
 import static com.example.mindful_reminder.config.Constants.NOTIFICATION_CHANNEL;
 import static com.example.mindful_reminder.config.Constants.REDIRECT;
 
@@ -29,9 +30,9 @@ import com.example.mindful_reminder.fragments.AboutFragment;
 import com.example.mindful_reminder.fragments.AffirmationFragment;
 import com.example.mindful_reminder.fragments.BreatheFragment;
 import com.example.mindful_reminder.fragments.DailyMindfulnessActivity;
-import com.example.mindful_reminder.fragments.GratitudeJournalCalendar;
-import com.example.mindful_reminder.fragments.GratitudeJournalStart;
-import com.example.mindful_reminder.fragments.GratitudeJournalTodaysEntry;
+import com.example.mindful_reminder.fragments.MindfulnessJournalCalendar;
+import com.example.mindful_reminder.fragments.MindfulnessJournalStart;
+import com.example.mindful_reminder.fragments.MindfulnessJournalTodaysEntry;
 import com.example.mindful_reminder.fragments.GroundingFragment;
 import com.example.mindful_reminder.fragments.SettingsFragment;
 import com.example.mindful_reminder.service.WorkerManager;
@@ -72,10 +73,10 @@ public class ActivityMain extends AppCompatActivity {
         FragmentManager fragmentManager = getSupportFragmentManager();
         if ((null != getIntent().getExtras()) && (null != getIntent().getExtras().get(REDIRECT))) {
             String intentRedirectValue = getIntent().getExtras().get(REDIRECT).toString();
-            if ("dailyMindfulnessFragment".equals(intentRedirectValue)) {
+            if (DAILY_MINDFULNESS_REDIRECT.equals(intentRedirectValue)) {
                 fragmentManager.beginTransaction().replace(R.id.fragment_frame, new DailyMindfulnessActivity()).commit();
-            } else if (GRATITUDE_REDIRECT.equals(intentRedirectValue)) {
-                fragmentManager.beginTransaction().replace(R.id.fragment_frame, new GratitudeJournalTodaysEntry()).commit();
+            } else if (MINDFULNESS_JOURNAL_REDIRECT.equals(intentRedirectValue)) {
+                fragmentManager.beginTransaction().replace(R.id.fragment_frame, new MindfulnessJournalTodaysEntry()).commit();
             }
         } else {
             fragmentManager.beginTransaction().replace(R.id.fragment_frame, new AffirmationFragment()).commit();
@@ -118,10 +119,10 @@ public class ActivityMain extends AppCompatActivity {
                 fragmentClass = SettingsFragment.class;
                 break;
             case R.id.nav_todays_journal_entry:
-                fragmentClass = GratitudeJournalTodaysEntry.class;
+                fragmentClass = MindfulnessJournalTodaysEntry.class;
                 break;
             case R.id.nav_review_journal:
-                fragmentClass = GratitudeJournalCalendar.class;
+                fragmentClass = MindfulnessJournalCalendar.class;
                 break;
         }
         try {
@@ -179,7 +180,7 @@ public class ActivityMain extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         Fragment f = getSupportFragmentManager().findFragmentById(R.id.fragment_frame);
-        if (!(f instanceof GratitudeJournalStart)) {
+        if (!(f instanceof MindfulnessJournalStart)) {
             if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
                 drawerLayout.closeDrawer(GravityCompat.START);
             } else if (getSupportFragmentManager().getBackStackEntryCount() > 0) {

@@ -1,7 +1,7 @@
 package com.example.mindful_reminder.service;
 
-import static com.example.mindful_reminder.config.Constants.GRATITUDE_NOTIFICATION_WORKER;
-import static com.example.mindful_reminder.config.Constants.GRATITUDE_REDIRECT;
+import static com.example.mindful_reminder.config.Constants.MINDFULNESS_JOURNAL_NOTIFICATION_WORKER;
+import static com.example.mindful_reminder.config.Constants.MINDFULNESS_JOURNAL_REDIRECT;
 import static com.example.mindful_reminder.config.Constants.NOTIFICATION_CHANNEL;
 import static com.example.mindful_reminder.config.Constants.REDIRECT;
 
@@ -24,6 +24,7 @@ import androidx.work.WorkerParameters;
 import com.example.mindful_reminder.R;
 import com.example.mindful_reminder.activities.ActivityMain;
 import com.example.mindful_reminder.databases.AppDatabase;
+import com.example.mindful_reminder.entities.JournalEntry;
 
 import java.time.LocalDate;
 import java.util.Random;
@@ -41,9 +42,9 @@ public class GratitudeNotificationWorker extends Worker {
     @Override
     public Result doWork() {
         if (!isJournalEntryDone()) {
-            Log.i(GRATITUDE_NOTIFICATION_WORKER, "Sending Notification Gratitude Journal Reminder");
+            Log.i(MINDFULNESS_JOURNAL_NOTIFICATION_WORKER, "Sending Notification Gratitude Journal Reminder");
             Intent intent = new Intent(getApplicationContext(), ActivityMain.class);
-            intent.putExtra(REDIRECT, GRATITUDE_REDIRECT);
+            intent.putExtra(REDIRECT, MINDFULNESS_JOURNAL_REDIRECT);
             TaskStackBuilder taskStackBuilder = TaskStackBuilder.create(getApplicationContext());
             taskStackBuilder.addNextIntentWithParentStack(intent);
             PendingIntent pendingIntent = taskStackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
@@ -51,7 +52,8 @@ public class GratitudeNotificationWorker extends Worker {
                     .setSmallIcon(R.drawable.mindful_reminder_icon)
                     .setContentTitle("Don't forget to take a few moments to reflect on what you are grateful for today!")
                     .setContentIntent(pendingIntent)
-                    .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+                    .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                    .setAutoCancel(true);
             NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(getApplicationContext());
             if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
                 Toast.makeText(getApplicationContext(), "Notification Permission not granted", Toast.LENGTH_SHORT).show();
@@ -66,8 +68,8 @@ public class GratitudeNotificationWorker extends Worker {
         boolean isDone = false;
         try {
             database = AppDatabase.getInstance(getApplicationContext());
-            String todaysEntry = database.gratitudeJournalDao().getEntryForDate(LocalDate.now()).get();
-            if ((null != todaysEntry) && (todaysEntry.length() > 0)) {
+            JournalEntry todaysEntry = database.gratitudeJournalDao().getEntryForDate(LocalDate.now()).get();
+            if ((null != todaysEntry) && ((todaysEntry.getGratitudeEntry().length() > 0) || (todaysEntry.getRuminationEntry().length() > 0))) {
                 isDone = true;
             }
         } catch (ExecutionException | InterruptedException ex) {

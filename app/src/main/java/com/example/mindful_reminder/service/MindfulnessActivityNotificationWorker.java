@@ -1,7 +1,9 @@
 package com.example.mindful_reminder.service;
 
 import static com.example.mindful_reminder.config.Constants.DAILY_MINDFULNESS_ACTIVITY_SHARED_PREFERENCE;
+import static com.example.mindful_reminder.config.Constants.DAILY_MINDFULNESS_REDIRECT;
 import static com.example.mindful_reminder.config.Constants.NOTIFICATION_CHANNEL;
+import static com.example.mindful_reminder.config.Constants.REDIRECT;
 
 import android.Manifest;
 import android.app.PendingIntent;
@@ -40,7 +42,7 @@ public class MindfulnessActivityNotificationWorker extends Worker {
         int index = Arrays.asList(getApplicationContext().getResources().getStringArray(R.array.activity_name)).indexOf(sharedPreferences.getString(DAILY_MINDFULNESS_ACTIVITY_SHARED_PREFERENCE, ""));
         String activityDesc = getApplicationContext().getResources().getStringArray(R.array.activity_text)[index];
         Intent intent = new Intent(getApplicationContext(), ActivityMain.class);
-        intent.putExtra("redirect", "dailyMindfulnessFragment");
+        intent.putExtra(REDIRECT, DAILY_MINDFULNESS_REDIRECT);
         TaskStackBuilder taskStackBuilder = TaskStackBuilder.create(getApplicationContext());
         taskStackBuilder.addNextIntentWithParentStack(intent);
         PendingIntent pendingIntent = taskStackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
@@ -49,7 +51,8 @@ public class MindfulnessActivityNotificationWorker extends Worker {
                 .setContentTitle(sharedPreferences.getString(DAILY_MINDFULNESS_ACTIVITY_SHARED_PREFERENCE, ""))
                 .setContentText(activityDesc)
                 .setContentIntent(pendingIntent)
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setAutoCancel(true);
         NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(getApplicationContext());
         if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
             Toast.makeText(getApplicationContext(), "Notification Permission not granted", Toast.LENGTH_SHORT).show();

@@ -14,10 +14,35 @@
             android:id="@+id/affirmation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="100dp"
             android:textAlignment="center"
             android:textAppearance="@style/TextAppearance.AppCompat.Headline"
             android:visibility="visible" />
+
+        <FrameLayout
+            android:layout_width="300dp"
+            android:layout_height="450dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="120dp"
+            android:id="@+id/affirmation_image_frame"
+            >
+
+            <ImageView
+                android:id="@+id/affirmation_image_view"
+                android:layout_width="285dp"
+                android:layout_height="435dp"
+                android:layout_gravity="center"
+                 />
+
+            <ImageView
+                android:layout_width="300dp"
+                android:layout_height="450dp"
+                android:src="@drawable/affirmation_image_border"
+                />
+
+        </FrameLayout>
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/skip_button"

@@ -3,15 +3,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.GratitudeJournalStart"
-    android:id="@+id/fragment_gratitude_journal_start">
+    tools:context=".fragments.MindfulnessJournalStart"
+    android:id="@+id/fragment_mindfulness_journal_start">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
             <TextSwitcher
-                android:id="@+id/gratitude_intro_text_switcher"
+                android:id="@+id/mindfulness_intro_text_switcher"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"

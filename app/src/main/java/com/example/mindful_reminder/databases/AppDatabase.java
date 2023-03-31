@@ -9,16 +9,16 @@ import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
-import com.example.mindful_reminder.dao.GratitudeJournalDao;
-import com.example.mindful_reminder.entities.GratitudeJournalEntry;
+import com.example.mindful_reminder.dao.JournalDao;
+import com.example.mindful_reminder.entities.JournalEntry;
 
-@Database(entities = {GratitudeJournalEntry.class}, version = 1, exportSchema = false)
+@Database(entities = {JournalEntry.class}, version = 1, exportSchema = false)
 @TypeConverters({com.example.mindful_reminder.util.TypeConverters.class})
 public abstract class AppDatabase extends RoomDatabase {
     private static AppDatabase appDatabaseInstance;
     public static final String DATABASE_NAME = "mindfulReminderDatabase";
 
-    public abstract GratitudeJournalDao gratitudeJournalDao();
+    public abstract JournalDao gratitudeJournalDao();
 
     public static synchronized AppDatabase getInstance(Context context) {
         if (appDatabaseInstance == null) {

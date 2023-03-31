@@ -5,9 +5,9 @@ import static com.example.mindful_reminder.config.Constants.AFFIRMATION_NOTIFICA
 import static com.example.mindful_reminder.config.Constants.AFFIRMATION_NOTIFICATION_WORKER_TAG;
 import static com.example.mindful_reminder.config.Constants.DAILY_ACTIVITY_TOGGLE;
 import static com.example.mindful_reminder.config.Constants.DAILY_NOTIFICATION_HOUR_LIST;
-import static com.example.mindful_reminder.config.Constants.GRATITUDE_NOTIFICATION_HOUR_LIST;
-import static com.example.mindful_reminder.config.Constants.GRATITUDE_NOTIFICATION_TOGGLE;
-import static com.example.mindful_reminder.config.Constants.GRATITUDE_NOTIFICATION_WORKER;
+import static com.example.mindful_reminder.config.Constants.MINDFULNESS_JOURNAL_NOTIFICATION_HOUR_LIST;
+import static com.example.mindful_reminder.config.Constants.MINDFULNESS_JOURNAL_NOTIFICATION_TOGGLE;
+import static com.example.mindful_reminder.config.Constants.MINDFULNESS_JOURNAL_NOTIFICATION_WORKER;
 import static com.example.mindful_reminder.config.Constants.NOTIFICATION_TIME_INTERVAL_LIST;
 
 import android.content.SharedPreferences;
@@ -75,8 +75,8 @@ public class SettingsFragment extends PreferenceFragmentCompat {
     }
 
     private void gratitudeSettings() {
-        gratitudeReminderSwitch = (SwitchPreferenceCompat) findPreference(GRATITUDE_NOTIFICATION_TOGGLE);
-        gratitudeReminderHourListPreference = (ListPreference) findPreference(GRATITUDE_NOTIFICATION_HOUR_LIST);
+        gratitudeReminderSwitch = (SwitchPreferenceCompat) findPreference(MINDFULNESS_JOURNAL_NOTIFICATION_TOGGLE);
+        gratitudeReminderHourListPreference = (ListPreference) findPreference(MINDFULNESS_JOURNAL_NOTIFICATION_HOUR_LIST);
         if (gratitudeReminderSwitch.isChecked()) {
             gratitudeReminderHourListPreference.setEnabled(true);
         }
@@ -102,7 +102,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                 String entryString = gratitudeReminderHourListPreference.getEntries()[index].toString();
                 gratitudeReminderHourListPreference.setSummary(entryString);
                 try {
-                    List<WorkInfo> workInfo = WorkManager.getInstance(requireContext()).getWorkInfosByTag(GRATITUDE_NOTIFICATION_WORKER).get();
+                    List<WorkInfo> workInfo = WorkManager.getInstance(requireContext()).getWorkInfosByTag(MINDFULNESS_JOURNAL_NOTIFICATION_WORKER).get();
                     if (!workInfo.isEmpty()) {
                         WorkInfo.State state = workInfo.get(0).getState();
                         if ((state == WorkInfo.State.RUNNING) || (state == WorkInfo.State.ENQUEUED)) {

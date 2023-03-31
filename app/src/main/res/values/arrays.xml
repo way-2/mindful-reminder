@@ -52,4 +52,17 @@
         <item>22</item>
         <item>23</item>
     </string-array>
+    <array name="background_images">
+        <item>@drawable/high_quality_photo_clear_vibrant_blue_ocean_golden_hour_calm_seed_6863733_steps_64_guidance_9</item>
+        <item>@drawable/high_quality_photo_clear_vibrant_blue_ocean_rocks_in_the_water_golden_hour_calm_seed_6174940_steps_64_guidance_9</item>
+        <item>@drawable/high_quality_photo_highly_detailed_forest_dirt_path_next_to_a_clear_stream_calm_seed_3522726_steps_64_guidance_9</item>
+        <item>@drawable/high_quality_photo_highly_detailed_forest_dirt_path_next_to_a_clear_stream_calm_seed_3522726_steps_89_guidance_9</item>
+        <item>@drawable/high_quality_photo_majestic_mountains_calm_seed_7461547_steps_64_guidance_9</item>
+        <item>@drawable/high_quality_photo_majestic_mountains_trail_fuzzy_white_mountain_goat_calm_seed_232964_steps_64_guidance_9</item>
+        <item>@drawable/high_quality_photo_mountains_calm_seed_8343684_steps_64_guidance_9</item>
+        <item>@drawable/high_quality_photo_garden_with_beautiful_foliage__clear_blue_pond__calm_seed_1083397_steps_64_guidance_9</item>
+        <item>@drawable/high_quality_photo__space__galaxy__stars__nebula__calm_seed_1774794_steps_64_guidance_9</item>
+        <item>@drawable/high_quality_photo__space__galaxy__stars__nebula__calm_seed_2911544_steps_50_guidance_7_5</item>
+        <item>@drawable/high_quality_photo__calm_seed_9932781_steps_64_guidance_7_5</item>
+    </array>
 </resources>

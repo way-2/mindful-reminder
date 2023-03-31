@@ -50,8 +50,6 @@
     \n
     4) Repeat the cycle of inhaling for 4 seconds, holding for 7 seconds, and exhaling for 8 seconds.</string>
     <string name="start">Start</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="groundingBody">5–4–3–2–1 Grounding is a mindfulness technique that can help you to feel more present and centered. Take a deep breath in and out, now lets get started.</string>
     <string name="groundingSee">Look around you and identify 5 things you can see. They can be anything from a piece of furniture to a plant or picture on the wall.</string>
     <string name="groundingTouch">Now notice 4 things you can touch. This can be anything from the ground beneath your feet to the fabric of your clothes.</string>
@@ -62,7 +60,7 @@
     <string name="grounding">Grounding Exercise</string>
     <string name="daily_activity_notifications">Toggle Daily Activity Notification</string>
     <string name="daily_affirmation">Your daily reminder</string>
-    <string name="gratitude_journal">Gratitude Journal</string>
+    <string name="gratitude_journal">Mindfulness Journal</string>
     <string name="todays_journal_entry">Today\'s Journal Entry</string>
     <string name="review_previous_entries">Review Previous Entries</string>
     <string name="gratitude_journal_intro_1">A gratitude journal is used to practice gratitude and appreciation by writing down things from the day that you are thankful for.  The idea behind it is to push you to focus on the good things in your life, in this way you can train yourself to be more optimistic.
@@ -71,6 +69,25 @@
     <string name="gratitude_journal_intro_3">Practicing gratitude regularly through a gratitude journal can have many benefits, including improving mood, reducing stress, and promoting a sense of well-being. It can also help you focus on the positive aspects of your life and feel more connected to the world around you.</string>
     <string name="next">Next</string>
     <string name="save">Save</string>
-    <string name="your_gratitude_journal">Your Gratitude Journal</string>
-    <string name="gratitude_notification_title">Toggle Gratitude Journal Notifications</string>
+    <string name="your_mindfulness_journal">Your Mindfulness Journal</string>
+    <string name="gratitude_notification_title">Toggle Mindfulness Journal Notifications</string>
+    <string name="daily_gratitude_header_text">am grateful for?</string>
+    <string name="daily_rumination_header_text">have been ruminating on?</string>
+    <string name="today_i">Today I…</string>
+    <string name="how_was_today_text">felt overall?</string>
+    <string name="happy_icon">\uf118</string>
+    <string name="sad_icon"></string>
+    <string name="unhappy_icon"></string>
+    <string name="meh_icon"></string>
+    <string name="estatic_icon"></string>
+    <string name="angry_icon"></string>
+    <string name="title_activity_how_are_you_feeling_button_group">HowAreYouFeelingButtonGroup
+    </string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
 </resources>

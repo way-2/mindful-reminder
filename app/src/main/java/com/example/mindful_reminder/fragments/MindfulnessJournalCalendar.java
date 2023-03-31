@@ -1,6 +1,6 @@
 package com.example.mindful_reminder.fragments;
 
-import static com.example.mindful_reminder.config.Constants.ENABLE_GRATITUDE_TUTORIAL;
+import static com.example.mindful_reminder.config.Constants.ENABLE_MINDFULNESS_TUTORIAL;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -17,6 +17,7 @@ import androidx.preference.PreferenceManager;
 
 import com.example.mindful_reminder.R;
 import com.example.mindful_reminder.databases.AppDatabase;
+import com.example.mindful_reminder.entities.JournalEntry;
 import com.kizitonwose.calendar.core.CalendarDay;
 import com.kizitonwose.calendar.core.CalendarMonth;
 import com.kizitonwose.calendar.core.DayPosition;
@@ -34,10 +35,13 @@ import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 
-public class GratitudeJournalCalendar extends Fragment {
+public class MindfulnessJournalCalendar extends Fragment {
 
     private CalendarView calendarView;
     private TextView gratitudeJournalDayEntry;
+    private TextView ruminationJournalDayEntry;
+    private TextView howWasITodayJournalDayEntry;
+    private TextView entryHeaderText;
     private List<DayOfWeek> daysOfWeek;
     private LocalDate selectedDate;
     private LocalDate oldDate;
@@ -46,7 +50,7 @@ public class GratitudeJournalCalendar extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_gratitude_journal_calendar, container, false);
+        View view = inflater.inflate(R.layout.fragment_mindfulness_journal_calendar, container, false);
         checkIfRunTutorial();
         getExistingDates();
         setupCalendarView(view);
@@ -54,8 +58,11 @@ public class GratitudeJournalCalendar extends Fragment {
     }
 
     private void setupCalendarView(View view) {
-        gratitudeJournalDayEntry = (TextView) view.findViewById(R.id.gratitude_journal_day_entry);
-        calendarView = (CalendarView) view.findViewById(R.id.gratitude_journal_events_calendar);
+        gratitudeJournalDayEntry = (TextView) view.findViewById(R.id.mindfulness_journal_day_entry);
+        ruminationJournalDayEntry = (TextView) view.findViewById(R.id.rumination_journal_day_entry);
+        howWasITodayJournalDayEntry = (TextView) view.findViewById(R.id.how_was_i_today_entry);
+        entryHeaderText = (TextView) view.findViewById(R.id.entry_header_text);
+        calendarView = (CalendarView) view.findViewById(R.id.mindfulness_journal_events_calendar);
         YearMonth current = YearMonth.now();
         YearMonth start = current.minusMonths(100);
         YearMonth end = current.plusMonths(100);
@@ -68,10 +75,10 @@ public class GratitudeJournalCalendar extends Fragment {
 
     private void checkIfRunTutorial() {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext());
-        if (sharedPreferences.getBoolean(ENABLE_GRATITUDE_TUTORIAL, true)) {
+        if (sharedPreferences.getBoolean(ENABLE_MINDFULNESS_TUTORIAL, true)) {
             FragmentManager fragmentManager = getParentFragmentManager();
             fragmentManager.popBackStack();
-            fragmentManager.beginTransaction().replace(R.id.fragment_frame, new GratitudeJournalStart()).addToBackStack(null).commit();
+            fragmentManager.beginTransaction().replace(R.id.fragment_frame, new MindfulnessJournalStart()).addToBackStack(null).commit();
         }
     }
 
@@ -148,6 +155,9 @@ public class GratitudeJournalCalendar extends Fragment {
             }
             if ((calendarDay.getDate() != selectedDate) && (calendarDay.getDate() != oldDate)) {
                 gratitudeJournalDayEntry.setVisibility(View.GONE);
+                ruminationJournalDayEntry.setVisibility(View.GONE);
+                entryHeaderText.setVisibility(View.GONE);
+                howWasITodayJournalDayEntry.setVisibility(View.GONE);
             }
         }
     }
@@ -185,21 +195,36 @@ public class GratitudeJournalCalendar extends Fragment {
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    TextView entryTextView = (TextView) view.getRootView().findViewById(R.id.gratitude_journal_day_entry);
+                    TextView entryTextView = (TextView) view.getRootView().findViewById(R.id.mindfulness_journal_day_entry);
+                    TextView ruminationEntryTextView = (TextView) view.getRootView().findViewById(R.id.rumination_journal_day_entry);
+                    TextView entryHeaderText = (TextView) view.getRootView().findViewById(R.id.entry_header_text);
+                    TextView howWasITodayJournalDayEntry = (TextView) view.getRootView().findViewById(R.id.how_was_i_today_entry);
                     if (day.getPosition() == DayPosition.MonthDate) {
                         setSelectedOldDate(day);
                         DateTimeFormatter HEADER_DATE_FORMAT = DateTimeFormatter.ofPattern("MMMM dd yyyy");
                         AppDatabase database = null;
                         try {
                             database = AppDatabase.getInstance(requireContext());
-                            String entryString = database.gratitudeJournalDao().getEntryForDate(day.getDate()).get();
+                            JournalEntry journalEntry = database.gratitudeJournalDao().getEntryForDate(day.getDate()).get();
                             String dateString = day.getDate().format(HEADER_DATE_FORMAT);
-                            String displayString = "On " + dateString + ", I was grateful for...\n" + entryString;
-                            if (null != entryString) {
-                                entryTextView.setText(displayString);
-                                entryTextView.setVisibility(View.VISIBLE);
-                            } else {
-                                entryTextView.setVisibility(View.GONE);
+                            String headerString = "On " + dateString + "...";
+                            if (journalEntry != null) {
+                                entryHeaderText.setText(headerString);
+                                entryHeaderText.setVisibility(View.VISIBLE);
+                                if (null != journalEntry.getRuminationEntry()) {
+                                    String ruminationDisplayString = "I was ruminating on...\n" + journalEntry.getRuminationEntry();
+                                    ruminationEntryTextView.setText(ruminationDisplayString);
+                                    ruminationEntryTextView.setVisibility(View.VISIBLE);
+                                }
+                                if (null != journalEntry.getGratitudeEntry()) {
+                                    String displayString = "I was grateful for...\n" + journalEntry.getGratitudeEntry();
+                                    entryTextView.setText(displayString);
+                                    entryTextView.setVisibility(View.VISIBLE);
+                                }
+                                if (null != journalEntry.getFeelingEntry()) {
+                                    howWasITodayJournalDayEntry.setText(journalEntry.getFeelingEntry());
+                                    howWasITodayJournalDayEntry.setVisibility(View.VISIBLE);
+                                }
                             }
                         } catch (ExecutionException | InterruptedException ex) {
                             ex.printStackTrace();

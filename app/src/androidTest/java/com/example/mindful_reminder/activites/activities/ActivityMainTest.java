@@ -162,7 +162,7 @@ public class ActivityMainTest {
         device.findObject(By.text("Review Previous Entries")).click();
         device.wait(Until.hasObject(By.clazz(PACKAGE_NAME, "GratitudeJournalStart").depth(0)), 5000);
         UiObject2 aboutText = device.findObject(By.res(PACKAGE_NAME, "calendar_header_text_view"));
-        assertEquals(ApplicationProvider.getApplicationContext().getString(R.string.your_gratitude_journal), aboutText.getText());
+        assertEquals(ApplicationProvider.getApplicationContext().getString(R.string.your_mindfulness_journal), aboutText.getText());
         device.pressBack();
         device.wait(Until.hasObject(By.pkg(device.getLauncherPackageName()).depth(0)), 5000);
     }
