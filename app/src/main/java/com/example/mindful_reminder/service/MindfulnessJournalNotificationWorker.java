@@ -30,11 +30,11 @@ import java.time.LocalDate;
 import java.util.Random;
 import java.util.concurrent.ExecutionException;
 
-public class GratitudeNotificationWorker extends Worker {
+public class MindfulnessJournalNotificationWorker extends Worker {
 
     private AppDatabase database;
 
-    public GratitudeNotificationWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
+    public MindfulnessJournalNotificationWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
     }
 

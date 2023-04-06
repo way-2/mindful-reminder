@@ -56,7 +56,7 @@ public class WorkerManager {
             }
             Log.i(MINDFULNESS_JOURNAL_NOTIFICATION_WORKER, "Setting gratitude notification to daily at " + calendar.getTime());
             long diff = calendar.getTimeInMillis() - nowMillis;
-            PeriodicWorkRequest.Builder workBuilder = new PeriodicWorkRequest.Builder(GratitudeNotificationWorker.class, 24, TimeUnit.HOURS).setInitialDelay(diff, TimeUnit.MILLISECONDS).addTag(MINDFULNESS_JOURNAL_NOTIFICATION_WORKER);
+            PeriodicWorkRequest.Builder workBuilder = new PeriodicWorkRequest.Builder(MindfulnessJournalNotificationWorker.class, 24, TimeUnit.HOURS).setInitialDelay(diff, TimeUnit.MILLISECONDS).addTag(MINDFULNESS_JOURNAL_NOTIFICATION_WORKER);
             Constraints constraints = new Constraints.Builder()
                     .setRequiredNetworkType(NetworkType.NOT_REQUIRED)
                     .setRequiresCharging(false)
@@ -203,7 +203,7 @@ public class WorkerManager {
         }
         Log.i(MINDFULNESS_JOURNAL_NOTIFICATION_WORKER, "Setting gratitude notification to daily at " + calendar.getTime());
         long diff = calendar.getTimeInMillis() - nowMillis;
-        PeriodicWorkRequest.Builder workBuilder = new PeriodicWorkRequest.Builder(GratitudeNotificationWorker.class, 24, TimeUnit.HOURS).setInitialDelay(diff, TimeUnit.MILLISECONDS).addTag(MINDFULNESS_JOURNAL_NOTIFICATION_WORKER);
+        PeriodicWorkRequest.Builder workBuilder = new PeriodicWorkRequest.Builder(MindfulnessJournalNotificationWorker.class, 24, TimeUnit.HOURS).setInitialDelay(diff, TimeUnit.MILLISECONDS).addTag(MINDFULNESS_JOURNAL_NOTIFICATION_WORKER);
         Constraints constraints = new Constraints.Builder()
                 .setRequiredNetworkType(NetworkType.NOT_REQUIRED)
                 .setRequiresCharging(false)
