@@ -46,7 +46,6 @@
             android:textAlignment="center"
             android:textColor="#e9ddff"
             android:visibility="visible"
-            android:hapticFeedbackEnabled="true"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"/>
 

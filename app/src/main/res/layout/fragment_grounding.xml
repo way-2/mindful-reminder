@@ -42,7 +42,6 @@
         </TextSwitcher>
 
         <com.github.lzyzsd.circleprogress.DonutProgress
-            android:hapticFeedbackEnabled="true"
             android:id="@+id/progress_donut"
             android:layout_width="180dp"
             android:layout_height="180dp"

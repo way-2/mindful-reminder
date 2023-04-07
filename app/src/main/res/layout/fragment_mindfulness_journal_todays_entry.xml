@@ -41,15 +41,15 @@
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
             <TextView
-                android:id="@+id/daily_rumination_header"
+                android:id="@+id/daily_worry_header"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingTop="10dp"
-                android:text="@string/daily_rumination_header_text"
+                android:text="@string/daily_worry_header_text"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
             <androidx.appcompat.widget.AppCompatEditText
-                android:id="@+id/rumination_entry_text"
+                android:id="@+id/worry_entry_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/edit_text_background"
@@ -148,7 +148,6 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
                 android:background="@drawable/button_style"
-                android:hapticFeedbackEnabled="true"
                 android:text="@string/save"
                 android:textAlignment="center"
                 android:textColor="#e9ddff"

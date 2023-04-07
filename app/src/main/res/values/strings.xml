@@ -2,16 +2,11 @@
     <string name="mindfulReminder">Mindful Reminder</string>
     <string name="help">Help</string>
     <string name="about">About</string>
-    <string name="aboutBody">
-        Welcome to Mindful Reminder!
-        \n\n
-        We are excited to introduce our new app that is designed to help you stay mindful and focused on the present moment. Mindful Reminder is the perfect tool for anyone who wants to reduce stress, increase self-awareness, and live a more fulfilling life.
-        \n\n
-        One of the key features of our app is the ability to send you reminders at specified intervals throughout the day. These reminders are designed to help you pause, breathe, and focus on the present moment.
-        \n\n
-        Mindful Reminder is also customizable, so you can select the frequency of reminders and personalize the app to suit your needs. Whether you\'re a beginner or an experienced mindfulness practitioner, our app is perfect for you.
-        \n\n
-        Thank you for choosing Mindful Reminder. We look forward to helping you stay mindful and focused on the present moment!
+    <string name="aboutBody">Mindful Reminder is an all-in-one mindfulness app designed to help users cultivate a positive mindset and improve their mental health. With daily affirmations and notifications throughout the day, users can stay motivated and focused on their goals. The built-in gratitude journal and worry tracker allow users to reflect on their emotions and experiences, gaining a deeper understanding of their mental and emotional state.
+        \n
+        In addition, Mindful Reminder also features a breathing tracker for the popular 4-7-8 breathing technique, which is known to help reduce stress and anxiety. The app also includes a grounding exercise to help users stay centered and focused in their daily life.
+        \n
+        Whether you\'re new to mindfulness or an experienced practitioner, Mindful Reminder has everything you need to take your mental health to the next level.
     </string>
     <string name="aboutGitHubLink">https://github.com/way-2/mindful-reminder</string>
     <string name="helpBodyStart">
@@ -71,10 +66,10 @@
     <string name="save">Save</string>
     <string name="your_mindfulness_journal">Your Mindfulness Journal</string>
     <string name="gratitude_notification_title">Toggle Mindfulness Journal Notifications</string>
-    <string name="daily_gratitude_header_text">am grateful for?</string>
-    <string name="daily_rumination_header_text">have been ruminating on?</string>
+    <string name="daily_gratitude_header_text">Am grateful for?</string>
+    <string name="daily_worry_header_text">Have been worrying about?</string>
     <string name="today_i">Today I…</string>
-    <string name="how_was_today_text">felt overall?</string>
+    <string name="how_was_today_text">Felt overall?</string>
     <string name="happy_icon">\uf118</string>
     <string name="sad_icon"></string>
     <string name="unhappy_icon"></string>
@@ -90,4 +85,5 @@
 
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="send_feedback">Send feedback or suggestions (new affirmations?) to mailto:dw.mindful.reminder@gmail.com</string>
 </resources>

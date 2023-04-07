@@ -23,7 +23,6 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
         <com.github.lzyzsd.circleprogress.DonutProgress
-            android:hapticFeedbackEnabled="true"
             android:id="@+id/progress_donut"
             android:layout_width="300dp"
             android:layout_height="300dp"
