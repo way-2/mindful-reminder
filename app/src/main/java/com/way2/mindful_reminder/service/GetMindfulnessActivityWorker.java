@@ -2,11 +2,9 @@ package com.way2.mindful_reminder.service;
 
 import static com.way2.mindful_reminder.config.Constants.DAILY_MINDFULNESS_ACTIVITY_SHARED_PREFERENCE;
 import static com.way2.mindful_reminder.config.Constants.DAILY_MINDFULNESS_ACTIVITY_UPDATED_SHARED_PREFERENCE;
-import static com.way2.mindful_reminder.config.Constants.GET_ACTIVITY_TAG;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
@@ -38,7 +36,6 @@ public class GetMindfulnessActivityWorker extends Worker {
         editor.putString(DAILY_MINDFULNESS_ACTIVITY_UPDATED_SHARED_PREFERENCE, "Last Updated: " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy hh:mm a")));
         editor.apply();
         updateDone.postValue(true);
-        Log.i(GET_ACTIVITY_TAG, LocalDateTime.now() + " | Got activity " + sharedPreferences.getString(DAILY_MINDFULNESS_ACTIVITY_SHARED_PREFERENCE, ""));
         return Result.success();
     }
 

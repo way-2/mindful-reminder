@@ -23,4 +23,7 @@ public interface JournalDao {
     @Query("SELECT entry_date FROM journal_entries")
     ListenableFuture<List<LocalDate>> getEntryDates();
 
+    @Query("DELETE FROM journal_entries WHERE entry_date > :oldDate")
+    ListenableFuture<Integer> deleteWhereOlderThan(LocalDate oldDate);;
+
 }

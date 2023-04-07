@@ -13,7 +13,6 @@ import static com.way2.mindful_reminder.config.Constants.NOTIFICATION_TIME_INTER
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.util.Log;
 
 import androidx.preference.PreferenceManager;
 import androidx.work.Constraints;
@@ -54,7 +53,6 @@ public class WorkerManager {
             if (calendar.before(Calendar.getInstance())) {
                 calendar.add(Calendar.DATE, 1);
             }
-            Log.i(MINDFULNESS_JOURNAL_NOTIFICATION_WORKER, "Setting gratitude notification to daily at " + calendar.getTime());
             long diff = calendar.getTimeInMillis() - nowMillis;
             PeriodicWorkRequest.Builder workBuilder = new PeriodicWorkRequest.Builder(MindfulnessJournalNotificationWorker.class, 24, TimeUnit.HOURS).setInitialDelay(diff, TimeUnit.MILLISECONDS).addTag(MINDFULNESS_JOURNAL_NOTIFICATION_WORKER);
             Constraints constraints = new Constraints.Builder()
@@ -109,7 +107,6 @@ public class WorkerManager {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         if (sharedPreferences.getBoolean(DAILY_ACTIVITY_TOGGLE, false)) {
             int notificationInterval = Integer.parseInt(sharedPreferences.getString(DAILY_NOTIFICATION_HOUR_LIST, "8"));
-            Log.i(DAILY_ACTIVITY_TAG, "Setting notifications to daily at " + notificationInterval);
             Calendar calendar = Calendar.getInstance();
             long nowMillis = calendar.getTimeInMillis();
             calendar.set(Calendar.HOUR_OF_DAY, notificationInterval);
@@ -136,7 +133,6 @@ public class WorkerManager {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         if (sharedPreferences.getBoolean(AFFIRMATION_NOTIFICATION_TOGGLE, false)) {
             long notificationInterval = Long.parseLong(sharedPreferences.getString(NOTIFICATION_TIME_INTERVAL_LIST, "30"));
-            Log.i(AFFIRMATION_NOTIFICATION_WORKER_TAG, "Setting notifications to every " + notificationInterval + " minutes");
             PeriodicWorkRequest.Builder workBuilder = new PeriodicWorkRequest.Builder(AffirmationNotificationWorker.class, notificationInterval, TimeUnit.MINUTES).setInitialDelay(15, TimeUnit.SECONDS).addTag(AFFIRMATION_NOTIFICATION_WORKER_TAG);
             Constraints constraints = new Constraints.Builder()
                     .setRequiredNetworkType(NetworkType.NOT_REQUIRED)
@@ -152,7 +148,6 @@ public class WorkerManager {
     public void startMindfulnessNotificationWorkerAlways(Context context) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         int notificationInterval = Integer.parseInt(sharedPreferences.getString(DAILY_NOTIFICATION_HOUR_LIST, "8"));
-        Log.i(DAILY_ACTIVITY_TAG, "Setting notifications to daily at " + notificationInterval);
         Calendar calendar = Calendar.getInstance();
         long nowMillis = calendar.getTimeInMillis();
         calendar.set(Calendar.HOUR_OF_DAY, notificationInterval);
@@ -177,7 +172,6 @@ public class WorkerManager {
     public void startAffirmationNotificationWorkerAlways(Context context) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         long notificationInterval = Long.parseLong(sharedPreferences.getString(NOTIFICATION_TIME_INTERVAL_LIST, "30"));
-        Log.i(AFFIRMATION_NOTIFICATION_WORKER_TAG, "Setting notifications to every " + notificationInterval + " minutes");
         PeriodicWorkRequest.Builder workBuilder = new PeriodicWorkRequest.Builder(AffirmationNotificationWorker.class, notificationInterval, TimeUnit.MINUTES).setInitialDelay(15, TimeUnit.SECONDS).addTag(AFFIRMATION_NOTIFICATION_WORKER_TAG);
         Constraints constraints = new Constraints.Builder()
                 .setRequiredNetworkType(NetworkType.NOT_REQUIRED)
@@ -201,7 +195,6 @@ public class WorkerManager {
         if (calendar.before(Calendar.getInstance())) {
             calendar.add(Calendar.DATE, 1);
         }
-        Log.i(MINDFULNESS_JOURNAL_NOTIFICATION_WORKER, "Setting gratitude notification to daily at " + calendar.getTime());
         long diff = calendar.getTimeInMillis() - nowMillis;
         PeriodicWorkRequest.Builder workBuilder = new PeriodicWorkRequest.Builder(MindfulnessJournalNotificationWorker.class, 24, TimeUnit.HOURS).setInitialDelay(diff, TimeUnit.MILLISECONDS).addTag(MINDFULNESS_JOURNAL_NOTIFICATION_WORKER);
         Constraints constraints = new Constraints.Builder()

@@ -1,6 +1,5 @@
 package com.way2.mindful_reminder.service;
 
-import static com.way2.mindful_reminder.config.Constants.MINDFULNESS_JOURNAL_NOTIFICATION_WORKER;
 import static com.way2.mindful_reminder.config.Constants.MINDFULNESS_JOURNAL_REDIRECT;
 import static com.way2.mindful_reminder.config.Constants.NOTIFICATION_CHANNEL;
 import static com.way2.mindful_reminder.config.Constants.REDIRECT;
@@ -10,7 +9,6 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -42,7 +40,6 @@ public class MindfulnessJournalNotificationWorker extends Worker {
     @Override
     public Result doWork() {
         if (!isJournalEntryDone()) {
-            Log.i(MINDFULNESS_JOURNAL_NOTIFICATION_WORKER, "Sending Notification Gratitude Journal Reminder");
             Intent intent = new Intent(getApplicationContext(), ActivityMain.class);
             intent.putExtra(REDIRECT, MINDFULNESS_JOURNAL_REDIRECT);
             TaskStackBuilder taskStackBuilder = TaskStackBuilder.create(getApplicationContext());

@@ -1,61 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:weightSum="10"
     tools:context=".fragments.AffirmationFragment">
+
+    <TextView
+        android:id="@+id/affirmation"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_gravity="center"
+        android:layout_weight="2"
+        android:paddingTop="20dp"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
+
+    <FrameLayout
+        android:id="@+id/affirmation_image_frame"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_gravity="center"
+        android:layout_weight="6"
+        android:padding="15dp">
+
+        <ImageView
+            android:id="@+id/affirmation_image_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="7.5dp" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/affirmation_image_border" />
+
+    </FrameLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginHorizontal="10dp">
-
-        <TextView
-            android:id="@+id/affirmation"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="100dp"
-            android:textAlignment="center"
-            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-            android:visibility="visible" />
-
-        <FrameLayout
-            android:layout_width="300dp"
-            android:layout_height="450dp"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="120dp"
-            android:id="@+id/affirmation_image_frame"
-            >
-
-            <ImageView
-                android:id="@+id/affirmation_image_view"
-                android:layout_width="285dp"
-                android:layout_height="435dp"
-                android:layout_gravity="center"
-                 />
-
-            <ImageView
-                android:layout_width="300dp"
-                android:layout_height="450dp"
-                android:src="@drawable/affirmation_image_border"
-                />
-
-        </FrameLayout>
+        android:layout_height="0dp"
+        android:layout_weight="2">
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/skip_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="40dp"
+            android:layout_centerInParent="true"
             android:background="@drawable/button_style"
             android:text="@string/skip"
-            android:textAlignment="center"
-            android:textColor="@color/md_theme_dark_onPrimaryContainer"
-            android:visibility="visible" />
+            android:textColor="@color/md_theme_dark_onPrimaryContainer" />
 
         <TextView
             android:id="@+id/affirmation_updated"
@@ -63,12 +58,10 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="10dp"
             android:textAlignment="center"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
-            android:textColor="@color/md_theme_dark_surfaceVariant"
-            android:visibility="visible" />
+            android:textColor="@color/md_theme_dark_surfaceVariant" />
 
     </RelativeLayout>
 
-</FrameLayout>
+</LinearLayout>

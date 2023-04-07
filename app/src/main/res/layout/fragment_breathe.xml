@@ -1,42 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:weightSum="10"
     tools:context=".fragments.BreatheFragment">
 
-    <RelativeLayout
+    <TextView
+        android:id="@+id/breath_help_steps_text"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginHorizontal="10dp"
-        >
+        android:layout_height="0dp"
+        android:layout_weight="8"
+        android:lineSpacingMultiplier="1.25"
+        android:text="@string/breath_steps"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
-        <TextView
-            android:id="@+id/breath_help_steps_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="25dp"
-            android:lineSpacingMultiplier="1.25"
-            android:text="@string/breath_steps"
-            android:textAlignment="center"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+    <com.github.lzyzsd.circleprogress.DonutProgress
+        android:id="@+id/progress_donut"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_gravity="center_horizontal"
+        app:donut_circle_starting_degree="270"
+        app:donut_clockWise="true"
+        app:donut_finished_color="@color/md_theme_dark_onPrimary"
+        app:donut_show_text="true"
+        app:donut_text="Start"
+        app:donut_text_size="25dp"
+        app:donut_unfinished_color="@color/md_theme_dark_primaryContainer" />
 
-        <com.github.lzyzsd.circleprogress.DonutProgress
-            android:id="@+id/progress_donut"
-            android:layout_width="300dp"
-            android:layout_height="300dp"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="140dp"
-            app:donut_circle_starting_degree="270"
-            app:donut_clockWise="true"
-            app:donut_finished_color="@color/md_theme_dark_onPrimary"
-            app:donut_show_text="true"
-            app:donut_text="Start"
-            app:donut_text_size="25dp"
-            app:donut_unfinished_color="@color/md_theme_dark_primaryContainer" />
-
-    </RelativeLayout>
-
-</FrameLayout>
+</LinearLayout>

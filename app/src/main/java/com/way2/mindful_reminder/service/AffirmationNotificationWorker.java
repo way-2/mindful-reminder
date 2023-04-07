@@ -1,6 +1,5 @@
 package com.way2.mindful_reminder.service;
 
-import static com.way2.mindful_reminder.config.Constants.AFFIRMATION_NOTIFICATION_WORKER_TAG;
 import static com.way2.mindful_reminder.config.Constants.AFFIRMATION_SHARED_PREFERENCE;
 import static com.way2.mindful_reminder.config.Constants.NOTIFICATION_CHANNEL;
 
@@ -11,7 +10,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.provider.Settings;
-import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -43,10 +41,9 @@ public class AffirmationNotificationWorker extends Worker {
         try {
             dndStatus = Settings.Global.getInt(getApplicationContext().getContentResolver(), "zen_mode");
         } catch (Settings.SettingNotFoundException ex) {
-            Log.w(AFFIRMATION_NOTIFICATION_WORKER_TAG, "Unable to find zen_mode status");
+            ex.printStackTrace();
         }
         if (dndStatus == 0) {
-            Log.i(AFFIRMATION_NOTIFICATION_WORKER_TAG, "Sending Notification for affirmation " + sharedPreferences.getString(AFFIRMATION_SHARED_PREFERENCE, ""));
             Intent intent = new Intent(getApplicationContext(), ActivityMain.class);
             TaskStackBuilder taskStackBuilder = TaskStackBuilder.create(getApplicationContext());
             taskStackBuilder.addNextIntentWithParentStack(intent);

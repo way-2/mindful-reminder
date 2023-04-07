@@ -2,11 +2,9 @@ package com.way2.mindful_reminder.service;
 
 import static com.way2.mindful_reminder.config.Constants.AFFIRMATION_SHARED_PREFERENCE;
 import static com.way2.mindful_reminder.config.Constants.AFFIRMATION_UPDATED_SHARED_PREFERENCE;
-import static com.way2.mindful_reminder.config.Constants.GET_AFFIRMATION_TAG;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
@@ -37,7 +35,6 @@ public class GetAffirmationWorker extends Worker {
         editor.putString(AFFIRMATION_UPDATED_SHARED_PREFERENCE, "Last Updated: " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy hh:mm a")));
         editor.apply();
         updateDone.postValue(true);
-        Log.i(GET_AFFIRMATION_TAG, LocalDateTime.now() + " | Got affirmation " + sharedPreferences.getString(AFFIRMATION_SHARED_PREFERENCE, ""));
         return Result.success();
     }
 
