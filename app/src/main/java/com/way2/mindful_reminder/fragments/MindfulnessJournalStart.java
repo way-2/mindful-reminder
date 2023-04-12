@@ -15,6 +15,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.preference.PreferenceManager;
 
 import com.way2.mindful_reminder.R;
+import com.way2.mindful_reminder.util.MindfulReminder;
 
 public class MindfulnessJournalStart extends Fragment {
 
@@ -57,7 +58,7 @@ public class MindfulnessJournalStart extends Fragment {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext());
+                SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(MindfulReminder.getContext());
                 sharedPreferences.edit().putBoolean(ENABLE_MINDFULNESS_TUTORIAL, false).apply();
                 FragmentManager fragmentManager = getParentFragmentManager();
                 fragmentManager.popBackStack();

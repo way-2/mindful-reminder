@@ -15,7 +15,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.preference.PreferenceManager;
 
-import com.way2.mindful_reminder.R;
 import com.kizitonwose.calendar.core.CalendarDay;
 import com.kizitonwose.calendar.core.CalendarMonth;
 import com.kizitonwose.calendar.core.DayPosition;
@@ -23,8 +22,10 @@ import com.kizitonwose.calendar.view.CalendarView;
 import com.kizitonwose.calendar.view.MonthDayBinder;
 import com.kizitonwose.calendar.view.MonthHeaderFooterBinder;
 import com.kizitonwose.calendar.view.ViewContainer;
+import com.way2.mindful_reminder.R;
 import com.way2.mindful_reminder.databases.AppDatabase;
 import com.way2.mindful_reminder.entities.JournalEntry;
+import com.way2.mindful_reminder.util.MindfulReminder;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -74,7 +75,7 @@ public class MindfulnessJournalCalendar extends Fragment {
     }
 
     private void checkIfRunTutorial() {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext());
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(MindfulReminder.getContext());
         if (sharedPreferences.getBoolean(ENABLE_MINDFULNESS_TUTORIAL, true)) {
             FragmentManager fragmentManager = getParentFragmentManager();
             fragmentManager.popBackStack();
@@ -86,7 +87,7 @@ public class MindfulnessJournalCalendar extends Fragment {
         AppDatabase database = null;
         try {
             if (databaseDates == null) {
-                database = AppDatabase.getInstance(requireContext());
+                database = AppDatabase.getInstance();
                 databaseDates = database.gratitudeJournalDao().getEntryDates().get();
             }
         } catch (ExecutionException | InterruptedException ex) {
@@ -146,7 +147,7 @@ public class MindfulnessJournalCalendar extends Fragment {
         container.textView.setText(String.valueOf(calendarDay.getDate().getDayOfMonth()));
         container.day = calendarDay;
         if (calendarDay.getPosition() != DayPosition.MonthDate) {
-            container.textView.setTextColor(getResources().getColor(R.color.md_theme_dark_outline, requireContext().getTheme()));
+            container.textView.setTextColor(getResources().getColor(R.color.md_theme_dark_outline, MindfulReminder.getContext().getTheme()));
         } else {
             if (calendarDay.getDate() == selectedDate) {
                 setSelectedDateBackground(container, calendarDay);
@@ -164,17 +165,17 @@ public class MindfulnessJournalCalendar extends Fragment {
 
     private void setNotSelectedDateBackground(DayViewContainer container, CalendarDay calendarDay) {
         if (databaseDates.contains(calendarDay.getDate())) {
-            container.getView().setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.calendar_day_entry_background, requireContext().getTheme()));
+            container.getView().setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.calendar_day_entry_background, MindfulReminder.getContext().getTheme()));
         } else {
-            container.getView().setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.calendar_day_background, requireContext().getTheme()));
+            container.getView().setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.calendar_day_background, MindfulReminder.getContext().getTheme()));
         }
     }
 
     private void setSelectedDateBackground(DayViewContainer container, CalendarDay calendarDay) {
         if (databaseDates.contains(calendarDay.getDate())) {
-            container.getView().setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.selected_calendar_day_entry_background, requireContext().getTheme()));
+            container.getView().setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.selected_calendar_day_entry_background, MindfulReminder.getContext().getTheme()));
         } else {
-            container.getView().setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.selected_calendar_day_background, requireContext().getTheme()));
+            container.getView().setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.selected_calendar_day_background, MindfulReminder.getContext().getTheme()));
         }
     }
 
@@ -204,7 +205,7 @@ public class MindfulnessJournalCalendar extends Fragment {
                         DateTimeFormatter HEADER_DATE_FORMAT = DateTimeFormatter.ofPattern("MMMM dd yyyy");
                         AppDatabase database = null;
                         try {
-                            database = AppDatabase.getInstance(requireContext());
+                            database = AppDatabase.getInstance();
                             JournalEntry journalEntry = database.gratitudeJournalDao().getEntryForDate(day.getDate()).get();
                             String dateString = day.getDate().format(HEADER_DATE_FORMAT);
                             String headerString = "On " + dateString + "...";

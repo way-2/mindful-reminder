@@ -13,6 +13,7 @@ import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
 import com.way2.mindful_reminder.R;
+import com.way2.mindful_reminder.util.MindfulReminder;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -24,7 +25,7 @@ public class GetAffirmationWorker extends Worker {
 
     public GetAffirmationWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
-        this.sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        this.sharedPreferences = PreferenceManager.getDefaultSharedPreferences(MindfulReminder.getContext());
     }
 
     @NonNull
@@ -39,7 +40,7 @@ public class GetAffirmationWorker extends Worker {
     }
 
     private String getRandomAffirmation() {
-        String[] affirmationArray = getApplicationContext().getResources().getStringArray(R.array.affirmations_array);
+        String[] affirmationArray = MindfulReminder.getContext().getResources().getStringArray(R.array.affirmations_array);
         return affirmationArray[new Random().nextInt(affirmationArray.length)];
     }
 

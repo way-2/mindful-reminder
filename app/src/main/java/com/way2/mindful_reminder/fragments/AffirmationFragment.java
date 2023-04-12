@@ -2,10 +2,9 @@ package com.way2.mindful_reminder.fragments;
 
 import static com.way2.mindful_reminder.config.Constants.AFFIRMATION_SHARED_PREFERENCE;
 import static com.way2.mindful_reminder.config.Constants.AFFIRMATION_UPDATED_SHARED_PREFERENCE;
-import static com.way2.mindful_reminder.config.Constants.GET_AFFIRMATION_TAG;
+import static com.way2.mindful_reminder.config.Constants.IMAGE_SHARED_PREFERENCE;
 
 import android.content.SharedPreferences;
-import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,12 +24,12 @@ import androidx.work.WorkManager;
 import androidx.work.WorkRequest;
 
 import com.way2.mindful_reminder.R;
-import com.way2.mindful_reminder.service.GetAffirmationWorker;
+import com.way2.mindful_reminder.service.DailyWorker;
+import com.way2.mindful_reminder.util.MindfulReminder;
 
 public class AffirmationFragment extends Fragment {
 
     private SharedPreferences sharedPreferences;
-    private AppCompatButton skipButton;
     private TextView affirmationTextView;
     private TextView affirmationUpdatedTextView;
     private ImageView imageView;
@@ -46,8 +45,8 @@ public class AffirmationFragment extends Fragment {
 
 
     private void setupSharedPreferences() {
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext());
-        if (!sharedPreferences.contains(AFFIRMATION_SHARED_PREFERENCE)) {
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(MindfulReminder.getContext());
+        if (!sharedPreferences.contains(AFFIRMATION_SHARED_PREFERENCE) || !sharedPreferences.contains(IMAGE_SHARED_PREFERENCE)) {
             runAffirmationOneTime();
         }
     }
@@ -58,41 +57,38 @@ public class AffirmationFragment extends Fragment {
         affirmationTextView.setText(sharedPreferences.getString(AFFIRMATION_SHARED_PREFERENCE,""));
         affirmationUpdatedTextView.setText(sharedPreferences.getString(AFFIRMATION_UPDATED_SHARED_PREFERENCE, ""));
         imageView = (ImageView) view.findViewById(R.id.affirmation_image_view);
-        setRandomImage();
-        skipButton = (AppCompatButton) view.findViewById(R.id.skip_button);
+        setImage();
+        AppCompatButton skipButton = (AppCompatButton) view.findViewById(R.id.skip_button);
         skipButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 runAffirmationOneTime();
-                setRandomImage();
             }
         });
     }
 
-    private void setRandomImage() {
-        TypedArray images = getResources().obtainTypedArray(R.array.background_images);
-        int choice = (int) (Math.random() * images.length());
-        imageView.setBackgroundResource(images.getResourceId(choice, R.drawable.mindful_reminder));
+    private void setImage() {
+        int choice = (int) sharedPreferences.getInt(IMAGE_SHARED_PREFERENCE, R.drawable.high_quality_photo__calm_s2914371834_st64_g7_5);
+        imageView.setBackgroundResource(choice);
         imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-        images.recycle();
     }
 
     public void runAffirmationOneTime() {
-        WorkRequest workRequest = OneTimeWorkRequest.from(GetAffirmationWorker.class);
-        WorkManager workManager = WorkManager.getInstance(requireContext());
+        WorkRequest workRequest = OneTimeWorkRequest.from(DailyWorker.class);
+        WorkManager workManager = WorkManager.getInstance(MindfulReminder.getContext());
         workManager.enqueue(workRequest);
         workManager.getWorkInfoByIdLiveData(workRequest.getId()).observe(getViewLifecycleOwner(), new Observer<WorkInfo>() {
             @Override
             public void onChanged(WorkInfo workInfo) {
                 if (null != workInfo && workInfo.getState().equals(WorkInfo.State.SUCCEEDED)) {
 
-                    GetAffirmationWorker.updateDone.observe(getViewLifecycleOwner(),
+                    DailyWorker.updateDone.observe(getViewLifecycleOwner(),
                             new Observer<Boolean>() {
                                 @Override
                                 public void onChanged(Boolean updateDone) {
-                                    workManager.getWorkInfosForUniqueWorkLiveData(GET_AFFIRMATION_TAG).removeObservers(getViewLifecycleOwner());
                                     affirmationTextView.setText(sharedPreferences.getString(AFFIRMATION_SHARED_PREFERENCE, ""));
                                     affirmationUpdatedTextView.setText(sharedPreferences.getString(AFFIRMATION_UPDATED_SHARED_PREFERENCE, ""));
+                                    setImage();
                                 }
                             });
                 }

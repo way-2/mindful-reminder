@@ -13,6 +13,7 @@ import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
 import com.way2.mindful_reminder.R;
+import com.way2.mindful_reminder.util.MindfulReminder;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -25,7 +26,7 @@ public class GetMindfulnessActivityWorker extends Worker {
 
     public GetMindfulnessActivityWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
-        this.sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        this.sharedPreferences = PreferenceManager.getDefaultSharedPreferences(MindfulReminder.getContext());
     }
 
     @NonNull
@@ -40,7 +41,7 @@ public class GetMindfulnessActivityWorker extends Worker {
     }
 
     private String getRandomActivity() {
-        String[] activityArray = getApplicationContext().getResources().getStringArray(R.array.activity_name);
+        String[] activityArray = MindfulReminder.getContext().getResources().getStringArray(R.array.activity_name);
         return activityArray[new Random().nextInt(activityArray.length)];
     }
 }

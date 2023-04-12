@@ -28,6 +28,7 @@ import androidx.work.WorkManager;
 
 import com.way2.mindful_reminder.R;
 import com.way2.mindful_reminder.service.WorkerManager;
+import com.way2.mindful_reminder.util.MindfulReminder;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -50,7 +51,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext());
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(MindfulReminder.getContext());
         addPreferencesFromResource(R.xml.root_preferences);
     }
 
@@ -84,10 +85,10 @@ public class SettingsFragment extends PreferenceFragmentCompat {
             @Override
             public boolean onPreferenceChange(@NonNull Preference preference, Object newValue) {
                 if ((Boolean) newValue) {
-                    workerManager.startGratitudeNotificationWorkerAlways(requireContext());
+                    workerManager.startGratitudeNotificationWorkerAlways();
                     gratitudeReminderHourListPreference.setEnabled(true);
                 } else {
-                    workerManager.stopGratitudeNotificationWorker(requireContext());
+                    workerManager.stopGratitudeNotificationWorker();
                     gratitudeReminderHourListPreference.setEnabled(false);
                 }
                 return true;
@@ -102,11 +103,11 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                 String entryString = gratitudeReminderHourListPreference.getEntries()[index].toString();
                 gratitudeReminderHourListPreference.setSummary(entryString);
                 try {
-                    List<WorkInfo> workInfo = WorkManager.getInstance(requireContext()).getWorkInfosByTag(MINDFULNESS_JOURNAL_NOTIFICATION_WORKER).get();
+                    List<WorkInfo> workInfo = WorkManager.getInstance(MindfulReminder.getContext()).getWorkInfosByTag(MINDFULNESS_JOURNAL_NOTIFICATION_WORKER).get();
                     if (!workInfo.isEmpty()) {
                         WorkInfo.State state = workInfo.get(0).getState();
                         if ((state == WorkInfo.State.RUNNING) || (state == WorkInfo.State.ENQUEUED)) {
-                            workerManager.startGratitudeNotificationWorker(requireContext());
+                            workerManager.startGratitudeNotificationWorker();
                         }
                     }
                 } catch(ExecutionException | InterruptedException ex){
@@ -127,10 +128,10 @@ public class SettingsFragment extends PreferenceFragmentCompat {
             @Override
             public boolean onPreferenceChange(@NonNull Preference preference, Object newValue) {
                 if ((Boolean) newValue) {
-                    workerManager.startMindfulnessNotificationWorkerAlways(requireContext());
+                    workerManager.startMindfulnessNotificationWorkerAlways();
                     dailyReminderHourListPreference.setEnabled(true);
                 } else {
-                    workerManager.stopActivityNotificationWorker(requireContext());
+                    workerManager.stopActivityNotificationWorker();
                     dailyReminderHourListPreference.setEnabled(false);
                 }
                 return true;
@@ -145,11 +146,11 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                 String entryString = dailyReminderHourListPreference.getEntries()[index].toString();
                 dailyReminderHourListPreference.setSummary(entryString);
                 try {
-                    List<WorkInfo> workInfo = WorkManager.getInstance(requireContext()).getWorkInfosByTag(ACTIVITY_NOTIFICATION_WORKER_TAG).get();
+                    List<WorkInfo> workInfo = WorkManager.getInstance(MindfulReminder.getContext()).getWorkInfosByTag(ACTIVITY_NOTIFICATION_WORKER_TAG).get();
                     if (!workInfo.isEmpty()) {
                         WorkInfo.State state = workInfo.get(0).getState();
                         if ((state == WorkInfo.State.RUNNING) || (state == WorkInfo.State.ENQUEUED)) {
-                            workerManager.startMindfulnessNotificationWorker(requireContext());
+                            workerManager.startMindfulnessNotificationWorker();
                         }
                     }
                 } catch(ExecutionException | InterruptedException ex){
@@ -170,10 +171,10 @@ public class SettingsFragment extends PreferenceFragmentCompat {
             @Override
             public boolean onPreferenceChange(@NonNull Preference preference, Object newValue) {
                 if ((Boolean) newValue) {
-                    workerManager.startAffirmationNotificationWorkerAlways(requireContext());
+                    workerManager.startAffirmationNotificationWorkerAlways();
                     notificationIntervalListPreference.setEnabled(true);
                 } else {
-                    workerManager.stopNotificationWorker(requireContext());
+                    workerManager.stopNotificationWorker();
                     notificationIntervalListPreference.setEnabled(false);
                 }
                 return true;
@@ -188,11 +189,11 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                 String entryString = notificationIntervalListPreference.getEntries()[index].toString();
                 notificationIntervalListPreference.setSummary(entryString);
                 try {
-                    List<WorkInfo> workInfo = WorkManager.getInstance(requireContext()).getWorkInfosByTag(AFFIRMATION_NOTIFICATION_WORKER_TAG).get();
+                    List<WorkInfo> workInfo = WorkManager.getInstance(MindfulReminder.getContext()).getWorkInfosByTag(AFFIRMATION_NOTIFICATION_WORKER_TAG).get();
                     if (!workInfo.isEmpty()) {
                         WorkInfo.State state = workInfo.get(0).getState();
                         if ((state == WorkInfo.State.RUNNING) || (state == WorkInfo.State.ENQUEUED)) {
-                            workerManager.startAffirmationNotificationWorker(requireContext());
+                            workerManager.startAffirmationNotificationWorker();
                         }
                     }
                 } catch(ExecutionException | InterruptedException ex){

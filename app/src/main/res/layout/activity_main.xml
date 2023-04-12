@@ -34,6 +34,24 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         app:headerLayout="@layout/nav_header"
-        app:menu="@menu/drawer_view" />
+        app:menu="@menu/drawer_view" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center_horizontal"
+        android:orientation="vertical"
+        >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:id="@+id/version_text_view"
+            android:layout_marginBottom="6dp"/>
+
+    </LinearLayout>
+
+    </com.google.android.material.navigation.NavigationView>
 
 </androidx.drawerlayout.widget.DrawerLayout>

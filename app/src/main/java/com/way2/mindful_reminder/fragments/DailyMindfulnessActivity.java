@@ -24,6 +24,7 @@ import androidx.work.WorkRequest;
 
 import com.way2.mindful_reminder.R;
 import com.way2.mindful_reminder.service.GetMindfulnessActivityWorker;
+import com.way2.mindful_reminder.util.MindfulReminder;
 
 import java.util.Arrays;
 
@@ -46,7 +47,7 @@ public class DailyMindfulnessActivity extends Fragment {
 
 
     private void setupSharedPreferences() {
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext());
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(MindfulReminder.getContext());
         if (!sharedPreferences.contains(DAILY_MINDFULNESS_ACTIVITY_SHARED_PREFERENCE)) {
             runActivityOneTime();
         }
@@ -73,7 +74,7 @@ public class DailyMindfulnessActivity extends Fragment {
 
     public void runActivityOneTime() {
         WorkRequest workRequest = OneTimeWorkRequest.from(GetMindfulnessActivityWorker.class);
-        WorkManager workManager = WorkManager.getInstance(requireContext());
+        WorkManager workManager = WorkManager.getInstance(MindfulReminder.getContext());
         workManager.enqueue(workRequest);
         workManager.getWorkInfoByIdLiveData(workRequest.getId()).observe(getViewLifecycleOwner(), new Observer<WorkInfo>() {
             @Override

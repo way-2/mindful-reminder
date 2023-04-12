@@ -1,7 +1,5 @@
 package com.way2.mindful_reminder.databases;
 
-import android.content.Context;
-
 import androidx.annotation.NonNull;
 import androidx.room.Database;
 import androidx.room.Room;
@@ -11,6 +9,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import com.way2.mindful_reminder.dao.JournalDao;
 import com.way2.mindful_reminder.entities.JournalEntry;
+import com.way2.mindful_reminder.util.MindfulReminder;
 
 @Database(entities = {JournalEntry.class}, version = 1, exportSchema = false)
 @TypeConverters({com.way2.mindful_reminder.util.TypeConverters.class})
@@ -20,9 +19,9 @@ public abstract class AppDatabase extends RoomDatabase {
 
     public abstract JournalDao gratitudeJournalDao();
 
-    public static synchronized AppDatabase getInstance(Context context) {
+    public static synchronized AppDatabase getInstance() {
         if (appDatabaseInstance == null) {
-            appDatabaseInstance = Room.databaseBuilder(context.getApplicationContext(), AppDatabase.class, DATABASE_NAME)
+            appDatabaseInstance = Room.databaseBuilder(MindfulReminder.getContext(), AppDatabase.class, DATABASE_NAME)
                     .addCallback(new Callback() {
                         @Override
                         public void onCreate(@NonNull SupportSQLiteDatabase db) {

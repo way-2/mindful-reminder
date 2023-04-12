@@ -23,6 +23,7 @@ import androidx.work.WorkerParameters;
 
 import com.way2.mindful_reminder.R;
 import com.way2.mindful_reminder.activities.ActivityMain;
+import com.way2.mindful_reminder.util.MindfulReminder;
 
 import java.util.Random;
 
@@ -31,7 +32,7 @@ public class AffirmationNotificationWorker extends Worker {
 
     public AffirmationNotificationWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
-        this.sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        this.sharedPreferences = PreferenceManager.getDefaultSharedPreferences(MindfulReminder.getContext());
     }
 
     @NonNull
@@ -39,24 +40,24 @@ public class AffirmationNotificationWorker extends Worker {
     public Result doWork() {
         int dndStatus = 0;
         try {
-            dndStatus = Settings.Global.getInt(getApplicationContext().getContentResolver(), "zen_mode");
+            dndStatus = Settings.Global.getInt(MindfulReminder.getContext().getContentResolver(), "zen_mode");
         } catch (Settings.SettingNotFoundException ex) {
             ex.printStackTrace();
         }
         if (dndStatus == 0) {
-            Intent intent = new Intent(getApplicationContext(), ActivityMain.class);
-            TaskStackBuilder taskStackBuilder = TaskStackBuilder.create(getApplicationContext());
+            Intent intent = new Intent(MindfulReminder.getContext(), ActivityMain.class);
+            TaskStackBuilder taskStackBuilder = TaskStackBuilder.create(MindfulReminder.getContext());
             taskStackBuilder.addNextIntentWithParentStack(intent);
             PendingIntent pendingIntent = taskStackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
-            NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), NOTIFICATION_CHANNEL)
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(MindfulReminder.getContext(), NOTIFICATION_CHANNEL)
                     .setSmallIcon(R.drawable.mindful_reminder_icon)
                     .setContentTitle(sharedPreferences.getString(AFFIRMATION_SHARED_PREFERENCE, ""))
                     .setContentIntent(pendingIntent)
                     .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                     .setAutoCancel(true);
-            NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(getApplicationContext());
-            if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(getApplicationContext(), "Notification Permission not granted", Toast.LENGTH_SHORT).show();
+            NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(MindfulReminder.getContext());
+            if (ActivityCompat.checkSelfPermission(MindfulReminder.getContext(), Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(MindfulReminder.getContext(), "Notification Permission not granted", Toast.LENGTH_SHORT).show();
             } else {
                 notificationManagerCompat.notify(new Random().nextInt(), builder.build());
             }

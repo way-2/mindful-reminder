@@ -2,31 +2,26 @@ package com.way2.mindful_reminder.activities;
 
 import static com.way2.mindful_reminder.config.Constants.DAILY_MINDFULNESS_REDIRECT;
 import static com.way2.mindful_reminder.config.Constants.MINDFULNESS_JOURNAL_REDIRECT;
-import static com.way2.mindful_reminder.config.Constants.NOTIFICATION_CHANNEL;
 import static com.way2.mindful_reminder.config.Constants.REDIRECT;
 
-import android.Manifest;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.content.pm.PackageManager;
 import android.content.res.Configuration;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.ActivityCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
-import com.way2.mindful_reminder.R;
 import com.google.android.material.navigation.NavigationView;
+import com.way2.mindful_reminder.BuildConfig;
+import com.way2.mindful_reminder.R;
 import com.way2.mindful_reminder.fragments.AboutFragment;
 import com.way2.mindful_reminder.fragments.AffirmationFragment;
 import com.way2.mindful_reminder.fragments.BreatheFragment;
@@ -36,24 +31,28 @@ import com.way2.mindful_reminder.fragments.MindfulnessJournalCalendar;
 import com.way2.mindful_reminder.fragments.MindfulnessJournalStart;
 import com.way2.mindful_reminder.fragments.MindfulnessJournalTodaysEntry;
 import com.way2.mindful_reminder.fragments.SettingsFragment;
-import com.way2.mindful_reminder.service.WorkerManager;
+import com.way2.mindful_reminder.service.BackgroundTasks;
 
 import java.util.Objects;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 public class ActivityMain extends AppCompatActivity {
     private DrawerLayout drawerLayout;
     private Toolbar toolbar;
     private NavigationView navigationView;
     private ActionBarDrawerToggle actionBarDrawerToggle;
-    private WorkerManager workerManager;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        checkPermissions();
-        createNotificationChannel();
-        setupWorkerManager();
+        runBackgroundWork();
         setContentView(R.layout.activity_main);
+        setupUi();
+    }
+
+    private void setupUi() {
         toolbar = (Toolbar) requireViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
@@ -81,15 +80,23 @@ public class ActivityMain extends AppCompatActivity {
         } else {
             fragmentManager.beginTransaction().replace(R.id.fragment_frame, new AffirmationFragment()).commit();
         }
+        TextView versionTextView = (TextView) requireViewById(R.id.version_text_view);
+        String versionString = "Version " + BuildConfig.VERSION_NAME;
+        versionTextView.setText(versionString);
     }
 
-    private void setupWorkerManager() {
-        workerManager = WorkerManager.getInstance();
-        workerManager.startMindfulnessNotificationWorker(getApplicationContext());
-        workerManager.startAffirmationNotificationWorker(getApplicationContext());
-        workerManager.startGratitudeNotificationWorker(getApplicationContext());
-        workerManager.startDailyActivityWorker(getApplicationContext());
-        workerManager.cleanUp();
+    private void runBackgroundWork() {
+        BackgroundTasks backgroundTasks = new BackgroundTasks();
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.execute(backgroundTasks.activityMainStartupTasks);
+        executorService.shutdown();
+        try {
+            if (!executorService.awaitTermination(800, TimeUnit.MILLISECONDS)) {
+                executorService.shutdownNow();
+            }
+        } catch (InterruptedException ex) {
+            executorService.shutdownNow();
+        }
     }
 
     private ActionBarDrawerToggle setupDrawerToggele() {
@@ -144,31 +151,12 @@ public class ActivityMain extends AppCompatActivity {
         drawerLayout.closeDrawers();
     }
 
-    private void checkPermissions() {
-        String[] requestedPermissions = new String[]{Manifest.permission.POST_NOTIFICATIONS};
-        for (String s: requestedPermissions) {
-            if (ActivityCompat.checkSelfPermission(getApplicationContext(), s) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(this, new String[]{s}, 0);
-            }
-        }
-    }
-
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (actionBarDrawerToggle.onOptionsItemSelected(item)) {
             return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    private void createNotificationChannel() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            int importance = NotificationManager.IMPORTANCE_DEFAULT;
-            NotificationChannel channel = new NotificationChannel(NOTIFICATION_CHANNEL, NOTIFICATION_CHANNEL, importance);
-            channel.setDescription("Notification channel used by mindful reminder");
-            NotificationManager notificationManager = getSystemService(NotificationManager.class);
-            notificationManager.createNotificationChannel(channel);
-        }
     }
 
     @Override
@@ -184,7 +172,6 @@ public class ActivityMain extends AppCompatActivity {
             if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
                 drawerLayout.closeDrawer(GravityCompat.START);
             } else if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
-                FragmentManager fragmentManager = getSupportFragmentManager();
                 navigationView.setCheckedItem(R.id.nav_affirmation);
                 getSupportFragmentManager().popBackStack();
             } else {

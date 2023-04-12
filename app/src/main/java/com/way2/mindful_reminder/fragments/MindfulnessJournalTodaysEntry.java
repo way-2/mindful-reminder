@@ -23,6 +23,7 @@ import androidx.preference.PreferenceManager;
 import com.way2.mindful_reminder.R;
 import com.way2.mindful_reminder.databases.AppDatabase;
 import com.way2.mindful_reminder.entities.JournalEntry;
+import com.way2.mindful_reminder.util.MindfulReminder;
 
 import java.time.LocalDate;
 import java.util.Arrays;
@@ -143,7 +144,7 @@ public class MindfulnessJournalTodaysEntry extends Fragment implements View.OnCl
     }
 
     private void checkIfRunTutorial() {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext());
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(MindfulReminder.getContext());
         if (sharedPreferences.getBoolean(ENABLE_MINDFULNESS_TUTORIAL, true)) {
             FragmentManager fragmentManager = getParentFragmentManager();
             fragmentManager.popBackStack();
@@ -156,9 +157,9 @@ public class MindfulnessJournalTodaysEntry extends Fragment implements View.OnCl
             @Override
             public void onClick(View v) {
                 try {
-                    InputMethodManager inputMethodManager = (InputMethodManager) requireContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    InputMethodManager inputMethodManager = (InputMethodManager) MindfulReminder.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
                     inputMethodManager.hideSoftInputFromWindow(v.getWindowToken(), 0);
-                    database = AppDatabase.getInstance(requireContext());
+                    database = AppDatabase.getInstance();
                     todaysEntry.setGratitudeEntry(gratitudeTextEntry.getText().toString());
                     todaysEntry.setRuminationEntry(worryEntryText.getText().toString());
                     todaysEntry.setFeelingEntry(buttonUnfocus.getText().toString());
@@ -181,7 +182,7 @@ public class MindfulnessJournalTodaysEntry extends Fragment implements View.OnCl
 
     private void getEntryIfExists() {
         try {
-            database = AppDatabase.getInstance(requireContext());
+            database = AppDatabase.getInstance();
             JournalEntry dbTodaysEntry = database.gratitudeJournalDao().getEntryForDate(LocalDate.now()).get();
             if (null != dbTodaysEntry) {
                 gratitudeTextEntry.setText(dbTodaysEntry.getGratitudeEntry());

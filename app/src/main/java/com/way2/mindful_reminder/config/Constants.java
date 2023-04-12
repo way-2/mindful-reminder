@@ -7,6 +7,7 @@ public class Constants {
     public static final String NOTIFICATION_CHANNEL = "MINDFUL_REMINDER";
     public static final String DAILY_MINDFULNESS_ACTIVITY_SHARED_PREFERENCE = "daily_mindfulness_activity_shared_preference";
     public static final String AFFIRMATION_SHARED_PREFERENCE = "affirmation_shared_preference";
+    public static final String IMAGE_SHARED_PREFERENCE = "image_shared_preference";
     public static final String AFFIRMATION_UPDATED_SHARED_PREFERENCE = "affirmation_updated_shared_preference";
     public static final String DAILY_MINDFULNESS_ACTIVITY_UPDATED_SHARED_PREFERENCE = "daily_mindfulness_activity_updated_shared_preference";
     public static final String REDIRECT = "redirect";
