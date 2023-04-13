@@ -5,7 +5,9 @@ import static com.way2.mindful_reminder.config.Constants.AFFIRMATION_UPDATED_SHA
 import static com.way2.mindful_reminder.config.Constants.IMAGE_SHARED_PREFERENCE;
 
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -69,7 +71,12 @@ public class AffirmationFragment extends Fragment {
 
     private void setImage() {
         int choice = (int) sharedPreferences.getInt(IMAGE_SHARED_PREFERENCE, R.drawable.high_quality_photo__calm_s2914371834_st64_g7_5);
-        imageView.setBackgroundResource(choice);
+        try {
+            imageView.setBackgroundResource(choice);
+        } catch (Resources.NotFoundException notFoundException) {
+            Log.d(this.getClass().getSimpleName(), "Using old image setting default, new image will be picked on next daily update");
+            imageView.setBackgroundResource(R.drawable.mindful_reminder);
+        }
         imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
     }
 

@@ -17,13 +17,19 @@ public interface JournalDao {
     @Query("SELECT * FROM journal_entries WHERE entry_date = :entryDate")
     ListenableFuture<JournalEntry> getEntryForDate(LocalDate entryDate);
 
+    @Query("SELECT * FROM journal_entries")
+    ListenableFuture<List<JournalEntry>> getAllEntries();
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     ListenableFuture<Long> insertGratitudeJournalEntry(JournalEntry journalEntry);
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    ListenableFuture<List<Long>> insertGratitudeJournalEntries(List<JournalEntry> journalEntries);
 
     @Query("SELECT entry_date FROM journal_entries")
     ListenableFuture<List<LocalDate>> getEntryDates();
 
     @Query("DELETE FROM journal_entries WHERE entry_date > :oldDate")
-    ListenableFuture<Integer> deleteWhereOlderThan(LocalDate oldDate);;
+    ListenableFuture<Integer> deleteWhereOlderThan(LocalDate oldDate);
 
 }

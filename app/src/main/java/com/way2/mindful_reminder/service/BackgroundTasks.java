@@ -3,7 +3,6 @@ package com.way2.mindful_reminder.service;
 import static com.way2.mindful_reminder.config.Constants.NOTIFICATION_CHANNEL;
 
 import android.Manifest;
-import android.app.Activity;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.pm.PackageManager;
@@ -12,9 +11,18 @@ import android.os.Build;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 
+import com.way2.mindful_reminder.BuildConfig;
+import com.way2.mindful_reminder.R;
+import com.way2.mindful_reminder.activities.ActivityMain;
 import com.way2.mindful_reminder.util.MindfulReminder;
 
-public class BackgroundTasks extends Activity {
+public class BackgroundTasks {
+
+    private ActivityMain activityMain;
+
+    public void setContext(ActivityMain activityMain) {
+        this.activityMain = activityMain;
+    }
 
     public Runnable activityMainStartupTasks = () -> {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -22,6 +30,10 @@ public class BackgroundTasks extends Activity {
         }
         createNotificationChannel();
         setupWorkerManager();
+    };
+    public Runnable activityMainUiSetup = () -> {
+        String versionString = "Version " + BuildConfig.VERSION_NAME;
+        activityMain.updateTextView(R.id.version_text_view, versionString);
     };
 
     private void setupWorkerManager() {
@@ -38,7 +50,7 @@ public class BackgroundTasks extends Activity {
         String[] requestedPermissions = new String[]{Manifest.permission.POST_NOTIFICATIONS};
         for (String s: requestedPermissions) {
             if (ActivityCompat.checkSelfPermission(MindfulReminder.getContext(), s) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(this, new String[]{s}, 0);
+                ActivityCompat.requestPermissions(this.activityMain, new String[]{s}, 0);
             }
         }
     }

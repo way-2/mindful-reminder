@@ -39,7 +39,7 @@ public class DailyWorker extends Worker {
     @NonNull
     @Override
     public Result doWork() {
-        updateAffirmation();
+        doUpdate();
         doDatabasePurge();
         return Result.success();
     }
@@ -56,7 +56,7 @@ public class DailyWorker extends Worker {
         }
     }
 
-    private void updateAffirmation() {
+    private void doUpdate() {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(AFFIRMATION_SHARED_PREFERENCE, getRandomAffirmation());
         editor.putString(AFFIRMATION_UPDATED_SHARED_PREFERENCE, "Last Updated: " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy hh:mm a")));

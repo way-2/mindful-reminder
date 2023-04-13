@@ -1,5 +1,6 @@
 package com.way2.mindful_reminder.fragments;
 
+import static com.way2.mindful_reminder.config.Constants.AFFIRMATION_SHARED_PREFERENCE;
 import static com.way2.mindful_reminder.config.Constants.ENABLE_MINDFULNESS_TUTORIAL;
 
 import android.content.Context;
@@ -37,9 +38,9 @@ public class MindfulnessJournalTodaysEntry extends Fragment implements View.OnCl
     private AppCompatEditText worryEntryText;
     private AppCompatButton saveButton;
     private JournalEntry todaysEntry;
-    private Button[] buttons = new Button[6];
+    private final Button[] buttons = new Button[6];
     private Button buttonUnfocus;
-    private int[] buttonId = {R.id.estatic_button, R.id.happy_button, R.id.meh_button, R.id.unhappy_button, R.id.sad_button, R.id.angry_button};
+    private final int[] buttonId = {R.id.estatic_button, R.id.happy_button, R.id.meh_button, R.id.unhappy_button, R.id.sad_button, R.id.angry_button};
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -157,12 +158,14 @@ public class MindfulnessJournalTodaysEntry extends Fragment implements View.OnCl
             @Override
             public void onClick(View v) {
                 try {
+                    SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(MindfulReminder.getContext());
                     InputMethodManager inputMethodManager = (InputMethodManager) MindfulReminder.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
                     inputMethodManager.hideSoftInputFromWindow(v.getWindowToken(), 0);
                     database = AppDatabase.getInstance();
                     todaysEntry.setGratitudeEntry(gratitudeTextEntry.getText().toString());
                     todaysEntry.setRuminationEntry(worryEntryText.getText().toString());
                     todaysEntry.setFeelingEntry(buttonUnfocus.getText().toString());
+                    todaysEntry.setDailyAffirmation(sharedPreferences.getString(AFFIRMATION_SHARED_PREFERENCE,""));
                     database.gratitudeJournalDao().insertGratitudeJournalEntry(todaysEntry).get();
                     gratitudeTextEntry.clearFocus();
                     worryEntryText.clearFocus();

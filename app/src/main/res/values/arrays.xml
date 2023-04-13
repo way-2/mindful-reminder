@@ -53,17 +53,15 @@
         <item>23</item>
     </string-array>
     <array name="background_images">
-        <item>@drawable/high_quality_photo_clear_vibrant_blue_ocean_golden_hour_calm_seed_6863733_steps_64_guidance_9</item>
-        <item>@drawable/high_quality_photo_clear_vibrant_blue_ocean_rocks_in_the_water_golden_hour_calm_seed_6174940_steps_64_guidance_9</item>
-        <item>@drawable/high_quality_photo_highly_detailed_forest_dirt_path_next_to_a_clear_stream_calm_seed_3522726_steps_64_guidance_9</item>
-        <item>@drawable/high_quality_photo_highly_detailed_forest_dirt_path_next_to_a_clear_stream_calm_seed_3522726_steps_89_guidance_9</item>
-        <item>@drawable/high_quality_photo_majestic_mountains_calm_seed_7461547_steps_64_guidance_9</item>
-        <item>@drawable/high_quality_photo_majestic_mountains_trail_fuzzy_white_mountain_goat_calm_seed_232964_steps_64_guidance_9</item>
-        <item>@drawable/high_quality_photo_mountains_calm_seed_8343684_steps_64_guidance_9</item>
-        <item>@drawable/high_quality_photo_garden_with_beautiful_foliage__clear_blue_pond__calm_seed_1083397_steps_64_guidance_9</item>
-        <item>@drawable/high_quality_photo__space__galaxy__stars__nebula__calm_seed_1774794_steps_64_guidance_9</item>
-        <item>@drawable/high_quality_photo__space__galaxy__stars__nebula__calm_seed_2911544_steps_50_guidance_7_5</item>
-        <item>@drawable/high_quality_photo__calm_seed_9932781_steps_64_guidance_7_5</item>
+        <item>@drawable/ultra_detailed_photo__calm_lake__huge_majestic_mountains_in_the_backgr_s1436935935_st64_g7_5</item>
+        <item>@drawable/ultra_detailed_photo__clear_blue_ocean__rocks_in_the_water_s3748618557_st64_g7_5</item>
+        <item>@drawable/ultra_detailed_photo__fish_in_a_coral_reef__clear_blue_ocean_s3232199275_st64_g7_5</item>
+        <item>@drawable/ultra_detailed_photo__forest__stream__grass_and_leaves_on_the_ground_s3105354206_st64_g7_5</item>
+        <item>@drawable/ultra_detailed_photo__giant_tree_in_clearing__green_s2625070165_st64_g7_5</item>
+        <item>@drawable/ultra_detailed_photo__instills_a_sense_of_peace_s178128751_st64_g7_5</item>
+        <item>@drawable/ultra_detailed_photo__instills_a_sense_of_peace_s2888894990_st64_g7_5</item>
+        <item>@drawable/ultra_detailed_photo__instills_a_sense_of_peace_s3598168800_st64_g7_5</item>
+        <item>@drawable/ultra_detailed_photo__majestic_scene_s2002617885_st64_g7_5</item>
         <item>@drawable/high_quality_photo__calm_s2914371834_st64_g7_5</item>
     </array>
 </resources>

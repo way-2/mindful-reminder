@@ -45,6 +45,22 @@
             android:title="Hour for daily mindfulness activity reminder"
             />
 
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/journal_category">
+
+        <Preference
+            android:title="Export Journal"
+            android:key="@string/export_button"
+            android:summary="Click here to export journal as a json file"
+            />
+
+        <Preference
+            android:title="Import Journal"
+            android:key="@string/import_button"
+            android:summary="Click here to import journal from a json file"
+            />
+
         <CheckBoxPreference
             android:enabled="true"
             android:defaultValue="true"

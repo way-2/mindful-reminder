@@ -6,6 +6,7 @@ import static com.way2.mindful_reminder.config.Constants.REDIRECT;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.TextView;
 
@@ -20,7 +21,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.google.android.material.navigation.NavigationView;
-import com.way2.mindful_reminder.BuildConfig;
 import com.way2.mindful_reminder.R;
 import com.way2.mindful_reminder.fragments.AboutFragment;
 import com.way2.mindful_reminder.fragments.AffirmationFragment;
@@ -32,11 +32,9 @@ import com.way2.mindful_reminder.fragments.MindfulnessJournalStart;
 import com.way2.mindful_reminder.fragments.MindfulnessJournalTodaysEntry;
 import com.way2.mindful_reminder.fragments.SettingsFragment;
 import com.way2.mindful_reminder.service.BackgroundTasks;
+import com.way2.mindful_reminder.util.MindfulReminder;
 
 import java.util.Objects;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 
 public class ActivityMain extends AppCompatActivity {
     private DrawerLayout drawerLayout;
@@ -47,9 +45,14 @@ public class ActivityMain extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        runBackgroundWork();
         setContentView(R.layout.activity_main);
         setupUi();
+        runBackgroundWork();
+    }
+
+    public void updateTextView(int id, String text) {
+        TextView textView = (TextView) requireViewById(id);
+        textView.setText(text);
     }
 
     private void setupUi() {
@@ -80,23 +83,17 @@ public class ActivityMain extends AppCompatActivity {
         } else {
             fragmentManager.beginTransaction().replace(R.id.fragment_frame, new AffirmationFragment()).commit();
         }
-        TextView versionTextView = (TextView) requireViewById(R.id.version_text_view);
-        String versionString = "Version " + BuildConfig.VERSION_NAME;
-        versionTextView.setText(versionString);
     }
 
     private void runBackgroundWork() {
         BackgroundTasks backgroundTasks = new BackgroundTasks();
-        ExecutorService executorService = Executors.newSingleThreadExecutor();
-        executorService.execute(backgroundTasks.activityMainStartupTasks);
-        executorService.shutdown();
-        try {
-            if (!executorService.awaitTermination(800, TimeUnit.MILLISECONDS)) {
-                executorService.shutdownNow();
-            }
-        } catch (InterruptedException ex) {
-            executorService.shutdownNow();
-        }
+        backgroundTasks.setContext(this);
+        MindfulReminder.getInstance().getThreadPoolExecutor().execute(backgroundTasks.activityMainStartupTasks);
+        MindfulReminder.getInstance().getThreadPoolExecutor().execute(backgroundTasks.activityMainUiSetup);
+        do {
+            Log.d("ACTIVITY_MAIN", "Number of active threads: " + MindfulReminder.getInstance().getThreadPoolExecutor().getActiveCount());
+        } while (MindfulReminder.getInstance().getThreadPoolExecutor().getActiveCount() > 0);
+        Log.d("ACTIVITY_MAIN", "Number of active threads: " + MindfulReminder.getInstance().getThreadPoolExecutor().getActiveCount());
     }
 
     private ActionBarDrawerToggle setupDrawerToggele() {

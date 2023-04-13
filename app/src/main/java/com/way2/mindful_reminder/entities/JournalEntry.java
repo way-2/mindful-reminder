@@ -24,6 +24,9 @@ public class JournalEntry {
     @ColumnInfo(name = "feeling_entry")
     private String feelingEntry;
 
+    @ColumnInfo(name = "daily_affirmation")
+    private String dailyAffirmation;
+
     public String getGratitudeEntry() {
         return gratitudeEntry;
     }
@@ -34,6 +37,10 @@ public class JournalEntry {
 
     public String getFeelingEntry() {
         return feelingEntry;
+    }
+
+    public String getDailyAffirmation() {
+        return dailyAffirmation;
     }
 
     @NonNull
@@ -57,15 +64,12 @@ public class JournalEntry {
         this.entryDate = entryDate;
     }
 
-    public JournalEntry() {
-        entryDate = LocalDate.now();
+    public void setDailyAffirmation(String dailyAffirmation) {
+        this.dailyAffirmation = dailyAffirmation;
     }
 
-    public JournalEntry(@NonNull LocalDate entryDate, String gratitudeEntry, String ruminationEntry, String feelingEntry) {
-        this.entryDate = entryDate;
-        this.gratitudeEntry = gratitudeEntry;
-        this.ruminationEntry = ruminationEntry;
-        this.feelingEntry = feelingEntry;
+    public JournalEntry() {
+        entryDate = LocalDate.now();
     }
 
 }

@@ -1,13 +1,11 @@
 package com.way2.mindful_reminder.fragments;
 
-import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
 import com.github.lzyzsd.circleprogress.DonutProgress;
@@ -52,7 +50,6 @@ public class BreatheFragment extends Fragment {
                 donutProgress.setProgress(percentComplete);
             }
 
-            @RequiresApi(api = Build.VERSION_CODES.R)
             @Override
             public void onFinish() {
                 loopCount++;
@@ -76,7 +73,6 @@ public class BreatheFragment extends Fragment {
                 donutProgress.setProgress(percentComplete);
             }
 
-            @RequiresApi(api = Build.VERSION_CODES.R)
             @Override
             public void onFinish() {
                 donutProgress.setText(String.valueOf(0));
@@ -94,7 +90,6 @@ public class BreatheFragment extends Fragment {
                 donutProgress.setProgress(percentComplete);
             }
 
-            @RequiresApi(api = Build.VERSION_CODES.R)
             @Override
             public void onFinish() {
                 donutProgress.setText(String.valueOf(0));

@@ -10,12 +10,18 @@ import static com.way2.mindful_reminder.config.Constants.MINDFULNESS_JOURNAL_NOT
 import static com.way2.mindful_reminder.config.Constants.MINDFULNESS_JOURNAL_NOTIFICATION_WORKER;
 import static com.way2.mindful_reminder.config.Constants.NOTIFICATION_TIME_INTERVAL_LIST;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.preference.ListPreference;
@@ -26,23 +32,34 @@ import androidx.preference.SwitchPreferenceCompat;
 import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.way2.mindful_reminder.R;
+import com.way2.mindful_reminder.databases.AppDatabase;
+import com.way2.mindful_reminder.entities.JournalEntry;
 import com.way2.mindful_reminder.service.WorkerManager;
+import com.way2.mindful_reminder.util.GsonLocalDateAdapter;
 import com.way2.mindful_reminder.util.MindfulReminder;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+import kotlin.io.ByteStreamsKt;
+
 public class SettingsFragment extends PreferenceFragmentCompat {
 
-    private SwitchPreferenceCompat notificationSwitch;
     private ListPreference notificationIntervalListPreference;
-    private SwitchPreferenceCompat dailyReminderSwitch;
     private ListPreference dailyReminderHourListPreference;
-    private SwitchPreferenceCompat gratitudeReminderSwitch;
     private ListPreference gratitudeReminderHourListPreference;
-    private SharedPreferences sharedPreferences;
     private WorkerManager workerManager;
+    private Gson gson;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -51,7 +68,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(MindfulReminder.getContext());
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(MindfulReminder.getContext());
         addPreferencesFromResource(R.xml.root_preferences);
     }
 
@@ -59,6 +76,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         workerManager = WorkerManager.getInstance();
+        gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").registerTypeAdapter(LocalDate.class, new GsonLocalDateAdapter()).create();
         getUiElements();
         return super.onCreateView(inflater, container, savedInstanceState);
     }
@@ -73,10 +91,115 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         affirmationSettings();
         activitySettings();
         gratitudeSettings();
+        setupButtons();
     }
 
+    private void setupButtons() {
+        Preference exportButton = findPreference(getString(R.string.export_button));
+        Preference importButton = findPreference(getString(R.string.import_button));
+        exportButton.setOnPreferenceClickListener(getExportBehavior());
+        importButton.setOnPreferenceClickListener(getImportBehavior());
+    }
+
+    private Preference.OnPreferenceClickListener getExportBehavior() {
+        return new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(@NonNull Preference preference) {
+                createFile();
+                return true;
+            }
+        };
+    }
+
+    private void createFile() {
+        Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.setType("application/json");
+        intent.putExtra(Intent.EXTRA_TITLE, "my_journal_entries.json");
+        createFileActivityResultLauncher.launch(intent);
+    }
+
+    ActivityResultLauncher<Intent> createFileActivityResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if ((result.getResultCode() == Activity.RESULT_OK) && (null != result.getData())) {
+                        Intent data = result.getData();
+                        try (OutputStream outputStream = MindfulReminder.getInstance().getContentResolver().openOutputStream(data.getData())) {
+                            AppDatabase database = null;
+                            List<JournalEntry> journalEntries = new ArrayList<>();
+                            try {
+                                database = AppDatabase.getInstance();
+                                journalEntries = database.gratitudeJournalDao().getAllEntries().get();
+                            } catch (ExecutionException | InterruptedException ex) {
+                                ex.printStackTrace();
+                            } finally {
+                                database.cleanUp();
+                                database = null;
+                            }
+                            outputStream.write(gson.toJson(journalEntries).getBytes());
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                }
+            }
+    );
+
+    private File getFilePath() {
+
+        return MindfulReminder.getInstance().getExternalFilesDir(null);
+    }
+
+    private Preference.OnPreferenceClickListener getImportBehavior() {
+        return new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(@NonNull Preference preference) {
+                openFile();
+                return true;
+            }
+        };
+    }
+
+    private void openFile() {
+        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.setType("application/json");
+        intent.putExtra(Intent.EXTRA_TITLE, "my_journal_entries.json");
+        openFileActivityResultLauncher.launch(intent);
+    }
+
+    ActivityResultLauncher<Intent> openFileActivityResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if ((result.getResultCode() == Activity.RESULT_OK) && (null != result.getData())) {
+                        Intent data = result.getData();
+                        File file = new File(data.getData().getPath());
+                        try (InputStream inputStream = MindfulReminder.getInstance().getContentResolver().openInputStream(data.getData())) {
+                            byte[] bytes = ByteStreamsKt.readBytes(inputStream);
+                            String jsonString = new String(bytes);
+                            List<JournalEntry> journalEntries = Arrays.asList(gson.fromJson(jsonString, JournalEntry[].class));
+                            AppDatabase database = null;
+                            try {
+                                database = AppDatabase.getInstance();
+                                database.gratitudeJournalDao().insertGratitudeJournalEntries(journalEntries);
+                            } finally {
+                                database.cleanUp();
+                                database = null;
+                            }
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                }
+            }
+    );
+
     private void gratitudeSettings() {
-        gratitudeReminderSwitch = (SwitchPreferenceCompat) findPreference(MINDFULNESS_JOURNAL_NOTIFICATION_TOGGLE);
+        SwitchPreferenceCompat gratitudeReminderSwitch = (SwitchPreferenceCompat) findPreference(MINDFULNESS_JOURNAL_NOTIFICATION_TOGGLE);
         gratitudeReminderHourListPreference = (ListPreference) findPreference(MINDFULNESS_JOURNAL_NOTIFICATION_HOUR_LIST);
         if (gratitudeReminderSwitch.isChecked()) {
             gratitudeReminderHourListPreference.setEnabled(true);
@@ -110,7 +233,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                             workerManager.startGratitudeNotificationWorker();
                         }
                     }
-                } catch(ExecutionException | InterruptedException ex){
+                } catch (ExecutionException | InterruptedException ex) {
                     ex.printStackTrace();
                 }
                 return true;
@@ -119,7 +242,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
     }
 
     private void activitySettings() {
-        dailyReminderSwitch = (SwitchPreferenceCompat) findPreference(DAILY_ACTIVITY_TOGGLE);
+        SwitchPreferenceCompat dailyReminderSwitch = (SwitchPreferenceCompat) findPreference(DAILY_ACTIVITY_TOGGLE);
         dailyReminderHourListPreference = (ListPreference) findPreference(DAILY_NOTIFICATION_HOUR_LIST);
         if (dailyReminderSwitch.isChecked()) {
             dailyReminderHourListPreference.setEnabled(true);
@@ -153,7 +276,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                             workerManager.startMindfulnessNotificationWorker();
                         }
                     }
-                } catch(ExecutionException | InterruptedException ex){
+                } catch (ExecutionException | InterruptedException ex) {
                     ex.printStackTrace();
                 }
                 return true;
@@ -162,7 +285,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
     }
 
     private void affirmationSettings() {
-        notificationSwitch = (SwitchPreferenceCompat) findPreference(AFFIRMATION_NOTIFICATION_TOGGLE);
+        SwitchPreferenceCompat notificationSwitch = (SwitchPreferenceCompat) findPreference(AFFIRMATION_NOTIFICATION_TOGGLE);
         notificationIntervalListPreference = (ListPreference) findPreference(NOTIFICATION_TIME_INTERVAL_LIST);
         if (notificationSwitch.isChecked()) {
             notificationIntervalListPreference.setEnabled(true);
@@ -196,7 +319,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                             workerManager.startAffirmationNotificationWorker();
                         }
                     }
-                } catch(ExecutionException | InterruptedException ex){
+                } catch (ExecutionException | InterruptedException ex) {
                     ex.printStackTrace();
                 }
                 return true;

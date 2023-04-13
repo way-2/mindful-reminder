@@ -7,7 +7,6 @@ import java.time.format.DateTimeFormatter;
 
 public class TypeConverters {
 
-
     @TypeConverter
     public static LocalDate fromString(String dateString) {
         return LocalDate.parse(dateString, DateTimeFormatter.ISO_DATE);

@@ -43,6 +43,7 @@ public class MindfulnessJournalCalendar extends Fragment {
     private TextView worryJournalDayEntry;
     private TextView howWasITodayJournalDayEntry;
     private TextView entryHeaderText;
+    private TextView thisDaysText;
     private List<DayOfWeek> daysOfWeek;
     private LocalDate selectedDate;
     private LocalDate oldDate;
@@ -62,6 +63,7 @@ public class MindfulnessJournalCalendar extends Fragment {
         gratitudeJournalDayEntry = (TextView) view.findViewById(R.id.mindfulness_journal_day_entry);
         worryJournalDayEntry = (TextView) view.findViewById(R.id.worry_journal_day_entry);
         howWasITodayJournalDayEntry = (TextView) view.findViewById(R.id.how_was_i_today_entry);
+        thisDaysText = (TextView) view.findViewById(R.id.this_days_affirmation);
         entryHeaderText = (TextView) view.findViewById(R.id.entry_header_text);
         calendarView = (CalendarView) view.findViewById(R.id.mindfulness_journal_events_calendar);
         YearMonth current = YearMonth.now();
@@ -159,6 +161,7 @@ public class MindfulnessJournalCalendar extends Fragment {
                 worryJournalDayEntry.setVisibility(View.GONE);
                 entryHeaderText.setVisibility(View.GONE);
                 howWasITodayJournalDayEntry.setVisibility(View.GONE);
+                thisDaysText.setVisibility(View.GONE);
             }
         }
     }
@@ -200,6 +203,7 @@ public class MindfulnessJournalCalendar extends Fragment {
                     TextView worryEntryTextView = (TextView) view.getRootView().findViewById(R.id.worry_journal_day_entry);
                     TextView entryHeaderText = (TextView) view.getRootView().findViewById(R.id.entry_header_text);
                     TextView howWasITodayJournalDayEntry = (TextView) view.getRootView().findViewById(R.id.how_was_i_today_entry);
+                    TextView thisDaysText = (TextView) view.getRootView().findViewById(R.id.this_days_affirmation);
                     if (day.getPosition() == DayPosition.MonthDate) {
                         setSelectedOldDate(day);
                         DateTimeFormatter HEADER_DATE_FORMAT = DateTimeFormatter.ofPattern("MMMM dd yyyy");
@@ -216,15 +220,28 @@ public class MindfulnessJournalCalendar extends Fragment {
                                     String worryDisplayString = "I was worrying about...\n" + journalEntry.getRuminationEntry();
                                     worryEntryTextView.setText(worryDisplayString);
                                     worryEntryTextView.setVisibility(View.VISIBLE);
+                                } else if (null == journalEntry.getRuminationEntry()) {
+                                    worryEntryTextView.setVisibility(View.GONE);
                                 }
                                 if (null != journalEntry.getGratitudeEntry()) {
                                     String displayString = "I was grateful for...\n" + journalEntry.getGratitudeEntry();
                                     entryTextView.setText(displayString);
                                     entryTextView.setVisibility(View.VISIBLE);
+                                } else if (null == journalEntry.getGratitudeEntry()) {
+                                    entryTextView.setVisibility(View.GONE);
                                 }
                                 if (null != journalEntry.getFeelingEntry()) {
                                     howWasITodayJournalDayEntry.setText(journalEntry.getFeelingEntry());
                                     howWasITodayJournalDayEntry.setVisibility(View.VISIBLE);
+                                } else if (null == journalEntry.getFeelingEntry()) {
+                                    howWasITodayJournalDayEntry.setVisibility(View.GONE);
+                                }
+                                if (null != journalEntry.getDailyAffirmation()) {
+                                    String affirmationDisplayString = "My affirmation was...\n" + journalEntry.getDailyAffirmation();
+                                    thisDaysText.setText(affirmationDisplayString);
+                                    thisDaysText.setVisibility(View.VISIBLE);
+                                } else if (null == journalEntry.getDailyAffirmation()) {
+                                    thisDaysText.setVisibility(View.GONE);
                                 }
                             }
                         } catch (ExecutionException | InterruptedException ex) {
