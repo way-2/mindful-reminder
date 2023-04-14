@@ -26,7 +26,6 @@ jobs:
       run: ./gradlew build
 
   test:
-
     runs-on: macos-latest
 
     steps:
