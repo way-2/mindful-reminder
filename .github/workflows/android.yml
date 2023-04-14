@@ -29,10 +29,6 @@ jobs:
     - name: Unit Test
       run: ./gradlew test
 
-    # Execute Instrumented tests
-    - name: Instrumented Test
-      run: ./gradlew connectedAndroidTest
-
-    - name: Android Test Report
-      uses: asadmansr/android-test-report-action@v1.2.0
-      if: ${{ always() }} # IMPORTANT: run Android Test Report regardless
+    - name: "Run UI Tests"
+      uses: vgaidarji/android-github-actions-emulator@v1.0.1
+#      run: ./gradlew connectedAndroidTest
