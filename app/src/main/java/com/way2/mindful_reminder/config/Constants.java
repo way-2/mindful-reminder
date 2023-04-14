@@ -23,4 +23,7 @@ public class Constants {
     public static final String GET_AFFIRMATION_TAG = "GetAffirmationWorker";
     public static final String GET_ACTIVITY_TAG = "GetActivityWorker";
     public static final String ACTIVITY_NOTIFICATION_WORKER_TAG = "ActivityNotificationWorker";
+    public static final Integer AFFIRMATION_NOTIFICATION_ID = 1;
+    public static final Integer MINDFULNESS_JOURNAL_NOTIFICATION_ID = 2;
+    public static final Integer MINDFULNESS_ACTIVITY_NOTIFICATION_ID = 3;
 }

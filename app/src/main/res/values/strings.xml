@@ -85,7 +85,7 @@
 
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
-    <string name="send_feedback">Send feedback or suggestions (new affirmations?) to mailto:dw.mindful.reminder@gmail.com</string>
+    <string name="send_feedback">Send feedback or suggestions (new affirmations?) to dw.mindful.reminder@gmail.com</string>
     <string name="export_button">Export</string>
     <string name="journal_category">Mindfulness Journal Preferences</string>
     <string name="import_button">Import</string>

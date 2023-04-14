@@ -2,6 +2,7 @@ package com.way2.mindful_reminder.service;
 
 import static com.way2.mindful_reminder.config.Constants.DAILY_MINDFULNESS_ACTIVITY_SHARED_PREFERENCE;
 import static com.way2.mindful_reminder.config.Constants.DAILY_MINDFULNESS_REDIRECT;
+import static com.way2.mindful_reminder.config.Constants.MINDFULNESS_ACTIVITY_NOTIFICATION_ID;
 import static com.way2.mindful_reminder.config.Constants.NOTIFICATION_CHANNEL;
 import static com.way2.mindful_reminder.config.Constants.REDIRECT;
 
@@ -27,7 +28,6 @@ import com.way2.mindful_reminder.activities.ActivityMain;
 import com.way2.mindful_reminder.util.MindfulReminder;
 
 import java.util.Arrays;
-import java.util.Random;
 
 public class MindfulnessActivityNotificationWorker extends Worker {
     private final SharedPreferences sharedPreferences;
@@ -59,7 +59,7 @@ public class MindfulnessActivityNotificationWorker extends Worker {
         if (ActivityCompat.checkSelfPermission(MindfulReminder.getContext(), Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
             Toast.makeText(MindfulReminder.getContext(), "Notification Permission not granted", Toast.LENGTH_SHORT).show();
         } else {
-            notificationManagerCompat.notify(new Random().nextInt(), builder.build());
+            notificationManagerCompat.notify(MINDFULNESS_ACTIVITY_NOTIFICATION_ID, builder.build());
         }
         return Result.success();
     }

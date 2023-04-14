@@ -36,6 +36,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:src="@drawable/affirmation_image_border"
+            android:id="@+id/affirmation_image_border"
             android:contentDescription="@string/border_around_inspirational_image"/>
 
     </FrameLayout>
