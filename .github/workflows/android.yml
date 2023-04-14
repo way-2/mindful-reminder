@@ -9,7 +9,7 @@ on:
 jobs:
   build:
 
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
 
     steps:
     - uses: actions/checkout@v3
@@ -24,13 +24,6 @@ jobs:
       run: chmod +x gradlew
     - name: Build with Gradle
       run: ./gradlew build
-
-  test:
-    runs-on: macos-latest
-
-    steps:
-      - name: checkout
-        uses: actions/checkout@v3
 
     # Execute unit tests
     - name: Unit Test
