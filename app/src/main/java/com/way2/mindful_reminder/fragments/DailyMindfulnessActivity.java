@@ -41,7 +41,6 @@ public class DailyMindfulnessActivity extends Fragment {
         return view;
     }
 
-
     private void setupSharedPreferences() {
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(MindfulReminder.getContext());
         if (!sharedPreferences.contains(DAILY_MINDFULNESS_ACTIVITY_SHARED_PREFERENCE)) {

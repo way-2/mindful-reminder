@@ -42,6 +42,7 @@ public class MindfulnessJournalNotificationWorker extends Worker {
     public Result doWork() {
         if (!isJournalEntryDone()) {
             Intent intent = new Intent(MindfulReminder.getContext(), ActivityMain.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             intent.putExtra(REDIRECT, MINDFULNESS_JOURNAL_REDIRECT);
             TaskStackBuilder taskStackBuilder = TaskStackBuilder.create(MindfulReminder.getContext());
             taskStackBuilder.addNextIntentWithParentStack(intent);

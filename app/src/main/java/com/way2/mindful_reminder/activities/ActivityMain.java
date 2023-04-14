@@ -4,6 +4,7 @@ import static com.way2.mindful_reminder.config.Constants.DAILY_MINDFULNESS_REDIR
 import static com.way2.mindful_reminder.config.Constants.MINDFULNESS_JOURNAL_REDIRECT;
 import static com.way2.mindful_reminder.config.Constants.REDIRECT;
 
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
@@ -48,6 +49,7 @@ public class ActivityMain extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         setupUi();
         runBackgroundWork();
+        onNewIntent(getIntent());
     }
 
     public void updateTextView(int id, String text) {
@@ -73,16 +75,21 @@ public class ActivityMain extends AppCompatActivity {
         actionBarDrawerToggle.syncState();
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
         FragmentManager fragmentManager = getSupportFragmentManager();
-        if ((null != getIntent().getExtras()) && (null != getIntent().getExtras().get(REDIRECT))) {
-            String intentRedirectValue = getIntent().getExtras().get(REDIRECT).toString();
+        fragmentManager.beginTransaction().replace(R.id.fragment_frame, new AffirmationFragment()).commit();
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        if ((null != intent.getExtras()) && (null != intent.getExtras().get(REDIRECT))) {
+            String intentRedirectValue = intent.getExtras().get(REDIRECT).toString();
             if (DAILY_MINDFULNESS_REDIRECT.equals(intentRedirectValue)) {
-                fragmentManager.beginTransaction().replace(R.id.fragment_frame, new DailyMindfulnessActivity()).commit();
+                fragmentManager.beginTransaction().replace(R.id.fragment_frame, new DailyMindfulnessActivity()).addToBackStack(null).commit();
             } else if (MINDFULNESS_JOURNAL_REDIRECT.equals(intentRedirectValue)) {
-                fragmentManager.beginTransaction().replace(R.id.fragment_frame, new MindfulnessJournalTodaysEntry()).commit();
+                fragmentManager.beginTransaction().replace(R.id.fragment_frame, new MindfulnessJournalTodaysEntry()).addToBackStack(null).commit();
             }
-        } else {
-            fragmentManager.beginTransaction().replace(R.id.fragment_frame, new AffirmationFragment()).commit();
         }
+        super.onNewIntent(intent);
     }
 
     private void runBackgroundWork() {

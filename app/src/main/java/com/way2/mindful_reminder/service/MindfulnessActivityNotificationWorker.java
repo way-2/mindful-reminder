@@ -43,6 +43,7 @@ public class MindfulnessActivityNotificationWorker extends Worker {
         int index = Arrays.asList(MindfulReminder.getContext().getResources().getStringArray(R.array.activity_name)).indexOf(sharedPreferences.getString(DAILY_MINDFULNESS_ACTIVITY_SHARED_PREFERENCE, ""));
         String activityDesc = MindfulReminder.getContext().getResources().getStringArray(R.array.activity_text)[index];
         Intent intent = new Intent(MindfulReminder.getContext(), ActivityMain.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.putExtra(REDIRECT, DAILY_MINDFULNESS_REDIRECT);
         TaskStackBuilder taskStackBuilder = TaskStackBuilder.create(MindfulReminder.getContext());
         taskStackBuilder.addNextIntentWithParentStack(intent);
