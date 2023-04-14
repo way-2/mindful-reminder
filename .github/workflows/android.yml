@@ -36,4 +36,4 @@ jobs:
         script: ./gradlew connectedAndroidTest
 
     - name: Android Test Report
-        uses: linuxias/Android-test-result-printer@v0.1.0
+      uses: linuxias/Android-test-result-printer@v0.1.0
