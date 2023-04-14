@@ -24,12 +24,7 @@ public class BreatheFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_breathe, container, false);
         donutProgress = view.findViewById(R.id.progress_donut);
         createCountDownTimers();
-        donutProgress.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                runBreathingSession();
-            }
-        });
+        donutProgress.setOnClickListener(v -> runBreathingSession());
         return view;
     }
 

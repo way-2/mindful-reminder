@@ -53,24 +53,21 @@ public class ActivityMain extends AppCompatActivity {
     }
 
     public void updateTextView(int id, String text) {
-        TextView textView = (TextView) requireViewById(id);
+        TextView textView = requireViewById(id);
         textView.setText(text);
     }
 
     private void setupUi() {
-        toolbar = (Toolbar) requireViewById(R.id.toolbar);
+        toolbar = requireViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
-        drawerLayout = (DrawerLayout) requireViewById(R.id.drawer_layout);
-        navigationView = (NavigationView) requireViewById(R.id.nView);
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                selectDrawerItem(item);
-                return true;
-            }
+        drawerLayout = requireViewById(R.id.drawer_layout);
+        navigationView = requireViewById(R.id.nView);
+        navigationView.setNavigationItemSelectedListener(item -> {
+            selectDrawerItem(item);
+            return true;
         });
-        actionBarDrawerToggle = setupDrawerToggele();
+        actionBarDrawerToggle = setupDrawerToggle();
         actionBarDrawerToggle.setDrawerIndicatorEnabled(true);
         actionBarDrawerToggle.syncState();
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
@@ -103,7 +100,7 @@ public class ActivityMain extends AppCompatActivity {
         Log.d("ACTIVITY_MAIN", "Number of active threads: " + MindfulReminder.getInstance().getThreadPoolExecutor().getActiveCount());
     }
 
-    private ActionBarDrawerToggle setupDrawerToggele() {
+    private ActionBarDrawerToggle setupDrawerToggle() {
         return new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.drawer_open, R.string.drawer_close);
     }
 

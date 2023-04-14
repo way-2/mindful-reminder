@@ -89,4 +89,6 @@
     <string name="export_button">Export</string>
     <string name="journal_category">Mindfulness Journal Preferences</string>
     <string name="import_button">Import</string>
+    <string name="shows_an_inspirational_image">Shows an inspirational image</string>
+    <string name="border_around_inspirational_image">Border around inspirational image</string>
 </resources>

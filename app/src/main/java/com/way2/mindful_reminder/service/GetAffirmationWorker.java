@@ -20,7 +20,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Random;
 
 public class GetAffirmationWorker extends Worker {
-    public static MutableLiveData<Boolean> updateDone = new MutableLiveData<>();
+    public final static MutableLiveData<Boolean> updateDone = new MutableLiveData<>();
     private final SharedPreferences sharedPreferences;
 
     public GetAffirmationWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {

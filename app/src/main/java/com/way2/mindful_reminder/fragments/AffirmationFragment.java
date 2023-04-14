@@ -54,23 +54,18 @@ public class AffirmationFragment extends Fragment {
     }
 
     private void setupUi(View view) {
-        affirmationUpdatedTextView = (TextView) view.findViewById(R.id.affirmation_updated);
-        affirmationTextView = (TextView) view.findViewById(R.id.affirmation);
+        affirmationUpdatedTextView = view.findViewById(R.id.affirmation_updated);
+        affirmationTextView = view.findViewById(R.id.affirmation);
         affirmationTextView.setText(sharedPreferences.getString(AFFIRMATION_SHARED_PREFERENCE,""));
         affirmationUpdatedTextView.setText(sharedPreferences.getString(AFFIRMATION_UPDATED_SHARED_PREFERENCE, ""));
-        imageView = (ImageView) view.findViewById(R.id.affirmation_image_view);
+        imageView = view.findViewById(R.id.affirmation_image_view);
         setImage();
-        AppCompatButton skipButton = (AppCompatButton) view.findViewById(R.id.skip_button);
-        skipButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                runAffirmationOneTime();
-            }
-        });
+        AppCompatButton skipButton = view.findViewById(R.id.skip_button);
+        skipButton.setOnClickListener(v -> runAffirmationOneTime());
     }
 
     private void setImage() {
-        int choice = (int) sharedPreferences.getInt(IMAGE_SHARED_PREFERENCE, R.drawable.high_quality_photo__calm_s2914371834_st64_g7_5);
+        int choice = sharedPreferences.getInt(IMAGE_SHARED_PREFERENCE, R.drawable.high_quality_photo__calm_s2914371834_st64_g7_5);
         try {
             imageView.setBackgroundResource(choice);
         } catch (Resources.NotFoundException notFoundException) {
@@ -84,21 +79,18 @@ public class AffirmationFragment extends Fragment {
         WorkRequest workRequest = OneTimeWorkRequest.from(DailyWorker.class);
         WorkManager workManager = WorkManager.getInstance(MindfulReminder.getContext());
         workManager.enqueue(workRequest);
-        workManager.getWorkInfoByIdLiveData(workRequest.getId()).observe(getViewLifecycleOwner(), new Observer<WorkInfo>() {
-            @Override
-            public void onChanged(WorkInfo workInfo) {
-                if (null != workInfo && workInfo.getState().equals(WorkInfo.State.SUCCEEDED)) {
+        workManager.getWorkInfoByIdLiveData(workRequest.getId()).observe(getViewLifecycleOwner(), workInfo -> {
+            if (null != workInfo && workInfo.getState().equals(WorkInfo.State.SUCCEEDED)) {
 
-                    DailyWorker.updateDone.observe(getViewLifecycleOwner(),
-                            new Observer<Boolean>() {
-                                @Override
-                                public void onChanged(Boolean updateDone) {
-                                    affirmationTextView.setText(sharedPreferences.getString(AFFIRMATION_SHARED_PREFERENCE, ""));
-                                    affirmationUpdatedTextView.setText(sharedPreferences.getString(AFFIRMATION_UPDATED_SHARED_PREFERENCE, ""));
-                                    setImage();
-                                }
-                            });
-                }
+                DailyWorker.updateDone.observe(getViewLifecycleOwner(),
+                        new Observer<>() {
+                            @Override
+                            public void onChanged(Boolean updateDone) {
+                                affirmationTextView.setText(sharedPreferences.getString(AFFIRMATION_SHARED_PREFERENCE, ""));
+                                affirmationUpdatedTextView.setText(sharedPreferences.getString(AFFIRMATION_UPDATED_SHARED_PREFERENCE, ""));
+                                setImage();
+                            }
+                        });
             }
         });
     }

@@ -49,8 +49,8 @@ public class DailyMindfulnessActivity extends Fragment {
     }
 
     private void setupUi(View view) {
-        activityTextView = (TextView) view.findViewById(R.id.daily_mindfulness_activity);
-        activityDetailsTextView = (TextView) view.findViewById(R.id.daily_mindfulness_activity_details);
+        activityTextView = view.findViewById(R.id.daily_mindfulness_activity);
+        activityDetailsTextView = view.findViewById(R.id.daily_mindfulness_activity_details);
         activityTextView.setText(sharedPreferences.getString(DAILY_MINDFULNESS_ACTIVITY_SHARED_PREFERENCE,""));
         if (sharedPreferences.contains(DAILY_MINDFULNESS_ACTIVITY_SHARED_PREFERENCE)) {
             int index = Arrays.asList(getResources().getStringArray(R.array.activity_name)).indexOf(sharedPreferences.getString(DAILY_MINDFULNESS_ACTIVITY_SHARED_PREFERENCE, ""));
@@ -62,22 +62,19 @@ public class DailyMindfulnessActivity extends Fragment {
         WorkRequest workRequest = OneTimeWorkRequest.from(GetMindfulnessActivityWorker.class);
         WorkManager workManager = WorkManager.getInstance(MindfulReminder.getContext());
         workManager.enqueue(workRequest);
-        workManager.getWorkInfoByIdLiveData(workRequest.getId()).observe(getViewLifecycleOwner(), new Observer<WorkInfo>() {
-            @Override
-            public void onChanged(WorkInfo workInfo) {
-                if (null != workInfo && workInfo.getState().equals(WorkInfo.State.SUCCEEDED)) {
+        workManager.getWorkInfoByIdLiveData(workRequest.getId()).observe(getViewLifecycleOwner(), workInfo -> {
+            if (null != workInfo && workInfo.getState().equals(WorkInfo.State.SUCCEEDED)) {
 
-                    GetMindfulnessActivityWorker.updateDone.observe(getViewLifecycleOwner(),
-                            new Observer<Boolean>() {
-                                @Override
-                                public void onChanged(Boolean updateDone) {
-                                    workManager.getWorkInfosForUniqueWorkLiveData(GET_ACTIVITY_TAG).removeObservers(getViewLifecycleOwner());
-                                    activityTextView.setText(sharedPreferences.getString(DAILY_MINDFULNESS_ACTIVITY_SHARED_PREFERENCE, ""));
-                                    int index = Arrays.asList(getResources().getStringArray(R.array.activity_name)).indexOf(sharedPreferences.getString(DAILY_MINDFULNESS_ACTIVITY_SHARED_PREFERENCE, ""));
-                                    activityDetailsTextView.setText(getResources().getStringArray(R.array.activity_text)[index]);
-                                }
-                            });
-                }
+                GetMindfulnessActivityWorker.updateDone.observe(getViewLifecycleOwner(),
+                        new Observer<>() {
+                            @Override
+                            public void onChanged(Boolean updateDone) {
+                                workManager.getWorkInfosForUniqueWorkLiveData(GET_ACTIVITY_TAG).removeObservers(getViewLifecycleOwner());
+                                activityTextView.setText(sharedPreferences.getString(DAILY_MINDFULNESS_ACTIVITY_SHARED_PREFERENCE, ""));
+                                int index = Arrays.asList(getResources().getStringArray(R.array.activity_name)).indexOf(sharedPreferences.getString(DAILY_MINDFULNESS_ACTIVITY_SHARED_PREFERENCE, ""));
+                                activityDetailsTextView.setText(getResources().getStringArray(R.array.activity_text)[index]);
+                            }
+                        });
             }
         });
     }

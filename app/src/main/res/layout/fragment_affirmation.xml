@@ -29,12 +29,14 @@
             android:id="@+id/affirmation_image_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="7.5dp" />
+            android:layout_margin="7.5dp"
+            android:contentDescription="@string/shows_an_inspirational_image" />
 
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="@drawable/affirmation_image_border" />
+            android:src="@drawable/affirmation_image_border"
+            android:contentDescription="@string/border_around_inspirational_image"/>
 
     </FrameLayout>
 

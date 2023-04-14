@@ -26,44 +26,35 @@ public class MindfulnessJournalStart extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_mindfulness_journal_start, container, false);
-        textSwitcher = (TextSwitcher) view.findViewById(R.id.mindfulness_intro_text_switcher);
+        textSwitcher = view.findViewById(R.id.mindfulness_intro_text_switcher);
         textSwitcher.setText(getString(R.string.gratitude_journal_intro_1));
-        nextButton = (AppCompatButton) view.findViewById(R.id.next_button);
+        nextButton = view.findViewById(R.id.next_button);
         nextButton.setOnClickListener(startOnClickListener());
         return view;
     }
 
     private View.OnClickListener startOnClickListener() {
-        return new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                textSwitcher.setText(getString(R.string.gratitude_journal_intro_2));
-                nextButton.setOnClickListener(secondOnClickListener());
-            }
+        return v -> {
+            textSwitcher.setText(getString(R.string.gratitude_journal_intro_2));
+            nextButton.setOnClickListener(secondOnClickListener());
         };
     }
 
     private View.OnClickListener secondOnClickListener() {
-        return new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                textSwitcher.setText(getString(R.string.gratitude_journal_intro_3));
-                nextButton.setOnClickListener(getStartedOnClickListener());
-            }
+        return v -> {
+            textSwitcher.setText(getString(R.string.gratitude_journal_intro_3));
+            nextButton.setOnClickListener(getStartedOnClickListener());
         };
     }
 
     private View.OnClickListener getStartedOnClickListener() {
         nextButton.setText("Let's Get Started");
-        return new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(MindfulReminder.getContext());
-                sharedPreferences.edit().putBoolean(ENABLE_MINDFULNESS_TUTORIAL, false).apply();
-                FragmentManager fragmentManager = getParentFragmentManager();
-                fragmentManager.popBackStack();
-                fragmentManager.beginTransaction().replace(R.id.fragment_frame, new MindfulnessJournalTodaysEntry()).addToBackStack(null).commit();
-            }
+        return v -> {
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(MindfulReminder.getContext());
+            sharedPreferences.edit().putBoolean(ENABLE_MINDFULNESS_TUTORIAL, false).apply();
+            FragmentManager fragmentManager = getParentFragmentManager();
+            fragmentManager.popBackStack();
+            fragmentManager.beginTransaction().replace(R.id.fragment_frame, new MindfulnessJournalTodaysEntry()).addToBackStack(null).commit();
         };
     }
 

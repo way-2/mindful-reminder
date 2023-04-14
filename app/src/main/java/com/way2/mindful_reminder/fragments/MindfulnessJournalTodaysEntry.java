@@ -154,30 +154,27 @@ public class MindfulnessJournalTodaysEntry extends Fragment implements View.OnCl
     }
 
     private void setupSaveButton() {
-        saveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try {
-                    SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(MindfulReminder.getContext());
-                    InputMethodManager inputMethodManager = (InputMethodManager) MindfulReminder.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-                    inputMethodManager.hideSoftInputFromWindow(v.getWindowToken(), 0);
-                    database = AppDatabase.getInstance();
-                    todaysEntry.setGratitudeEntry(gratitudeTextEntry.getText().toString());
-                    todaysEntry.setRuminationEntry(worryEntryText.getText().toString());
-                    todaysEntry.setFeelingEntry(buttonUnfocus.getText().toString());
-                    todaysEntry.setDailyAffirmation(sharedPreferences.getString(AFFIRMATION_SHARED_PREFERENCE,""));
-                    database.gratitudeJournalDao().insertGratitudeJournalEntry(todaysEntry).get();
-                    gratitudeTextEntry.clearFocus();
-                    worryEntryText.clearFocus();
-                } catch (ExecutionException | InterruptedException ex) {
-                    ex.printStackTrace();
-                } finally {
-                    database.cleanUp();
-                    if (!Objects.requireNonNull(gratitudeTextEntry.getText()).toString().isEmpty()) {
-                        FragmentManager fragmentManager = getParentFragmentManager();
-                        fragmentManager.popBackStack();
-                        fragmentManager.beginTransaction().replace(R.id.fragment_frame, new MindfulnessJournalCalendar()).addToBackStack(null).commit();
-                    }
+        saveButton.setOnClickListener(v -> {
+            try {
+                SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(MindfulReminder.getContext());
+                InputMethodManager inputMethodManager = (InputMethodManager) MindfulReminder.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                inputMethodManager.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                database = AppDatabase.getInstance();
+                todaysEntry.setGratitudeEntry(gratitudeTextEntry.getText().toString());
+                todaysEntry.setRuminationEntry(worryEntryText.getText().toString());
+                todaysEntry.setFeelingEntry(buttonUnfocus.getText().toString());
+                todaysEntry.setDailyAffirmation(sharedPreferences.getString(AFFIRMATION_SHARED_PREFERENCE,""));
+                database.gratitudeJournalDao().insertGratitudeJournalEntry(todaysEntry).get();
+                gratitudeTextEntry.clearFocus();
+                worryEntryText.clearFocus();
+            } catch (ExecutionException | InterruptedException ex) {
+                ex.printStackTrace();
+            } finally {
+                database.cleanUp();
+                if (!Objects.requireNonNull(gratitudeTextEntry.getText()).toString().isEmpty()) {
+                    FragmentManager fragmentManager = getParentFragmentManager();
+                    fragmentManager.popBackStack();
+                    fragmentManager.beginTransaction().replace(R.id.fragment_frame, new MindfulnessJournalCalendar()).addToBackStack(null).commit();
                 }
             }
         });
@@ -206,11 +203,11 @@ public class MindfulnessJournalTodaysEntry extends Fragment implements View.OnCl
     }
 
     private void setupUi(View view) {
-        gratitudeTextEntry = (AppCompatEditText) view.findViewById(R.id.gratitude_entry_text);
-        worryEntryText = (AppCompatEditText) view.findViewById(R.id.worry_entry_text);
-        saveButton = (AppCompatButton) view.findViewById(R.id.save_button);
+        gratitudeTextEntry = view.findViewById(R.id.gratitude_entry_text);
+        worryEntryText = view.findViewById(R.id.worry_entry_text);
+        saveButton = view.findViewById(R.id.save_button);
         for (int i = 0; i < buttons.length; i++) {
-            buttons[i] = (Button) view.findViewById(buttonId[i]);
+            buttons[i] = view.findViewById(buttonId[i]);
             buttons[i].setOnClickListener(this);
         }
         buttonUnfocus = buttons[0];

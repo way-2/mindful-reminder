@@ -24,14 +24,14 @@ public class BackgroundTasks {
         this.activityMain = activityMain;
     }
 
-    public Runnable activityMainStartupTasks = () -> {
+    public final Runnable activityMainStartupTasks = () -> {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             checkPermissions();
         }
         createNotificationChannel();
         setupWorkerManager();
     };
-    public Runnable activityMainUiSetup = () -> {
+    public final Runnable activityMainUiSetup = () -> {
         String versionString = "Version " + BuildConfig.VERSION_NAME;
         activityMain.updateTextView(R.id.version_text_view, versionString);
     };

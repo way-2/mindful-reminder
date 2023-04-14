@@ -11,7 +11,7 @@ import java.util.concurrent.TimeUnit;
 public class MindfulReminder extends Application {
     private static MindfulReminder instance;
     private static final int NUMBER_OF_CORES = Runtime.getRuntime().availableProcessors();
-    private final BlockingQueue<Runnable> workQueue = new LinkedBlockingQueue<Runnable>();
+    private final BlockingQueue<Runnable> workQueue = new LinkedBlockingQueue<>();
     private static final int KEEP_ALIVE_TIME = 1;
     private static final TimeUnit KEEP_ALIVE_TIME_UNIT = TimeUnit.SECONDS;
 

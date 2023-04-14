@@ -60,12 +60,12 @@ public class MindfulnessJournalCalendar extends Fragment {
     }
 
     private void setupCalendarView(View view) {
-        gratitudeJournalDayEntry = (TextView) view.findViewById(R.id.mindfulness_journal_day_entry);
-        worryJournalDayEntry = (TextView) view.findViewById(R.id.worry_journal_day_entry);
-        howWasITodayJournalDayEntry = (TextView) view.findViewById(R.id.how_was_i_today_entry);
-        thisDaysText = (TextView) view.findViewById(R.id.this_days_affirmation);
-        entryHeaderText = (TextView) view.findViewById(R.id.entry_header_text);
-        calendarView = (CalendarView) view.findViewById(R.id.mindfulness_journal_events_calendar);
+        gratitudeJournalDayEntry = view.findViewById(R.id.mindfulness_journal_day_entry);
+        worryJournalDayEntry = view.findViewById(R.id.worry_journal_day_entry);
+        howWasITodayJournalDayEntry = view.findViewById(R.id.how_was_i_today_entry);
+        thisDaysText = view.findViewById(R.id.this_days_affirmation);
+        entryHeaderText = view.findViewById(R.id.entry_header_text);
+        calendarView = view.findViewById(R.id.mindfulness_journal_events_calendar);
         YearMonth current = YearMonth.now();
         YearMonth start = current.minusMonths(100);
         YearMonth end = current.plusMonths(100);
@@ -96,7 +96,6 @@ public class MindfulnessJournalCalendar extends Fragment {
             ex.printStackTrace();
         } finally {
             database.cleanUp();
-            database = null;
         }
     }
 
@@ -116,11 +115,11 @@ public class MindfulnessJournalCalendar extends Fragment {
     }
 
     private void monthHeaderFooterBind(@NonNull MonthViewContainer container, CalendarMonth calendarMonth) {
-        TextView monthHeader = (TextView) container.getView().findViewById(R.id.month_title);
+        TextView monthHeader = container.getView().findViewById(R.id.month_title);
         monthHeader.setText(calendarMonth.getYearMonth().format(DateTimeFormatter.ofPattern("MMMM yyyy")));
         if (null == container.titlesContainer.getTag()) {
             container.titlesContainer.setTag(calendarMonth.getYearMonth());
-            for (int index = 0; index < (((ViewGroup) container.titlesContainer).getChildCount()); index++) {
+            for (int index = 0; index < (container.titlesContainer.getChildCount()); index++) {
                 TextView textView = (TextView) container.titlesContainer.getChildAt(index);
                 DayOfWeek dayOfWeek = daysOfWeek.get(index);
                 String title = dayOfWeek.getDisplayName(TextStyle.SHORT, Locale.getDefault());
@@ -183,73 +182,70 @@ public class MindfulnessJournalCalendar extends Fragment {
     }
 
     static class MonthViewContainer extends ViewContainer {
-        ViewGroup titlesContainer;
+        final ViewGroup titlesContainer;
         public MonthViewContainer(@NonNull View view) {
             super(view);
-            titlesContainer = (ViewGroup) view.findViewById(R.id.calendar_day_titles_container);
+            titlesContainer = view.findViewById(R.id.calendar_day_titles_container);
         }
     }
 
     class DayViewContainer extends ViewContainer {
-        TextView textView;
+        final TextView textView;
         CalendarDay day;
         public DayViewContainer(@NonNull View view) {
             super(view);
-            textView = (TextView) view.findViewById(R.id.calendarDayText);
-            view.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    TextView entryTextView = (TextView) view.getRootView().findViewById(R.id.mindfulness_journal_day_entry);
-                    TextView worryEntryTextView = (TextView) view.getRootView().findViewById(R.id.worry_journal_day_entry);
-                    TextView entryHeaderText = (TextView) view.getRootView().findViewById(R.id.entry_header_text);
-                    TextView howWasITodayJournalDayEntry = (TextView) view.getRootView().findViewById(R.id.how_was_i_today_entry);
-                    TextView thisDaysText = (TextView) view.getRootView().findViewById(R.id.this_days_affirmation);
-                    if (day.getPosition() == DayPosition.MonthDate) {
-                        setSelectedOldDate(day);
-                        DateTimeFormatter HEADER_DATE_FORMAT = DateTimeFormatter.ofPattern("MMMM dd yyyy");
-                        AppDatabase database = null;
-                        try {
-                            database = AppDatabase.getInstance();
-                            JournalEntry journalEntry = database.gratitudeJournalDao().getEntryForDate(day.getDate()).get();
-                            String dateString = day.getDate().format(HEADER_DATE_FORMAT);
-                            String headerString = "On " + dateString + "...";
-                            if (journalEntry != null) {
-                                entryHeaderText.setText(headerString);
-                                entryHeaderText.setVisibility(View.VISIBLE);
-                                if (null != journalEntry.getRuminationEntry()) {
-                                    String worryDisplayString = "I was worrying about...\n" + journalEntry.getRuminationEntry();
-                                    worryEntryTextView.setText(worryDisplayString);
-                                    worryEntryTextView.setVisibility(View.VISIBLE);
-                                } else if (null == journalEntry.getRuminationEntry()) {
-                                    worryEntryTextView.setVisibility(View.GONE);
-                                }
-                                if (null != journalEntry.getGratitudeEntry()) {
-                                    String displayString = "I was grateful for...\n" + journalEntry.getGratitudeEntry();
-                                    entryTextView.setText(displayString);
-                                    entryTextView.setVisibility(View.VISIBLE);
-                                } else if (null == journalEntry.getGratitudeEntry()) {
-                                    entryTextView.setVisibility(View.GONE);
-                                }
-                                if (null != journalEntry.getFeelingEntry()) {
-                                    howWasITodayJournalDayEntry.setText(journalEntry.getFeelingEntry());
-                                    howWasITodayJournalDayEntry.setVisibility(View.VISIBLE);
-                                } else if (null == journalEntry.getFeelingEntry()) {
-                                    howWasITodayJournalDayEntry.setVisibility(View.GONE);
-                                }
-                                if (null != journalEntry.getDailyAffirmation()) {
-                                    String affirmationDisplayString = "My affirmation was...\n" + journalEntry.getDailyAffirmation();
-                                    thisDaysText.setText(affirmationDisplayString);
-                                    thisDaysText.setVisibility(View.VISIBLE);
-                                } else if (null == journalEntry.getDailyAffirmation()) {
-                                    thisDaysText.setVisibility(View.GONE);
-                                }
+            textView = view.findViewById(R.id.calendarDayText);
+            view.setOnClickListener(v -> {
+                TextView entryTextView = (TextView) view.getRootView().findViewById(R.id.mindfulness_journal_day_entry);
+                TextView worryEntryTextView = (TextView) view.getRootView().findViewById(R.id.worry_journal_day_entry);
+                TextView entryHeaderText = (TextView) view.getRootView().findViewById(R.id.entry_header_text);
+                TextView howWasITodayJournalDayEntry = (TextView) view.getRootView().findViewById(R.id.how_was_i_today_entry);
+                TextView thisDaysText = (TextView) view.getRootView().findViewById(R.id.this_days_affirmation);
+                if (day.getPosition() == DayPosition.MonthDate) {
+                    setSelectedOldDate(day);
+                    DateTimeFormatter HEADER_DATE_FORMAT = DateTimeFormatter.ofPattern("MMMM dd yyyy");
+                    AppDatabase database = null;
+                    try {
+                        database = AppDatabase.getInstance();
+                        JournalEntry journalEntry = database.gratitudeJournalDao().getEntryForDate(day.getDate()).get();
+                        String dateString = day.getDate().format(HEADER_DATE_FORMAT);
+                        String headerString = "On " + dateString + "...";
+                        if (journalEntry != null) {
+                            entryHeaderText.setText(headerString);
+                            entryHeaderText.setVisibility(View.VISIBLE);
+                            if (null != journalEntry.getRuminationEntry()) {
+                                String worryDisplayString = "I was worrying about...\n" + journalEntry.getRuminationEntry();
+                                worryEntryTextView.setText(worryDisplayString);
+                                worryEntryTextView.setVisibility(View.VISIBLE);
+                            } else if (null == journalEntry.getRuminationEntry()) {
+                                worryEntryTextView.setVisibility(View.GONE);
                             }
-                        } catch (ExecutionException | InterruptedException ex) {
-                            ex.printStackTrace();
-                        } finally {
-                            database.cleanUp();
-                            database = null;
+                            if (null != journalEntry.getGratitudeEntry()) {
+                                String displayString = "I was grateful for...\n" + journalEntry.getGratitudeEntry();
+                                entryTextView.setText(displayString);
+                                entryTextView.setVisibility(View.VISIBLE);
+                            } else if (null == journalEntry.getGratitudeEntry()) {
+                                entryTextView.setVisibility(View.GONE);
+                            }
+                            if (null != journalEntry.getFeelingEntry()) {
+                                howWasITodayJournalDayEntry.setText(journalEntry.getFeelingEntry());
+                                howWasITodayJournalDayEntry.setVisibility(View.VISIBLE);
+                            } else if (null == journalEntry.getFeelingEntry()) {
+                                howWasITodayJournalDayEntry.setVisibility(View.GONE);
+                            }
+                            if (null != journalEntry.getDailyAffirmation()) {
+                                String affirmationDisplayString = "My affirmation was...\n" + journalEntry.getDailyAffirmation();
+                                thisDaysText.setText(affirmationDisplayString);
+                                thisDaysText.setVisibility(View.VISIBLE);
+                            } else if (null == journalEntry.getDailyAffirmation()) {
+                                thisDaysText.setVisibility(View.GONE);
+                            }
                         }
+                    } catch (ExecutionException | InterruptedException ex) {
+                        ex.printStackTrace();
+                    } finally {
+                        database.cleanUp();
+                        database = null;
                     }
                 }
             });

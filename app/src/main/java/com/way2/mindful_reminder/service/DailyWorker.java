@@ -27,7 +27,7 @@ import java.util.Random;
 import java.util.concurrent.ExecutionException;
 
 public class DailyWorker extends Worker {
-    public static MutableLiveData<Boolean> updateDone = new MutableLiveData<>();
+    public final static MutableLiveData<Boolean> updateDone = new MutableLiveData<>();
     private final SharedPreferences sharedPreferences;
     private AppDatabase database;
 
@@ -68,9 +68,10 @@ public class DailyWorker extends Worker {
     }
 
     private int getRandomImage() {
-        TypedArray images = MindfulReminder.getContext().getResources().obtainTypedArray(R.array.background_images);
-        int choice = images.getResourceId((int) (Math.random() * images.length()), R.drawable.mindful_reminder);
-        images.recycle();
+        int choice;
+        try (TypedArray images = MindfulReminder.getContext().getResources().obtainTypedArray(R.array.background_images)) {
+            choice = images.getResourceId((int) (Math.random() * images.length()), R.drawable.mindful_reminder);
+        }
         return choice;
     }
 

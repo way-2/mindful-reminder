@@ -21,7 +21,7 @@ import java.util.Random;
 
 public class GetMindfulnessActivityWorker extends Worker {
 
-    public static MutableLiveData<Boolean> updateDone = new MutableLiveData<>();
+    public final static MutableLiveData<Boolean> updateDone = new MutableLiveData<>();
     private final SharedPreferences sharedPreferences;
 
     public GetMindfulnessActivityWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
