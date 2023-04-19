@@ -53,7 +53,7 @@ dependencies {
     implementation 'androidx.navigation:navigation-fragment:2.5.3'
     implementation 'androidx.navigation:navigation-ui:2.5.3'
     implementation 'com.github.lzyzsd:CircleProgress:v1.2.4'
-    implementation 'com.kizitonwose.calendar:view:2.2.0'
+    implementation 'com.kizitonwose.calendar:view:2.3.0'
     implementation 'com.google.code.gson:gson:2.10.1'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
