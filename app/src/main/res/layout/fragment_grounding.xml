@@ -36,7 +36,7 @@
             android:textSize="18sp" />
     </TextSwitcher>
 
-    <com.github.lzyzsd.circleprogress.DonutProgress
+    <com.way2.mindful_reminder.util.Way2DonutProgress
         android:layout_gravity="center_horizontal"
         android:id="@+id/progress_donut"
         android:layout_width="250dp"

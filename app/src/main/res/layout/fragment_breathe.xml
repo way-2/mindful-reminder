@@ -18,7 +18,7 @@
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
-    <com.github.lzyzsd.circleprogress.DonutProgress
+    <com.way2.mindful_reminder.util.Way2DonutProgress
         android:id="@+id/progress_donut"
         android:layout_width="300dp"
         android:layout_height="300dp"

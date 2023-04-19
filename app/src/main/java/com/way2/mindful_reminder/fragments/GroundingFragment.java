@@ -9,11 +9,11 @@ import android.widget.TextSwitcher;
 import androidx.fragment.app.Fragment;
 
 import com.way2.mindful_reminder.R;
-import com.github.lzyzsd.circleprogress.DonutProgress;
+import com.way2.mindful_reminder.util.Way2DonutProgress;
 
 public class GroundingFragment extends Fragment {
     private TextSwitcher textSwitcher;
-    private DonutProgress donutProgress;
+    private Way2DonutProgress donutProgress;
     private int counter;
 
     @Override

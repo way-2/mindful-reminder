@@ -1,4 +1,4 @@
-package com.github.lzyzsd.circleprogress;
+package com.way2.mindful_reminder.util;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -14,11 +14,13 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
 
+import com.github.lzyzsd.circleprogress.Utils;
+
 /**
  * Used to display "Donut Progress" (circular progress).
  * Accepts an inner drawable (can be a supports vector drawables).
  */
-public class DonutProgress extends View
+public class Way2DonutProgress extends View
 {
     private Paint finishedPaint;
     private Paint unfinishedPaint;
@@ -84,17 +86,17 @@ public class DonutProgress extends View
     private static final String INSTANCE_STARTING_DEGREE = "starting_degree";
     private static final String INSTANCE_INNER_DRAWABLE = "inner_drawable";
 
-    public DonutProgress(Context context)
+    public Way2DonutProgress(Context context)
     {
         this(context, null);
     }
 
-    public DonutProgress(Context context, AttributeSet attrs)
+    public Way2DonutProgress(Context context, AttributeSet attrs)
     {
         this(context, attrs, 0);
     }
 
-    public DonutProgress(Context context, AttributeSet attrs, int defStyleAttr)
+    public Way2DonutProgress(Context context, AttributeSet attrs, int defStyleAttr)
     {
         super(context, attrs, defStyleAttr);
 
@@ -104,7 +106,7 @@ public class DonutProgress extends View
         default_inner_bottom_text_size = Utils.sp2px(getResources(), 18);
 
         final TypedArray attributes = context.getTheme()
-                .obtainStyledAttributes(attrs, R.styleable.DonutProgress, defStyleAttr, 0);
+                .obtainStyledAttributes(attrs, com.github.lzyzsd.circleprogress.R.styleable.DonutProgress, defStyleAttr, 0);
         initByAttributes(attributes);
         attributes.recycle();
         //Init the inner bitmap, we don't want to do this inside onDraw().
@@ -148,59 +150,59 @@ public class DonutProgress extends View
     protected void initByAttributes(TypedArray attributes)
     {
         finishedStrokeColor = attributes
-                .getColor(R.styleable.DonutProgress_donut_finished_color, default_finished_color);
+                .getColor(com.github.lzyzsd.circleprogress.R.styleable.DonutProgress_donut_finished_color, default_finished_color);
         unfinishedStrokeColor = attributes
-                .getColor(R.styleable.DonutProgress_donut_unfinished_color, default_unfinished_color);
-        showText = attributes.getBoolean(R.styleable.DonutProgress_donut_show_text, true);
+                .getColor(com.github.lzyzsd.circleprogress.R.styleable.DonutProgress_donut_unfinished_color, default_unfinished_color);
+        showText = attributes.getBoolean(com.github.lzyzsd.circleprogress.R.styleable.DonutProgress_donut_show_text, true);
         attributeResourceId = attributes
-                .getResourceId(R.styleable.DonutProgress_donut_inner_drawable, 0);
+                .getResourceId(com.github.lzyzsd.circleprogress.R.styleable.DonutProgress_donut_inner_drawable, 0);
 
-        setMax(attributes.getInt(R.styleable.DonutProgress_donut_max, default_max));
-        setProgress(attributes.getFloat(R.styleable.DonutProgress_donut_progress, 0));
+        setMax(attributes.getInt(com.github.lzyzsd.circleprogress.R.styleable.DonutProgress_donut_max, default_max));
+        setProgress(attributes.getFloat(com.github.lzyzsd.circleprogress.R.styleable.DonutProgress_donut_progress, 0));
         finishedStrokeWidth = attributes
-                .getDimension(R.styleable.DonutProgress_donut_finished_stroke_width, default_stroke_width);
+                .getDimension(com.github.lzyzsd.circleprogress.R.styleable.DonutProgress_donut_finished_stroke_width, default_stroke_width);
         unfinishedStrokeWidth = attributes
-                .getDimension(R.styleable.DonutProgress_donut_unfinished_stroke_width, default_stroke_width);
+                .getDimension(com.github.lzyzsd.circleprogress.R.styleable.DonutProgress_donut_unfinished_stroke_width, default_stroke_width);
 
         if (showText)
         {
-            if (attributes.getString(R.styleable.DonutProgress_donut_prefix_text) != null)
+            if (attributes.getString(com.github.lzyzsd.circleprogress.R.styleable.DonutProgress_donut_prefix_text) != null)
             {
-                prefixText = attributes.getString(R.styleable.DonutProgress_donut_prefix_text);
+                prefixText = attributes.getString(com.github.lzyzsd.circleprogress.R.styleable.DonutProgress_donut_prefix_text);
             }
-            if (attributes.getString(R.styleable.DonutProgress_donut_suffix_text) != null)
+            if (attributes.getString(com.github.lzyzsd.circleprogress.R.styleable.DonutProgress_donut_suffix_text) != null)
             {
-                suffixText = attributes.getString(R.styleable.DonutProgress_donut_suffix_text);
+                suffixText = attributes.getString(com.github.lzyzsd.circleprogress.R.styleable.DonutProgress_donut_suffix_text);
             }
-            if (attributes.getString(R.styleable.DonutProgress_donut_text) != null)
+            if (attributes.getString(com.github.lzyzsd.circleprogress.R.styleable.DonutProgress_donut_text) != null)
             {
-                text = attributes.getString(R.styleable.DonutProgress_donut_text);
+                text = attributes.getString(com.github.lzyzsd.circleprogress.R.styleable.DonutProgress_donut_text);
             }
 
             textColor = attributes
-                    .getColor(R.styleable.DonutProgress_donut_text_color, default_text_color);
+                    .getColor(com.github.lzyzsd.circleprogress.R.styleable.DonutProgress_donut_text_color, default_text_color);
             textSize = attributes
-                    .getDimension(R.styleable.DonutProgress_donut_text_size, default_text_size);
+                    .getDimension(com.github.lzyzsd.circleprogress.R.styleable.DonutProgress_donut_text_size, default_text_size);
             innerBottomTextSize = attributes
-                    .getDimension(R.styleable.DonutProgress_donut_inner_bottom_text_size, default_inner_bottom_text_size);
+                    .getDimension(com.github.lzyzsd.circleprogress.R.styleable.DonutProgress_donut_inner_bottom_text_size, default_inner_bottom_text_size);
             innerBottomTextColor = attributes
-                    .getColor(R.styleable.DonutProgress_donut_inner_bottom_text_color, default_inner_bottom_text_color);
+                    .getColor(com.github.lzyzsd.circleprogress.R.styleable.DonutProgress_donut_inner_bottom_text_color, default_inner_bottom_text_color);
             innerBottomText = attributes
-                    .getString(R.styleable.DonutProgress_donut_inner_bottom_text);
+                    .getString(com.github.lzyzsd.circleprogress.R.styleable.DonutProgress_donut_inner_bottom_text);
         }
 
         innerBottomTextSize = attributes
-                .getDimension(R.styleable.DonutProgress_donut_inner_bottom_text_size, default_inner_bottom_text_size);
+                .getDimension(com.github.lzyzsd.circleprogress.R.styleable.DonutProgress_donut_inner_bottom_text_size, default_inner_bottom_text_size);
         innerBottomTextColor = attributes
-                .getColor(R.styleable.DonutProgress_donut_inner_bottom_text_color, default_inner_bottom_text_color);
-        innerBottomText = attributes.getString(R.styleable.DonutProgress_donut_inner_bottom_text);
+                .getColor(com.github.lzyzsd.circleprogress.R.styleable.DonutProgress_donut_inner_bottom_text_color, default_inner_bottom_text_color);
+        innerBottomText = attributes.getString(com.github.lzyzsd.circleprogress.R.styleable.DonutProgress_donut_inner_bottom_text);
 
         startingDegree = attributes
-                .getInt(R.styleable.DonutProgress_donut_circle_starting_degree, default_startingDegree);
+                .getInt(com.github.lzyzsd.circleprogress.R.styleable.DonutProgress_donut_circle_starting_degree, default_startingDegree);
         clockWise = attributes
-                .getBoolean(R.styleable.DonutProgress_donut_clockWise, true);
+                .getBoolean(com.github.lzyzsd.circleprogress.R.styleable.DonutProgress_donut_clockWise, true);
         innerBackgroundColor = attributes
-                .getColor(R.styleable.DonutProgress_donut_background_color, default_inner_background_color);
+                .getColor(com.github.lzyzsd.circleprogress.R.styleable.DonutProgress_donut_background_color, default_inner_background_color);
     }
 
     protected void initInnerBitmap(Context context)

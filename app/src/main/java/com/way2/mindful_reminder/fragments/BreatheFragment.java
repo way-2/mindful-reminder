@@ -8,11 +8,11 @@ import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
 
-import com.github.lzyzsd.circleprogress.DonutProgress;
 import com.way2.mindful_reminder.R;
+import com.way2.mindful_reminder.util.Way2DonutProgress;
 
 public class BreatheFragment extends Fragment {
-    private DonutProgress donutProgress;
+    private Way2DonutProgress donutProgress;
     private CountDownTimer countdownIn;
     private CountDownTimer countdownHold;
     private CountDownTimer countdownOut;
