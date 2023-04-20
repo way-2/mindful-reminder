@@ -11,8 +11,8 @@ android {
         applicationId "com.way2.mindful_reminder"
         minSdk 28
         targetSdk 33
-        versionCode 11
-        versionName "1.0"
+        versionCode 12
+        versionName "1.2"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         testHandleProfiling true
         testFunctionalTest true
@@ -52,7 +52,6 @@ dependencies {
     implementation 'androidx.preference:preference:1.2.0'
     implementation 'androidx.navigation:navigation-fragment:2.5.3'
     implementation 'androidx.navigation:navigation-ui:2.5.3'
-    implementation 'com.github.lzyzsd:CircleProgress:v1.2.4'
     implementation 'com.kizitonwose.calendar:view:2.3.0'
     implementation 'com.google.code.gson:gson:2.10.1'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.2'
@@ -61,6 +60,6 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
     androidTestImplementation 'androidx.test.espresso:espresso-contrib:3.5.1'
     androidTestImplementation 'androidx.test.espresso:espresso-intents:3.5.1'
-    androidTestImplementation 'androidx.fragment:fragment-testing:1.6.0-alpha09'
-    debugImplementation 'androidx.fragment:fragment-testing-manifest:1.6.0-alpha09'
+    androidTestImplementation 'androidx.fragment:fragment-testing:1.6.0-beta01'
+    debugImplementation 'androidx.fragment:fragment-testing-manifest:1.6.0-beta01'
 }

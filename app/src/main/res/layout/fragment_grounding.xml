@@ -2,21 +2,21 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fragment_grounding"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.GroundingFragment"
-    android:id="@+id/fragment_grounding"
     android:orientation="vertical"
-    android:weightSum="10">
+    android:weightSum="10"
+    tools:context=".fragments.GroundingFragment">
 
     <TextSwitcher
         android:id="@+id/grounding_text_switcher"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginHorizontal="25dp"
+        android:layout_weight="8"
         android:inAnimation="@anim/nav_default_enter_anim"
         android:outAnimation="@anim/nav_default_exit_anim"
-        android:layout_weight="8"
         android:paddingTop="160dp">
 
         <TextView
@@ -36,19 +36,15 @@
             android:textSize="18sp" />
     </TextSwitcher>
 
-    <com.way2.mindful_reminder.util.Way2DonutProgress
-        android:layout_gravity="center_horizontal"
+    <com.way2.mindful_reminder.views.CircleProgressBar
         android:id="@+id/progress_donut"
         android:layout_width="250dp"
         android:layout_height="250dp"
-        app:donut_unfinished_stroke_width="12dp"
-        app:donut_finished_stroke_width="12dp"
-        app:donut_circle_starting_degree="270"
-        app:donut_clockWise="true"
-        app:donut_finished_color="@color/md_theme_dark_onPrimary"
-        app:donut_show_text="true"
-        app:donut_text="Start"
-        app:donut_text_size="40dp"
-        app:donut_unfinished_color="@color/md_theme_dark_primaryContainer" />
+        android:layout_gravity="center_horizontal"
+        app:progressText="Start"
+        app:progressTextSize="40dp"
+        app:progressbarColor="@color/md_theme_dark_primary"
+        app:progressBarThickness="15dp"
+        />
 
 </LinearLayout>

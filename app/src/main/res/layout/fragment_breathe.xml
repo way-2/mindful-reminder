@@ -18,17 +18,15 @@
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
-    <com.way2.mindful_reminder.util.Way2DonutProgress
+    <com.way2.mindful_reminder.views.CircleProgressBar
         android:id="@+id/progress_donut"
         android:layout_width="300dp"
         android:layout_height="300dp"
         android:layout_gravity="center_horizontal"
-        app:donut_circle_starting_degree="270"
-        app:donut_clockWise="true"
-        app:donut_finished_color="@color/md_theme_dark_onPrimary"
-        app:donut_show_text="true"
-        app:donut_text="Start"
-        app:donut_text_size="25dp"
-        app:donut_unfinished_color="@color/md_theme_dark_primaryContainer" />
+        app:progressText="Start"
+        app:progressTextSize="30dp"
+        app:progressbarColor="@color/md_theme_dark_primary"
+        app:progressBarThickness="10dp"
+        />
 
 </LinearLayout>

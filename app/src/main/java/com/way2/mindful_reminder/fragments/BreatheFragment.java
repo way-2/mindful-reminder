@@ -9,10 +9,10 @@ import android.view.ViewGroup;
 import androidx.fragment.app.Fragment;
 
 import com.way2.mindful_reminder.R;
-import com.way2.mindful_reminder.util.Way2DonutProgress;
+import com.way2.mindful_reminder.views.CircleProgressBar;
 
 public class BreatheFragment extends Fragment {
-    private Way2DonutProgress donutProgress;
+    private CircleProgressBar donutProgress;
     private CountDownTimer countdownIn;
     private CountDownTimer countdownHold;
     private CountDownTimer countdownOut;
@@ -39,7 +39,7 @@ public class BreatheFragment extends Fragment {
             @Override
             public void onTick(long millisUntilFinished) {
                 String textString = "Breathe out for " + (millisUntilFinished / 1000);
-                donutProgress.setText(textString);
+                donutProgress.setProgressText(textString);
                 float progressFraction = (8 - ((float) millisUntilFinished / 1000)) / 8;
                 float percentComplete = (progressFraction * 100);
                 donutProgress.setProgress(percentComplete);
@@ -49,7 +49,7 @@ public class BreatheFragment extends Fragment {
             public void onFinish() {
                 loopCount++;
                 if (loopCount > 3) {
-                    donutProgress.setText("Done");
+                    donutProgress.setProgressText("Done");
                     donutProgress.setProgress(0);
                     donutProgress.setClickable(true);
                 } else {
@@ -62,7 +62,7 @@ public class BreatheFragment extends Fragment {
             @Override
             public void onTick(long millisUntilFinished) {
                 String textString = "Hold breath for " + (millisUntilFinished / 1000);
-                donutProgress.setText(textString);
+                donutProgress.setProgressText(textString);
                 float progressFraction = (7 - ((float) millisUntilFinished / 1000)) / 7;
                 float percentComplete = (progressFraction * 100);
                 donutProgress.setProgress(percentComplete);
@@ -70,7 +70,7 @@ public class BreatheFragment extends Fragment {
 
             @Override
             public void onFinish() {
-                donutProgress.setText(String.valueOf(0));
+                donutProgress.setProgressText(String.valueOf(0));
                 donutProgress.setProgress(100);
                 countdownOut.start();
             }
@@ -79,7 +79,7 @@ public class BreatheFragment extends Fragment {
             @Override
             public void onTick(long millisUntilFinished) {
                 String textString = "Breathe in for " + (millisUntilFinished / 1000);
-                donutProgress.setText(textString);
+                donutProgress.setProgressText(textString);
                 float progressFraction = (4 - ((float) millisUntilFinished / 1000)) / 4;
                 float percentComplete = (progressFraction * 100);
                 donutProgress.setProgress(percentComplete);
@@ -87,7 +87,7 @@ public class BreatheFragment extends Fragment {
 
             @Override
             public void onFinish() {
-                donutProgress.setText(String.valueOf(0));
+                donutProgress.setProgressText(String.valueOf(0));
                 donutProgress.setProgress(100);
                 countdownHold.start();
             }
