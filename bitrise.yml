@@ -64,8 +64,8 @@ workflows:
         inputs:
         - test_type: instrumentation
         - test_devices: |-
-            Pixel2,30,en,portrait
-            MediumPhone,33,en,portrait
+            Pixel2.arm,30,en,portrait
+            MediumPhone.arm,33,en,portrait
     - save-gradle-cache@1: {}
     - deploy-to-bitrise-io@2: {}
 meta:
