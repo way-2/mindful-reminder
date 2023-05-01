@@ -46,7 +46,7 @@ public class DailyWorker extends Worker {
 
     private void doDatabasePurge() {
         try {
-            LocalDate oldDate = LocalDate.now().minusYears(10);
+            LocalDate oldDate  = LocalDate.now().minusYears(10);
             database = AppDatabase.getInstance();
             Integer countDeleted = database.gratitudeJournalDao().deleteWhereOlderThan(oldDate).get();
         } catch (ExecutionException | InterruptedException ex) {
@@ -68,9 +68,14 @@ public class DailyWorker extends Worker {
     }
 
     private int getRandomImage() {
-        int choice;
-        try (TypedArray images = MindfulReminder.getContext().getResources().obtainTypedArray(R.array.background_images)) {
+        int choice = 1;
+        TypedArray images;
+        try {
+            images = MindfulReminder.getContext().getResources().obtainTypedArray(R.array.background_images);
             choice = images.getResourceId((int) (Math.random() * images.length()), R.drawable.mindful_reminder);
+            images.recycle();
+        } catch (Exception exception) {
+            exception.printStackTrace();
         }
         return choice;
     }

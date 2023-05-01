@@ -53,16 +53,16 @@ public class ActivityMain extends AppCompatActivity {
     }
 
     public void updateTextView(int id, String text) {
-        TextView textView = requireViewById(id);
+        TextView textView = findViewById(id);
         textView.setText(text);
     }
 
     private void setupUi() {
-        toolbar = requireViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
-        drawerLayout = requireViewById(R.id.drawer_layout);
-        navigationView = requireViewById(R.id.nView);
+        drawerLayout = findViewById(R.id.drawer_layout);
+        navigationView = findViewById(R.id.nView);
         navigationView.setNavigationItemSelectedListener(item -> {
             selectDrawerItem(item);
             return true;

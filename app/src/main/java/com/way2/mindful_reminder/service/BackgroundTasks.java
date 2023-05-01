@@ -56,11 +56,13 @@ public class BackgroundTasks {
     }
 
     private void createNotificationChannel() {
-        int importance = NotificationManager.IMPORTANCE_DEFAULT;
-        NotificationChannel channel = new NotificationChannel(NOTIFICATION_CHANNEL, NOTIFICATION_CHANNEL, importance);
-        channel.setDescription("Notification channel used by mindful reminder");
-        NotificationManager notificationManager = MindfulReminder.getContext().getSystemService(NotificationManager.class);
-        notificationManager.createNotificationChannel(channel);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel(NOTIFICATION_CHANNEL, NOTIFICATION_CHANNEL, importance);
+            channel.setDescription("Notification channel used by mindful reminder");
+            NotificationManager notificationManager = MindfulReminder.getContext().getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
     }
 
 }
