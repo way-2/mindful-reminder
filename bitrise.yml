@@ -43,6 +43,9 @@ workflows:
       Next steps:
       - Check out [Getting started with Android apps](https://devcenter.bitrise.io/en/getting-started/getting-started-with-android-apps.html).
     steps:
+    - set-java-version@1:
+        inputs:
+        - set_java_version: '17'
     - git-clone@8: {}
     - restore-gradle-cache@1: {}
     - install-missing-android-tools@3:
