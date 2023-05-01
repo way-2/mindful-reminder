@@ -91,4 +91,8 @@
     <string name="import_button">Import</string>
     <string name="shows_an_inspirational_image">Shows an inspirational image</string>
     <string name="border_around_inspirational_image">Border around inspirational image</string>
+    <string name="content_description_daily_activity_content">Displays content of the selected date including: Gratitude entry, Worry entry, How I am feeling and Daily affirmation</string>
+    <string name="content_description_gratitude_entry_box">Text box to enter your gratitude journal entry for the day</string>
+    <string name="content_description_grounding_activity_counter_button">Button counter for the grounding activity, pressing it increses the counter</string>
+    <string name="content_description_worry_entry_box">Text box to input your entry on what you have been worrying about today</string>
 </resources>

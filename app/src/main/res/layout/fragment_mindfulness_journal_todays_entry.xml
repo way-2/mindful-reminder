@@ -37,7 +37,8 @@
                 android:background="@drawable/edit_text_background"
                 android:inputType="textCapSentences|textMultiLine"
                 android:padding="15dp"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:contentDescription="@string/content_description_gratitude_entry_box"/>
 
             <TextView
                 android:id="@+id/daily_worry_header"
@@ -54,7 +55,8 @@
                 android:background="@drawable/edit_text_background"
                 android:inputType="textCapSentences|textMultiLine"
                 android:padding="15dp"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:contentDescription="@string/content_description_worry_entry_box"/>
 
             <TextView
                 android:id="@+id/how_was_today_header"
