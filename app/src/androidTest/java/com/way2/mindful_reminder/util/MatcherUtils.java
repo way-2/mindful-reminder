@@ -10,7 +10,7 @@ import android.widget.TextView;
 import androidx.test.espresso.UiController;
 import androidx.test.espresso.ViewAction;
 
-import com.github.lzyzsd.circleprogress.DonutProgress;
+import com.way2.mindful_reminder.views.CircleProgressBar;
 
 import org.hamcrest.Matcher;
 
@@ -43,7 +43,7 @@ public class MatcherUtils {
         onView(matcher).perform(new ViewAction() {
             @Override
             public Matcher<View> getConstraints() {
-                return isAssignableFrom(DonutProgress.class);
+                return isAssignableFrom(CircleProgressBar.class);
             }
 
             @Override
@@ -53,8 +53,8 @@ public class MatcherUtils {
 
             @Override
             public void perform(UiController uiController, View view) {
-                DonutProgress tv = (DonutProgress) view; //Save, because of check in getConstraints()
-                stringHolder[0] = tv.getText().toString();
+                CircleProgressBar tv = (CircleProgressBar) view; //Save, because of check in getConstraints()
+                stringHolder[0] = tv.getProgressText();
             }
         });
         return stringHolder[0];

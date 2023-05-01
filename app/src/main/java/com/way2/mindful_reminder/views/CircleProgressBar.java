@@ -115,4 +115,8 @@ public class CircleProgressBar extends View {
         this.progressText = progressText;
     }
 
+    public String getProgressText() {
+        return progressText;
+    }
+
 }
