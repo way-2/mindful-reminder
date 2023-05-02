@@ -24,7 +24,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:autoLink="email"
+        android:autoLink="email|web"
         android:text="@string/send_feedback"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"

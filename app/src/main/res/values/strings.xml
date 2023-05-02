@@ -74,16 +74,11 @@
     <string name="meh_icon"></string>
     <string name="estatic_icon"></string>
     <string name="angry_icon"></string>
-    <string name="title_activity_how_are_you_feeling_button_group">HowAreYouFeelingButtonGroup
-    </string>
-    <!-- Strings used for fragments for navigation -->
-    <string name="first_fragment_label">First Fragment</string>
-    <string name="second_fragment_label">Second Fragment</string>
+    <string name="title_activity_how_are_you_feeling_button_group">HowAreYouFeelingButtonGroup</string>
     <string name="previous">Previous</string>
-
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
-    <string name="send_feedback">Send feedback or suggestions (new affirmations?) to dw.mindful.reminder@gmail.com</string>
+    <string name="send_feedback">Send feedback or suggestions (new affirmations?) to dw.mindful.reminder@gmail.com or checkout the source code at https://github.com/way-2/mindful-reminder</string>
     <string name="export_button">Export</string>
     <string name="journal_category">Mindfulness Journal Preferences</string>
     <string name="import_button">Import</string>
