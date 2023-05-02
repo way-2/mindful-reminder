@@ -1,9 +1,13 @@
 name: 'Test Report'
+
 on:
   workflow_run:
     workflows: ['Android CI']
     types:
       - completed
+
+permissions:
+  checks: write
 
 jobs:
   report:
