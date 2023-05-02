@@ -5,9 +5,13 @@ import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
+import static com.way2.mindful_reminder.config.Constants.ENABLE_MINDFULNESS_TUTORIAL;
 import static org.junit.Assert.assertTrue;
 
+import android.content.SharedPreferences;
+
 import androidx.lifecycle.Lifecycle;
+import androidx.preference.PreferenceManager;
 import androidx.test.espresso.Espresso;
 import androidx.test.espresso.action.ViewActions;
 import androidx.test.espresso.contrib.DrawerActions;
@@ -17,7 +21,9 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 import com.way2.mindful_reminder.BuildConfig;
 import com.way2.mindful_reminder.R;
 import com.way2.mindful_reminder.activities.ActivityMain;
+import com.way2.mindful_reminder.util.MindfulReminder;
 
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,6 +33,12 @@ public class ActivityMainTest {
 
     @Rule
     public ActivityScenarioRule<ActivityMain> activityMainActivityScenarioRule = new ActivityScenarioRule<>(ActivityMain.class);
+
+    @Before
+    public void setup() {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(MindfulReminder.getContext());
+        sharedPreferences.edit().putBoolean(ENABLE_MINDFULNESS_TUTORIAL, false).commit();
+    }
 
     @Test
     public void validateLaunchFragmentTest() {

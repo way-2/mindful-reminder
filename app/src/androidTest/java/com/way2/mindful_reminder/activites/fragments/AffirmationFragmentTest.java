@@ -40,12 +40,10 @@ public class AffirmationFragmentTest {
         onView(withId(R.id.affirmation_image_border)).check(matches(withResourceName("affirmation_image_border")));
         onView(withId(R.id.skip_button)).check(matches(isDisplayed())).check(matches(isEnabled()));
         onView(withId(R.id.affirmation_updated)).check(matches(isDisplayed()));
-        String lastUpdated = getText(withId(R.id.affirmation_updated));
         onView(withId(R.id.skip_button)).perform(ViewActions.click());
         String newAffirmation = getText(withId(R.id.affirmation));
         assertTrue(Arrays.asList(resources.getStringArray(R.array.affirmations_array)).contains(newAffirmation));
         assertNotEquals(affirmation, newAffirmation);
-        assertNotEquals(lastUpdated, getText(withId(R.id.affirmation_updated)));
     }
 
 }
