@@ -41,6 +41,11 @@ public class AffirmationFragmentTest {
         onView(withId(R.id.skip_button)).check(matches(isDisplayed())).check(matches(isEnabled()));
         onView(withId(R.id.affirmation_updated)).check(matches(isDisplayed()));
         onView(withId(R.id.skip_button)).perform(ViewActions.click());
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException ex) {
+            ex.printStackTrace();
+        }
         String newAffirmation = getText(withId(R.id.affirmation));
         assertTrue(Arrays.asList(resources.getStringArray(R.array.affirmations_array)).contains(newAffirmation));
         assertNotEquals(affirmation, newAffirmation);
