@@ -3,9 +3,7 @@
     <string name="help">Help</string>
     <string name="about">About</string>
     <string name="aboutBody">Mindful Reminder is an all-in-one mindfulness app designed to help users cultivate a positive mindset and improve their mental health. With daily affirmations and notifications throughout the day, users can stay motivated and focused on their goals. The built-in gratitude journal and worry tracker allow users to reflect on their emotions and experiences, gaining a deeper understanding of their mental and emotional state.
-        \n
         In addition, Mindful Reminder also features a breathing tracker for the popular 4-7-8 breathing technique, which is known to help reduce stress and anxiety. The app also includes a grounding exercise to help users stay centered and focused in their daily life.
-        \n
         Whether you\'re new to mindfulness or an experienced practitioner, Mindful Reminder has everything you need to take your mental health to the next level.
     </string>
     <string name="aboutGitHubLink">https://github.com/way-2/mindful-reminder</string>
@@ -95,4 +93,6 @@
     <string name="content_description_gratitude_entry_box">Text box to enter your gratitude journal entry for the day</string>
     <string name="content_description_grounding_activity_counter_button">Button counter for the grounding activity, pressing it increses the counter</string>
     <string name="content_description_worry_entry_box">Text box to input your entry on what you have been worrying about today</string>
+    <string name="additional_credits">Additional Credits</string>
+    <string name="license">License Information</string>
 </resources>
