@@ -28,6 +28,8 @@ public class AboutFragmentTest {
         FragmentScenario.launchInContainer(AboutFragment.class, null);
         onView(withId(R.id.about_text_1)).check(matches(isDisplayed())).check(matches(withText(resources.getString(R.string.aboutBody))));
         onView(withId(R.id.about_text_2)).check(matches(isDisplayed())).check(matches(withText(resources.getString(R.string.send_feedback))));
+        onView(withId(R.id.license_button)).check(matches(isDisplayed()));
+        onView(withId(R.id.open_source_credits_button)).check(matches(isDisplayed()));
     }
 
 }

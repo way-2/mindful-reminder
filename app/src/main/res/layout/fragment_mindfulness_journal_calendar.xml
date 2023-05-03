@@ -30,7 +30,9 @@
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:layout_marginVertical="20dp"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:id="@+id/journal_review_layout"
+        android:visibility="gone">
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="0dp"
@@ -49,20 +51,20 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="6dp"
-                    android:visibility="gone" />
+                    />
 
                 <TextView
                     android:id="@+id/mindfulness_journal_day_entry"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:visibility="gone" />
+                    />
 
                 <TextView
                     android:id="@+id/worry_journal_day_entry"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="6dp"
-                    android:visibility="gone" />
+                    />
 
             </LinearLayout>
 
@@ -77,7 +79,7 @@
             android:layout_weight=".30"
             android:fontFamily="@font/font_awesome_6_free_regular_400"
             android:textSize="60sp"
-            android:visibility="gone" />
+            />
 
     </LinearLayout>
 

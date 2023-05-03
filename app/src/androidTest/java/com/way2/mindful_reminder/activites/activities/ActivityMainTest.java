@@ -57,6 +57,9 @@ public class ActivityMainTest {
         onView(withId(R.id.nav_review_journal)).check(matches(isDisplayed()));
         onView(withId(R.id.nav_settings)).check(matches(isDisplayed()));
         onView(withId(R.id.nav_about)).check(matches(isDisplayed()));
+        onView(withId(R.id.nav_progressive_muscle_relaxation)).check(matches(isDisplayed()));
+        onView(withId(R.id.nav_body_scan_meditation)).check(matches(isDisplayed()));
+        onView(withId(R.id.nav_mindful_stretch)).check(matches(isDisplayed()));
         onView(withId(R.id.version_text_view)).check(matches(withText("Version " + BuildConfig.VERSION_NAME))).check(matches(isDisplayed()));
         onView(withId(R.id.drawer_layout)).perform(DrawerActions.close());
     }
@@ -87,6 +90,27 @@ public class ActivityMainTest {
         onView(withId(R.id.drawer_layout)).perform(DrawerActions.open());
         onView(withId(R.id.nav_grounding)).perform(ViewActions.click());
         onView(withId(R.id.progress_donut)).check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void validateNavDrawerBodyScanMeditationFragmentTest() {
+        onView(withId(R.id.drawer_layout)).perform(DrawerActions.open());
+        onView(withId(R.id.nav_body_scan_meditation)).perform(ViewActions.click());
+        onView(withId(R.id.next_button)).check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void validateNavDrawerMindfulStretchingFragmentTest() {
+        onView(withId(R.id.drawer_layout)).perform(DrawerActions.open());
+        onView(withId(R.id.nav_mindful_stretch)).perform(ViewActions.click());
+        onView(withId(R.id.next_button)).check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void validateNavDrawerProgressiveMuscleRelaxationFragmentTest() {
+        onView(withId(R.id.drawer_layout)).perform(DrawerActions.open());
+        onView(withId(R.id.nav_progressive_muscle_relaxation)).perform(ViewActions.click());
+        onView(withId(R.id.next_button)).check(matches(isDisplayed()));
     }
 
     @Test

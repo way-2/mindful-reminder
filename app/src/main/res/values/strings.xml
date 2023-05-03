@@ -90,4 +90,11 @@
     <string name="content_description_worry_entry_box">Text box to input your entry on what you have been worrying about today</string>
     <string name="additional_credits">Additional Credits</string>
     <string name="license">License Information</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="content_description_mindful_stretching_start_button">This button is used to step through the mindful stretching routine.</string>
+    <string name="mindful_stretch">Mindful Stretching</string>
+    <string name="content_description_next_button">This button steps forward in the exercise</string>
+    <string name="body_scan">Body Scan Meditation</string>
+    <string name="progressive_muscle_relaxation">Progressive Muscle Relaxation</string>
 </resources>

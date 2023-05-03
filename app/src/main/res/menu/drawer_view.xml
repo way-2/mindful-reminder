@@ -20,6 +20,18 @@
             android:id="@+id/nav_grounding"
             android:title="@string/grounding"
             />
+        <item
+            android:id="@+id/nav_mindful_stretch"
+            android:title="@string/mindful_stretch"
+            />
+        <item
+            android:id="@+id/nav_progressive_muscle_relaxation"
+            android:title="@string/progressive_muscle_relaxation"
+            />
+        <item
+            android:id="@+id/nav_body_scan_meditation"
+            android:title="@string/body_scan"
+            />
     </group>
 
     <group

@@ -25,12 +25,15 @@ import com.google.android.material.navigation.NavigationView;
 import com.way2.mindful_reminder.R;
 import com.way2.mindful_reminder.fragments.AboutFragment;
 import com.way2.mindful_reminder.fragments.AffirmationFragment;
+import com.way2.mindful_reminder.fragments.BodyScanMeditationFragment;
 import com.way2.mindful_reminder.fragments.BreatheFragment;
 import com.way2.mindful_reminder.fragments.DailyMindfulnessActivity;
 import com.way2.mindful_reminder.fragments.GroundingFragment;
+import com.way2.mindful_reminder.fragments.MindfulStretchingFragment;
 import com.way2.mindful_reminder.fragments.MindfulnessJournalCalendar;
 import com.way2.mindful_reminder.fragments.MindfulnessJournalStart;
 import com.way2.mindful_reminder.fragments.MindfulnessJournalTodaysEntry;
+import com.way2.mindful_reminder.fragments.ProgressiveMuscleRelaxationFragment;
 import com.way2.mindful_reminder.fragments.SettingsFragment;
 import com.way2.mindful_reminder.service.BackgroundTasks;
 import com.way2.mindful_reminder.util.MindfulReminder;
@@ -131,6 +134,15 @@ public class ActivityMain extends AppCompatActivity {
                 break;
             case R.id.nav_review_journal:
                 fragmentClass = MindfulnessJournalCalendar.class;
+                break;
+            case R.id.nav_mindful_stretch:
+                fragmentClass = MindfulStretchingFragment.class;
+                break;
+            case R.id.nav_progressive_muscle_relaxation:
+                fragmentClass = ProgressiveMuscleRelaxationFragment.class;
+                break;
+            case R.id.nav_body_scan_meditation:
+                fragmentClass = BodyScanMeditationFragment.class;
                 break;
         }
         try {

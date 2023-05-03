@@ -1,105 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="affirmations_array">
-        <item>I am worthy of love and respect.</item>
-        <item>I am capable of achieving my goals.</item>
-        <item>I trust my intuition and make wise decisions.</item>
-        <item>I am strong and resilient.</item>
-        <item>I am grateful for everything in my life.</item>
-        <item>I believe in myself and my abilities.</item>
-        <item>I radiate positivity and attract good things.</item>
-        <item>I am confident in my unique talents and skills.</item>
-        <item>I am deserving of happiness and success.</item>
-        <item>I am surrounded by supportive and loving people.</item>
-        <item>I am in control of my thoughts and emotions.</item>
-        <item>I forgive myself and others easily.</item>
-        <item>I am worthy of abundance and prosperity.</item>
-        <item>I am constantly improving and growing.</item>
-        <item>I am at peace with myself and my past.</item>
-        <item>I am always learning and expanding my knowledge.</item>
-        <item>I am grateful for my body and treat it with kindness.</item>
-        <item>I am worthy of respect and admiration.</item>
-        <item>I trust the universe to guide me towards my path.</item>
-        <item>I am open to new opportunities and experiences.</item>
-        <item>I am free of negative self-talk and limiting beliefs.</item>
-        <item>I am grateful for my unique qualities and personality.</item>
-        <item>I am kind and compassionate towards myself and others.</item>
-        <item>I am confident in my ability to handle challenges.</item>
-        <item>I am worthy of love and affection.</item>
-        <item>I am successful in all areas of my life.</item>
-        <item>I am living my best life.</item>
-        <item>I am constantly attracting positive energy.</item>
-        <item>I am worthy of achieving my dreams.</item>
-        <item>I am proud of my accomplishments.</item>
-        <item>I am surrounded by abundance and prosperity.</item>
-        <item>I am confident in my ability to achieve my goals.</item>
-        <item>I am worthy of respect and admiration.</item>
-        <item>I am grateful for the challenges that make me stronger.</item>
-        <item>I am surrounded by positive and supportive people.</item>
-        <item>I am a magnet for good things.</item>
-        <item>I am in charge of my own happiness.</item>
-        <item>I am confident in my ability to create the life I want.</item>
-        <item>I am grateful for my experiences and lessons learned.</item>
-        <item>I am worthy of success and prosperity.</item>
-        <item>I am loved unconditionally.</item>
-        <item>I am patient and trust the timing of my life.</item>
-        <item>I am worthy of trust and honesty from others.</item>
-        <item>I am constantly improving my mindset and attitude.</item>
-        <item>I am capable of overcoming any obstacle.</item>
-        <item>I am grateful for the abundance in my life.</item>
-        <item>I am confident in my own abilities and skills.</item>
-        <item>I am worthy of respect and kindness from others.</item>
-        <item>I am creating a life that brings me joy and fulfillment.</item>
-        <item>I am at peace with my past and excited for my future.</item>
-        <item>I am capable of achieving my dreams.</item>
-        <item>I am worthy of love and affection from others.</item>
-        <item>I am surrounded by positive and loving relationships.</item>
-        <item>I am grateful for my inner strength and resilience.</item>
-        <item>I am confident in my own beauty and worth.</item>
-        <item>I am worthy of success and happiness.</item>
-        <item>I am surrounded by opportunities for growth and learning.</item>
-        <item>I am deserving of all the good things in life.</item>
-        <item>I am constantly improving and evolving.</item>
-        <item>I am worthy of kindness and compassion from others.</item>
-        <item>I am grateful for my body and treat it with love.</item>
-        <item>I am confident in my own creativity and imagination.</item>
-        <item>I am worthy of trust and respect from others.</item>
-        <item>I am living a life that reflects my values and passions.</item>
-        <item>I am surrounded by abundance and prosperity.</item>
-        <item>I am capable of achieving anything I set my mind to.</item>
-        <item>I am grateful for the opportunities to learn and grow.</item>
-        <item>I am worthy of love and respect.</item>
-        <item>I am capable of achieving anything I set my mind to.</item>
-        <item>I am strong, confident, and resilient.</item>
-        <item>I choose to focus on the good in every situation.</item>
-        <item>I am grateful for everything in my life.</item>
-        <item>I trust in my abilities and instincts.</item>
-        <item>I am surrounded by positive energy and love.</item>
-        <item>I let go of negative thoughts and emotions.</item>
-        <item>I am worthy of success and happiness.</item>
-        <item>I radiate love and positivity wherever I go.</item>
-        <item>I am blessed with abundance and prosperity.</item>
-        <item>I am patient, kind, and compassionate towards myself and others.</item>
-        <item>I am healthy, vibrant, and full of energy.</item>
-        <item>I am proud of myself and my accomplishments.</item>
-        <item>I forgive myself and others for past mistakes.</item>
-        <item>I am at peace with myself and the world around me.</item>
-        <item>I am in control of my thoughts and emotions.</item>
-        <item>I am deserving of love, joy, and abundance.</item>
-        <item>I trust that everything happens for a reason.</item>
-        <item>I attract positive people and opportunities into my life.</item>
-        <item>I am grateful for my body and all that it does for me.</item>
-        <item>I am worthy of self-care and self-love.</item>
-        <item>I am blessed with endless possibilities and opportunities.</item>
-        <item>I am confident in my abilities and talents.</item>
-        <item>I am open to learning and growth.</item>
-        <item>I choose to see the beauty in everything and everyone.</item>
-        <item>I am surrounded by abundance and prosperity.</item>
-        <item>I am grateful for the present moment and all that it holds.</item>
-        <item>I am loved, appreciated, and valued.</item>
-        <item>I trust the journey of my life.</item>
-        <item>I release all fear and embrace love.</item>
-        <item>I am capable of overcoming any obstacle.</item>
-        <item>I am filled with joy, peace, and gratitude</item>
+        <item>This too shall pass</item>
+        <item>Just be</item>
+        <item>You don’t have to control your thoughts. You just have to stop letting them control you.</item>
+        <item>It is what it is</item>
+        <item>You are right where you are supposed to be.</item>
+        <item>Life isn’t that happens to you, it’s how you react to what happens to you.</item>
+        <item>This too shall pass</item>
+        <item>Nothing good gets away</item>
+        <item>Whatever it takes, be yourself</item>
+        <item>Think of your best self and show up as them</item>
+        <item>Small smart decisions</item>
+        <item>What has been is not what will be</item>
+        <item>I am present in this moment, and this moment is enough</item>
+        <item>Breathe in peace, exhale stress</item>
+        <item>I am calm, centered, and focused</item>
+        <item>May I be kind to myself and others</item>
+        <item>I am grateful for this moment and all it offers</item>
+        <item>I let go of worries and trust in the universe</item>
+        <item>With each breath, I become more relaxed and at ease</item>
+        <item>I am a peaceful presence in the world</item>
+        <item>I accept what is and let go of what was</item>
+        <item>I choose to let go of negativity and embrace positivity</item>
+        <item>I am here, now, fully present and engaged</item>
+        <item>With every breath, I release tension and find peace</item>
+        <item>I trust in the wisdom of my body and mind</item>
+        <item>I am grateful for the small things in life that bring me joy</item>
+        <item>I let go of the past and embrace the present moment</item>
+        <item>I am open to the beauty and wonder of the world around me</item>
+        <item>I am at peace with myself and those around me</item>
+        <item>I am mindful of my thoughts, emotions, and actions</item>
+        <item>I trust in the journey of life and where it\'s taking me</item>
+        <item>I am grounded and rooted in the present moment</item>
+        <item>I am enough, just as I am</item>
+        <item>I cultivate patience and understanding with myself and others</item>
+        <item>I let go of judgments and embrace compassion</item>
+        <item>I am grateful for the lessons that come from each experience</item>
+        <item>I am calm and centered in the midst of chaos</item>
+        <item>I trust in my intuition and inner wisdom</item>
+        <item>I am open to change and growth</item>
+        <item>I focus on my breath and allow my thoughts to pass</item>
+        <item>I am kind to myself and practice self-compassion</item>
+        <item>I am mindful of my surroundings and the beauty of nature</item>
+        <item>I embrace the uncertainty of life with a sense of adventure</item>
+        <item>I find peace in the present moment, free from worry and anxiety</item>
+        <item>I am aware of my feelings and choose to respond with kindness and understanding</item>
+        <item>I am grateful for the abundance of love and support in my life</item>
+        <item>I trust in the process of life and the journey it takes me on</item>
+        <item>I am free from attachment to outcomes and trust in the flow of life</item>
+        <item>I find joy and beauty in simple moments</item>
+        <item>I am centered and grounded in my own inner peace</item>
     </string-array>
 </resources>

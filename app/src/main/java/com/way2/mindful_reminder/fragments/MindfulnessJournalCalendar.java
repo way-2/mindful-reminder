@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -39,10 +40,7 @@ import java.util.concurrent.ExecutionException;
 public class MindfulnessJournalCalendar extends Fragment {
 
     private CalendarView calendarView;
-    private TextView gratitudeJournalDayEntry;
-    private TextView worryJournalDayEntry;
-    private TextView howWasITodayJournalDayEntry;
-    private TextView entryHeaderText;
+    private LinearLayout journalReviewLayout;
     private TextView thisDaysText;
     private List<DayOfWeek> daysOfWeek;
     private LocalDate selectedDate;
@@ -60,11 +58,8 @@ public class MindfulnessJournalCalendar extends Fragment {
     }
 
     private void setupCalendarView(View view) {
-        gratitudeJournalDayEntry = view.findViewById(R.id.mindfulness_journal_day_entry);
-        worryJournalDayEntry = view.findViewById(R.id.worry_journal_day_entry);
-        howWasITodayJournalDayEntry = view.findViewById(R.id.how_was_i_today_entry);
         thisDaysText = view.findViewById(R.id.this_days_affirmation);
-        entryHeaderText = view.findViewById(R.id.entry_header_text);
+        journalReviewLayout = view.findViewById(R.id.journal_review_layout);
         calendarView = view.findViewById(R.id.mindfulness_journal_events_calendar);
         YearMonth current = YearMonth.now();
         YearMonth start = current.minusMonths(100);
@@ -156,11 +151,8 @@ public class MindfulnessJournalCalendar extends Fragment {
                 setNotSelectedDateBackground(container, calendarDay);
             }
             if ((calendarDay.getDate() != selectedDate) && (calendarDay.getDate() != oldDate)) {
-                gratitudeJournalDayEntry.setVisibility(View.GONE);
-                worryJournalDayEntry.setVisibility(View.GONE);
-                entryHeaderText.setVisibility(View.GONE);
-                howWasITodayJournalDayEntry.setVisibility(View.GONE);
                 thisDaysText.setVisibility(View.GONE);
+                journalReviewLayout.setVisibility(View.GONE);
             }
         }
     }
@@ -201,6 +193,7 @@ public class MindfulnessJournalCalendar extends Fragment {
                 TextView entryHeaderText = (TextView) view.getRootView().findViewById(R.id.entry_header_text);
                 TextView howWasITodayJournalDayEntry = (TextView) view.getRootView().findViewById(R.id.how_was_i_today_entry);
                 TextView thisDaysText = (TextView) view.getRootView().findViewById(R.id.this_days_affirmation);
+                LinearLayout journalReviewLayout = (LinearLayout) view.getRootView().findViewById(R.id.journal_review_layout);
                 if (day.getPosition() == DayPosition.MonthDate) {
                     setSelectedOldDate(day);
                     DateTimeFormatter HEADER_DATE_FORMAT = DateTimeFormatter.ofPattern("MMMM dd yyyy");
@@ -212,34 +205,26 @@ public class MindfulnessJournalCalendar extends Fragment {
                         String headerString = "On " + dateString + "...";
                         if (journalEntry != null) {
                             entryHeaderText.setText(headerString);
-                            entryHeaderText.setVisibility(View.VISIBLE);
                             if (null != journalEntry.getRuminationEntry()) {
                                 String worryDisplayString = "I was worrying about...\n" + journalEntry.getRuminationEntry();
                                 worryEntryTextView.setText(worryDisplayString);
-                                worryEntryTextView.setVisibility(View.VISIBLE);
-                            } else if (null == journalEntry.getRuminationEntry()) {
-                                worryEntryTextView.setVisibility(View.GONE);
                             }
                             if (null != journalEntry.getGratitudeEntry()) {
                                 String displayString = "I was grateful for...\n" + journalEntry.getGratitudeEntry();
                                 entryTextView.setText(displayString);
-                                entryTextView.setVisibility(View.VISIBLE);
-                            } else if (null == journalEntry.getGratitudeEntry()) {
-                                entryTextView.setVisibility(View.GONE);
                             }
                             if (null != journalEntry.getFeelingEntry()) {
                                 howWasITodayJournalDayEntry.setText(journalEntry.getFeelingEntry());
-                                howWasITodayJournalDayEntry.setVisibility(View.VISIBLE);
-                            } else if (null == journalEntry.getFeelingEntry()) {
-                                howWasITodayJournalDayEntry.setVisibility(View.GONE);
                             }
                             if (null != journalEntry.getDailyAffirmation()) {
                                 String affirmationDisplayString = "My affirmation was...\n" + journalEntry.getDailyAffirmation();
                                 thisDaysText.setText(affirmationDisplayString);
-                                thisDaysText.setVisibility(View.VISIBLE);
-                            } else if (null == journalEntry.getDailyAffirmation()) {
-                                thisDaysText.setVisibility(View.GONE);
                             }
+                            thisDaysText.setVisibility(View.VISIBLE);
+                            journalReviewLayout.setVisibility(View.VISIBLE);
+                        } else {
+                            journalReviewLayout.setVisibility(View.GONE);
+                            thisDaysText.setVisibility(View.GONE);
                         }
                     } catch (ExecutionException | InterruptedException ex) {
                         ex.printStackTrace();

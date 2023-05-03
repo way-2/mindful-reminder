@@ -52,6 +52,34 @@
         <item>22</item>
         <item>23</item>
     </string-array>
+    <string-array name="notification_times_string">
+        <item>5 minutes</item>
+        <item>10 minutes</item>
+        <item>15 minutes</item>
+        <item>20 minutes</item>
+        <item>25 minutes</item>
+        <item>30 minutes</item>
+        <item>35 minutes</item>
+        <item>40 minutes</item>
+        <item>45 minutes</item>
+        <item>50 minutes</item>
+        <item>55 minutes</item>
+        <item>60 minutes</item>
+    </string-array>
+    <string-array name="notification_times_int">
+        <item>5</item>
+        <item>10</item>
+        <item>15</item>
+        <item>20</item>
+        <item>25</item>
+        <item>30</item>
+        <item>35</item>
+        <item>40</item>
+        <item>45</item>
+        <item>50</item>
+        <item>55</item>
+        <item>60</item>
+    </string-array>
     <array name="background_images">
         <item>@drawable/ultra_detailed_photo__calm_lake__huge_majestic_mountains_in_the_backgr_s1436935935_st64_g7_5</item>
         <item>@drawable/ultra_detailed_photo__clear_blue_ocean__rocks_in_the_water_s3748618557_st64_g7_5</item>
@@ -64,4 +92,35 @@
         <item>@drawable/ultra_detailed_photo__majestic_scene_s2002617885_st64_g7_5</item>
         <item>@drawable/high_quality_photo__calm_s2914371834_st64_g7_5</item>
     </array>
+    <string-array name="mindful_stretching">
+        <item>Mindful stretching combines stretching exercises with mindfulness techniques to promote relaxation, improve flexibility, and connect your mind and body.</item>
+        <item>Find a quiet and comfortable space where you can stretch without distractions or interruptions. You can do this routine either standing up or seated on a chair or mat.</item>
+        <item>Begin by taking a few deep breaths, inhaling through your nose and exhaling through your mouth. With each exhale, allow your body to relax and release tension.</item>
+        <item>Start with gentle stretches for your neck, rolling your head slowly from side to side, and then forward and back. You can also add gentle rotations, letting your chin drop to your chest and then rolling your head in a circle.</item>
+        <item>Next, focus on stretching your shoulders and upper back. Interlace your fingers behind your back and gently lift your arms up behind you, stretching your chest and shoulders. Hold for a few breaths, then release.</item>
+        <item>Move on to stretches for your lower back and hips. Sitting on a chair, cross your right ankle over your left knee, and gently press your right knee down to stretch your hip. Hold for a few breaths, then switch sides.</item>
+        <item>Finally, stretch your legs and hamstrings. Standing up, place your right foot forward and gently bend your right knee, stretching your left hamstring. Hold for a few breaths, then switch sides.</item>
+        <item>As you stretch, pay attention to how your body feels and focus on the sensations in your muscles. Take deep, slow breaths, and visualize your muscles relaxing and releasing tension.</item>
+        <item>End the routine with a few deep breaths and a sense of gratitude for your body and the ability to move and stretch. Press the button again to restart this practice if you\'d like.</item>
+    </string-array>
+    <string-array name="progressive_muscle_relaxation">
+        <item>Progressive muscle relaxation is a technique where you systematically tense and relax each muscle group in your body to promote relaxation and release tension.</item>
+        <item>Find a comfortable position, either lying down or sitting in a chair.</item>
+        <item>Close your eyes and take a few deep breaths, inhaling through your nose and exhaling through your mouth.</item>
+        <item>Starting at your feet, tense the muscles in your feet and hold for a few seconds, then release and relax the muscles.</item>
+        <item>Move up to your calf muscles, tense them and hold for a few seconds, then release and relax.</item>
+        <item>Continue tensing and releasing the muscles in each part of your body, working your way up to your thighs, hips, abdomen, chest, arms, shoulders, neck, and face.</item>
+        <item>As you tense and release each muscle group, focus your attention on the sensations in your muscles, noticing the difference between tension and relaxation.</item>
+        <item>Take deep breaths as you go through each muscle group, and allow yourself to fully relax and release any tension or stress. Press the button again to restart this practice if you\'d like.</item>
+    </string-array>
+    <string-array name="body_scan">
+        <item>Body scan meditation is a mindfulness practice where you focus your attention on different parts of your body, one at a time, to promote relaxation, reduce stress and anxiety, and increase your sense of well-being.</item>
+        <item>Find a comfortable position, either lying down or sitting in a chair.</item>
+        <item>Close your eyes and take a few deep breaths, inhaling through your nose and exhaling through your mouth.</item>
+        <item>Bring your attention to the sensations in your body, starting with your feet and working your way up to your head.</item>
+        <item>Focus on each part of your body, noticing any sensations you feel, such as tension, discomfort, or relaxation.</item>
+        <item>Allow yourself to fully experience each sensation without judgment, and simply observe what you are feeling in each moment.</item>
+        <item>Take deep breaths as you move through your body, and allow yourself to fully relax and let go of any tension or stress.</item>
+        <item>When you reach your head, take a few more deep breaths, and then slowly open your eyes. Press the button again to restart this practice if you\'d like.</item>
+    </string-array>
 </resources>
