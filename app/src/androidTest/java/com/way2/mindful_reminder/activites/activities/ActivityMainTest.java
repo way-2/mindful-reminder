@@ -67,84 +67,84 @@ public class ActivityMainTest {
     @Test
     public void validateNavDrawerAffirmationFragmentTest() {
         onView(withId(R.id.drawer_layout)).perform(DrawerActions.open());
-        onView(withId(R.id.nav_affirmation)).perform(ViewActions.click());
+        onView(withId(R.id.nav_affirmation)).perform(ViewActions.scrollTo(),ViewActions.click());
         onView(withId(R.id.affirmation)).check(matches(isDisplayed()));
     }
 
     @Test
     public void validateNavDrawerActivityFragmentTest() {
         onView(withId(R.id.drawer_layout)).perform(DrawerActions.open());
-        onView(withId(R.id.nav_activity)).perform(ViewActions.click());
+        onView(withId(R.id.nav_activity)).perform(ViewActions.scrollTo(),ViewActions.click());
         onView(withId(R.id.daily_mindfulness_activity)).check(matches(isDisplayed()));
     }
 
     @Test
     public void validateNavDrawerBreatheHelperFragmentTest() {
         onView(withId(R.id.drawer_layout)).perform(DrawerActions.open());
-        onView(withId(R.id.nav_breathe_helper)).perform(ViewActions.click());
+        onView(withId(R.id.nav_breathe_helper)).perform(ViewActions.scrollTo(),ViewActions.click());
         onView(withId(R.id.breath_help_steps_text)).check(matches(isDisplayed()));
     }
 
     @Test
     public void validateNavDrawerGroundingFragmentTest() {
         onView(withId(R.id.drawer_layout)).perform(DrawerActions.open());
-        onView(withId(R.id.nav_grounding)).perform(ViewActions.click());
+        onView(withId(R.id.nav_grounding)).perform(ViewActions.scrollTo(),ViewActions.click());
         onView(withId(R.id.progress_donut)).check(matches(isDisplayed()));
     }
 
     @Test
     public void validateNavDrawerBodyScanMeditationFragmentTest() {
         onView(withId(R.id.drawer_layout)).perform(DrawerActions.open());
-        onView(withId(R.id.nav_body_scan_meditation)).perform(ViewActions.click());
+        onView(withId(R.id.nav_body_scan_meditation)).perform(ViewActions.scrollTo(),ViewActions.click());
         onView(withId(R.id.next_button)).check(matches(isDisplayed()));
     }
 
     @Test
     public void validateNavDrawerMindfulStretchingFragmentTest() {
         onView(withId(R.id.drawer_layout)).perform(DrawerActions.open());
-        onView(withId(R.id.nav_mindful_stretch)).perform(ViewActions.click());
+        onView(withId(R.id.nav_mindful_stretch)).perform(ViewActions.scrollTo(),ViewActions.click());
         onView(withId(R.id.next_button)).check(matches(isDisplayed()));
     }
 
     @Test
     public void validateNavDrawerProgressiveMuscleRelaxationFragmentTest() {
         onView(withId(R.id.drawer_layout)).perform(DrawerActions.open());
-        onView(withId(R.id.nav_progressive_muscle_relaxation)).perform(ViewActions.click());
+        onView(withId(R.id.nav_progressive_muscle_relaxation)).perform(ViewActions.scrollTo(),ViewActions.click());
         onView(withId(R.id.next_button)).check(matches(isDisplayed()));
     }
 
     @Test
     public void validateNavDrawerTodaysJournalEntryFragmentTest() {
         onView(withId(R.id.drawer_layout)).perform(DrawerActions.open());
-        onView(withId(R.id.nav_todays_journal_entry)).perform(ViewActions.click());
+        onView(withId(R.id.nav_todays_journal_entry)).perform(ViewActions.scrollTo(),ViewActions.click());
         onView(withId(R.id.header_text_view)).check(matches(isDisplayed()));
     }
 
     @Test
     public void validateNavDrawerReviewJournalFragmentTest() {
         onView(withId(R.id.drawer_layout)).perform(DrawerActions.open());
-        onView(withId(R.id.nav_review_journal)).perform(ViewActions.click());
+        onView(withId(R.id.nav_review_journal)).perform(ViewActions.scrollTo(),ViewActions.click());
         onView(withId(R.id.calendar_header_text_view)).check(matches(isDisplayed()));
     }
 
     @Test
     public void validateNavDrawerSettingsFragmentTest() {
         onView(withId(R.id.drawer_layout)).perform(DrawerActions.open());
-        onView(withId(R.id.nav_settings)).perform(ViewActions.click());
+        onView(withId(R.id.nav_settings)).perform(ViewActions.scrollTo(),ViewActions.click());
         onView(withText("Toggle Affirmation Notifications")).check(matches(isDisplayed()));
     }
 
     @Test
     public void validateNavDrawerAboutFragmentTest() {
         onView(withId(R.id.drawer_layout)).perform(DrawerActions.open());
-        onView(withId(R.id.nav_about)).perform(ViewActions.click());
+        onView(withId(R.id.nav_about)).perform(ViewActions.scrollTo(),ViewActions.click());
         onView(withId(R.id.about_text_1)).check(matches(isDisplayed()));
     }
 
     @Test
     public void validateBackButtonFromFragmentTest() {
         onView(withId(R.id.drawer_layout)).perform(DrawerActions.open());
-        onView(withId(R.id.nav_activity)).perform(ViewActions.click());
+        onView(withId(R.id.nav_activity)).perform(ViewActions.scrollTo(),ViewActions.click());
         onView(withId(R.id.daily_mindfulness_activity)).check(matches(isDisplayed()));
         Espresso.pressBack();
         onView(withId(R.id.affirmation)).check(matches(isDisplayed()));
