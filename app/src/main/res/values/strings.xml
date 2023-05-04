@@ -86,15 +86,16 @@
     <string name="border_around_inspirational_image">Border around inspirational image</string>
     <string name="content_description_daily_activity_content">Displays content of the selected date including: Gratitude entry, Worry entry, How I am feeling and Daily affirmation</string>
     <string name="content_description_gratitude_entry_box">Text box to enter your gratitude journal entry for the day</string>
-    <string name="content_description_grounding_activity_counter_button">Button counter for the grounding activity, pressing it increses the counter</string>
+    <string name="content_description_grounding_activity_counter_button">Counter for the grounding activity, pressing it increases the counter</string>
     <string name="content_description_worry_entry_box">Text box to input your entry on what you have been worrying about today</string>
     <string name="additional_credits">Additional Credits</string>
     <string name="license">License Information</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="content_description_mindful_stretching_start_button">This button is used to step through the mindful stretching routine.</string>
+    <string name="content_description_mindful_stretching_start_button">Used to step through the mindful stretching routine.</string>
     <string name="mindful_stretch">Mindful Stretching</string>
     <string name="content_description_next_button">This button steps forward in the exercise</string>
     <string name="body_scan">Body Scan Meditation</string>
     <string name="progressive_muscle_relaxation">Progressive Muscle Relaxation</string>
+    <string name="content_description_breathe_counter">Counter for the breathing exercise</string>
 </resources>

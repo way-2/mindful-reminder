@@ -42,7 +42,7 @@
 
     <Button
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="60dp"
         android:text="@string/additional_credits"
         android:id="@+id/open_source_credits_button"
         android:layout_weight="5"
@@ -50,7 +50,7 @@
 
     <Button
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="60dp"
         android:text="@string/license"
         android:id="@+id/license_button"
         android:layout_weight="5"

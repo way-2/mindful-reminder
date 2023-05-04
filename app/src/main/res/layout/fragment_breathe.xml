@@ -27,6 +27,7 @@
         app:progressTextSize="30dp"
         app:progressbarColor="@color/md_theme_dark_primary"
         app:progressBarThickness="10dp"
+        android:contentDescription="@string/content_description_breathe_counter"
         />
 
 </LinearLayout>
