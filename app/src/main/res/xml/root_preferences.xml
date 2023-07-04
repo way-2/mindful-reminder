@@ -31,20 +31,6 @@
             android:title="Mindfulness Journal Notification Time"
             />
 
-        <SwitchPreferenceCompat
-            app:key="daily_activity_notification_toggle"
-            app:title="@string/daily_activity_notifications"
-            />
-
-        <ListPreference
-            android:enabled="false"
-            android:defaultValue="08"
-            android:entries="@array/hour_string"
-            android:entryValues="@array/hour_int"
-            android:key="daily_notification_hour_list"
-            android:title="Hour for daily mindfulness activity reminder"
-            />
-
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/journal_category">

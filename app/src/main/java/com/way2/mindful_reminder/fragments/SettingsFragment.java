@@ -1,10 +1,7 @@
 package com.way2.mindful_reminder.fragments;
 
-import static com.way2.mindful_reminder.config.Constants.ACTIVITY_NOTIFICATION_WORKER_TAG;
 import static com.way2.mindful_reminder.config.Constants.AFFIRMATION_NOTIFICATION_TOGGLE;
 import static com.way2.mindful_reminder.config.Constants.AFFIRMATION_NOTIFICATION_WORKER_TAG;
-import static com.way2.mindful_reminder.config.Constants.DAILY_ACTIVITY_TOGGLE;
-import static com.way2.mindful_reminder.config.Constants.DAILY_NOTIFICATION_HOUR_LIST;
 import static com.way2.mindful_reminder.config.Constants.MINDFULNESS_JOURNAL_NOTIFICATION_HOUR_LIST;
 import static com.way2.mindful_reminder.config.Constants.MINDFULNESS_JOURNAL_NOTIFICATION_TOGGLE;
 import static com.way2.mindful_reminder.config.Constants.MINDFULNESS_JOURNAL_NOTIFICATION_WORKER;
@@ -56,7 +53,6 @@ import kotlin.io.ByteStreamsKt;
 public class SettingsFragment extends PreferenceFragmentCompat {
 
     private ListPreference notificationIntervalListPreference;
-    private ListPreference dailyReminderHourListPreference;
     private ListPreference gratitudeReminderHourListPreference;
     private WorkerManager workerManager;
     private Gson gson;
@@ -89,7 +85,6 @@ public class SettingsFragment extends PreferenceFragmentCompat {
 
     private void getUiElements() {
         affirmationSettings();
-        activitySettings();
         gratitudeSettings();
         setupButtons();
     }
@@ -144,7 +139,6 @@ public class SettingsFragment extends PreferenceFragmentCompat {
     );
 
     private File getFilePath() {
-
         return MindfulReminder.getInstance().getExternalFilesDir(null);
     }
 
@@ -218,43 +212,6 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                     WorkInfo.State state = workInfo.get(0).getState();
                     if ((state == WorkInfo.State.RUNNING) || (state == WorkInfo.State.ENQUEUED)) {
                         workerManager.startGratitudeNotificationWorker();
-                    }
-                }
-            } catch (ExecutionException | InterruptedException ex) {
-                ex.printStackTrace();
-            }
-            return true;
-        });
-    }
-
-    private void activitySettings() {
-        SwitchPreferenceCompat dailyReminderSwitch = findPreference(DAILY_ACTIVITY_TOGGLE);
-        dailyReminderHourListPreference = findPreference(DAILY_NOTIFICATION_HOUR_LIST);
-        if (dailyReminderSwitch.isChecked()) {
-            dailyReminderHourListPreference.setEnabled(true);
-        }
-        dailyReminderSwitch.setOnPreferenceChangeListener((preference, newValue) -> {
-            if ((Boolean) newValue) {
-                workerManager.startMindfulnessNotificationWorkerAlways();
-                dailyReminderHourListPreference.setEnabled(true);
-            } else {
-                workerManager.stopActivityNotificationWorker();
-                dailyReminderHourListPreference.setEnabled(false);
-            }
-            return true;
-        });
-        dailyReminderHourListPreference.setSummary(dailyReminderHourListPreference.getEntry());
-        dailyReminderHourListPreference.setOnPreferenceChangeListener((preference, newValue) -> {
-            String textValue = newValue.toString();
-            int index = dailyReminderHourListPreference.findIndexOfValue(textValue);
-            String entryString = dailyReminderHourListPreference.getEntries()[index].toString();
-            dailyReminderHourListPreference.setSummary(entryString);
-            try {
-                List<WorkInfo> workInfo = WorkManager.getInstance(MindfulReminder.getContext()).getWorkInfosByTag(ACTIVITY_NOTIFICATION_WORKER_TAG).get();
-                if (!workInfo.isEmpty()) {
-                    WorkInfo.State state = workInfo.get(0).getState();
-                    if ((state == WorkInfo.State.RUNNING) || (state == WorkInfo.State.ENQUEUED)) {
-                        workerManager.startMindfulnessNotificationWorker();
                     }
                 }
             } catch (ExecutionException | InterruptedException ex) {

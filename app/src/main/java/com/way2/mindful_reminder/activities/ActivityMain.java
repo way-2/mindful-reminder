@@ -1,6 +1,5 @@
 package com.way2.mindful_reminder.activities;
 
-import static com.way2.mindful_reminder.config.Constants.DAILY_MINDFULNESS_REDIRECT;
 import static com.way2.mindful_reminder.config.Constants.MINDFULNESS_JOURNAL_REDIRECT;
 import static com.way2.mindful_reminder.config.Constants.REDIRECT;
 
@@ -27,7 +26,6 @@ import com.way2.mindful_reminder.fragments.AboutFragment;
 import com.way2.mindful_reminder.fragments.AffirmationFragment;
 import com.way2.mindful_reminder.fragments.BodyScanMeditationFragment;
 import com.way2.mindful_reminder.fragments.BreatheFragment;
-import com.way2.mindful_reminder.fragments.DailyMindfulnessActivity;
 import com.way2.mindful_reminder.fragments.GroundingFragment;
 import com.way2.mindful_reminder.fragments.MindfulStretchingFragment;
 import com.way2.mindful_reminder.fragments.MindfulnessJournalCalendar;
@@ -83,9 +81,7 @@ public class ActivityMain extends AppCompatActivity {
         FragmentManager fragmentManager = getSupportFragmentManager();
         if ((null != intent.getExtras()) && (null != intent.getExtras().get(REDIRECT))) {
             String intentRedirectValue = intent.getExtras().get(REDIRECT).toString();
-            if (DAILY_MINDFULNESS_REDIRECT.equals(intentRedirectValue)) {
-                fragmentManager.beginTransaction().replace(R.id.fragment_frame, new DailyMindfulnessActivity()).addToBackStack(null).commit();
-            } else if (MINDFULNESS_JOURNAL_REDIRECT.equals(intentRedirectValue)) {
+            if (MINDFULNESS_JOURNAL_REDIRECT.equals(intentRedirectValue)) {
                 fragmentManager.beginTransaction().replace(R.id.fragment_frame, new MindfulnessJournalTodaysEntry()).addToBackStack(null).commit();
             }
         }
@@ -119,9 +115,6 @@ public class ActivityMain extends AppCompatActivity {
                 break;
             case R.id.nav_affirmation:
                 fragmentClass = AffirmationFragment.class;
-                break;
-            case R.id.nav_activity:
-                fragmentClass = DailyMindfulnessActivity.class;
                 break;
             case R.id.nav_grounding:
                 fragmentClass = GroundingFragment.class;

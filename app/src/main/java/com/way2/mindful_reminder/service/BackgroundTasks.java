@@ -38,7 +38,7 @@ public class BackgroundTasks {
 
     private void setupWorkerManager() {
         WorkerManager workerManager = WorkerManager.getInstance();
-        workerManager.startMindfulnessNotificationWorker();
+        workerManager.stopActivityNotificationWorker();
         workerManager.startAffirmationNotificationWorker();
         workerManager.startGratitudeNotificationWorker();
         workerManager.startDailyActivityWorker();
