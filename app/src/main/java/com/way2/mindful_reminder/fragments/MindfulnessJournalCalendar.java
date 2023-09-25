@@ -11,7 +11,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.preference.PreferenceManager;
@@ -143,7 +142,7 @@ public class MindfulnessJournalCalendar extends Fragment {
         container.textView.setText(String.valueOf(calendarDay.getDate().getDayOfMonth()));
         container.day = calendarDay;
         if (calendarDay.getPosition() != DayPosition.MonthDate) {
-            container.textView.setTextColor(getResources().getColor(R.color.md_theme_dark_outline, MindfulReminder.getContext().getTheme()));
+            container.textView.setTextColor(com.google.android.material.R.attr.colorOutlineVariant);
         } else {
             if (calendarDay.getDate() == selectedDate) {
                 setSelectedDateBackground(container, calendarDay);
@@ -159,17 +158,17 @@ public class MindfulnessJournalCalendar extends Fragment {
 
     private void setNotSelectedDateBackground(DayViewContainer container, CalendarDay calendarDay) {
         if (databaseDates.contains(calendarDay.getDate())) {
-            container.getView().setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.calendar_day_entry_background, MindfulReminder.getContext().getTheme()));
+            container.getView().setBackgroundResource(R.drawable.calendar_day_entry_background);
         } else {
-            container.getView().setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.calendar_day_background, MindfulReminder.getContext().getTheme()));
+            container.getView().setBackgroundResource(R.drawable.calendar_day_background);
         }
     }
 
     private void setSelectedDateBackground(DayViewContainer container, CalendarDay calendarDay) {
         if (databaseDates.contains(calendarDay.getDate())) {
-            container.getView().setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.selected_calendar_day_entry_background, MindfulReminder.getContext().getTheme()));
+            container.getView().setBackgroundResource(R.drawable.selected_calendar_day_entry_background);
         } else {
-            container.getView().setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.selected_calendar_day_background, MindfulReminder.getContext().getTheme()));
+            container.getView().setBackgroundResource(R.drawable.selected_calendar_day_background);
         }
     }
 
@@ -189,7 +188,6 @@ public class MindfulnessJournalCalendar extends Fragment {
             textView = view.findViewById(R.id.calendarDayText);
             view.setOnClickListener(v -> {
                 TextView entryTextView = (TextView) view.getRootView().findViewById(R.id.mindfulness_journal_day_entry);
-                TextView worryEntryTextView = (TextView) view.getRootView().findViewById(R.id.worry_journal_day_entry);
                 TextView entryHeaderText = (TextView) view.getRootView().findViewById(R.id.entry_header_text);
                 TextView howWasITodayJournalDayEntry = (TextView) view.getRootView().findViewById(R.id.how_was_i_today_entry);
                 TextView thisDaysText = (TextView) view.getRootView().findViewById(R.id.this_days_affirmation);
@@ -205,10 +203,6 @@ public class MindfulnessJournalCalendar extends Fragment {
                         String headerString = "On " + dateString + "...";
                         if (journalEntry != null) {
                             entryHeaderText.setText(headerString);
-                            if (null != journalEntry.getRuminationEntry()) {
-                                String worryDisplayString = "I was worrying about...\n" + journalEntry.getRuminationEntry();
-                                worryEntryTextView.setText(worryDisplayString);
-                            }
                             if (null != journalEntry.getGratitudeEntry()) {
                                 String displayString = "I was grateful for...\n" + journalEntry.getGratitudeEntry();
                                 entryTextView.setText(displayString);

@@ -3,6 +3,9 @@ package com.way2.mindful_reminder.util;
 import android.app.Application;
 import android.content.Context;
 
+import com.google.android.material.color.DynamicColors;
+import com.google.android.material.color.DynamicColorsOptions;
+
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -39,6 +42,8 @@ public class MindfulReminder extends Application {
     public void onCreate() {
         instance = this;
         super.onCreate();
+        DynamicColorsOptions dynamicColorsOptions = new DynamicColorsOptions.Builder().build();
+        DynamicColors.applyToActivitiesIfAvailable(this, dynamicColorsOptions);
     }
 
 }

@@ -5,7 +5,6 @@
     android:layout_height="192dp"
     android:background="?attr/colorPrimaryDark"
     android:padding="16dp"
-    android:theme="@style/Theme.Material3.Dark"
     android:gravity="bottom">
 
     <TextView
@@ -13,6 +12,6 @@
         android:layout_height="wrap_content"
         android:text="@string/mindfulReminder"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:textColor="@color/md_theme_dark_surface" />
+        android:textColor="?attr/colorSurface" />
 
 </LinearLayout>

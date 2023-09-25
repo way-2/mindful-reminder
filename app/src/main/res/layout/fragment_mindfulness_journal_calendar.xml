@@ -20,8 +20,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:background="@drawable/edit_text_background"
         android:overScrollMode="never"
+        android:background="@drawable/edit_text_background"
         app:cv_dayViewResource="@layout/calendar_day_layout"
         app:cv_monthHeaderResource="@layout/calendar_day_titles_container"
         app:cv_outDateStyle="endOfGrid" />
@@ -57,13 +57,6 @@
                     android:id="@+id/mindfulness_journal_day_entry"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    />
-
-                <TextView
-                    android:id="@+id/worry_journal_day_entry"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="6dp"
                     />
 
             </LinearLayout>

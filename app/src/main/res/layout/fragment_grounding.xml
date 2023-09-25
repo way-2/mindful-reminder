@@ -43,7 +43,7 @@
         android:layout_gravity="center_horizontal"
         app:progressText="Start"
         app:progressTextSize="40dp"
-        app:progressbarColor="@color/md_theme_dark_primary"
+        app:progressbarColor="?attr/colorPrimary"
         app:progressBarThickness="15dp"
         android:contentDescription="@string/content_description_grounding_activity_counter_button"
         />

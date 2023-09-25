@@ -25,7 +25,7 @@
         android:layout_gravity="center_horizontal"
         app:progressText="Start"
         app:progressTextSize="30dp"
-        app:progressbarColor="@color/md_theme_dark_primary"
+        app:progressbarColor="?attr/colorPrimary"
         app:progressBarThickness="10dp"
         android:contentDescription="@string/content_description_breathe_counter"
         />

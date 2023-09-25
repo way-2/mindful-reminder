@@ -16,7 +16,6 @@ import android.widget.Button;
 
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatEditText;
-import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.preference.PreferenceManager;
@@ -35,7 +34,6 @@ public class MindfulnessJournalTodaysEntry extends Fragment implements View.OnCl
 
     private AppDatabase database;
     private AppCompatEditText gratitudeTextEntry;
-    private AppCompatEditText worryEntryText;
     private AppCompatButton saveButton;
     private JournalEntry todaysEntry;
     private final Button[] buttons = new Button[6];
@@ -56,31 +54,25 @@ public class MindfulnessJournalTodaysEntry extends Fragment implements View.OnCl
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.estatic_button:
-                setFocus(buttonUnfocus, buttons[0]);
-                break;
-            case R.id.happy_button:
-                setFocus(buttonUnfocus, buttons[1]);
-                break;
-            case R.id.meh_button:
-                setFocus(buttonUnfocus, buttons[2]);
-                break;
-            case R.id.unhappy_button:
-                setFocus(buttonUnfocus, buttons[3]);
-                break;
-            case R.id.sad_button:
-                setFocus(buttonUnfocus, buttons[4]);
-                break;
-            case R.id.angry_button:
-                setFocus(buttonUnfocus, buttons[5]);
-                break;
+        int selectedId = v.getId();
+        if (selectedId == R.id.estatic_button) {
+            setFocus(buttonUnfocus, buttons[0]);
+        } else if (selectedId == R.id.happy_button) {
+            setFocus(buttonUnfocus, buttons[1]);
+        } else if (selectedId == R.id.meh_button) {
+            setFocus(buttonUnfocus, buttons[2]);
+        } else if (selectedId == R.id.unhappy_button) {
+            setFocus(buttonUnfocus, buttons[3]);
+        } else if (selectedId == R.id.sad_button) {
+            setFocus(buttonUnfocus, buttons[4]);
+        } else if (selectedId == R.id.angry_button) {
+            setFocus(buttonUnfocus, buttons[5]);
         }
     }
 
     private void setFocus(Button buttonUnfocus, Button buttonFocus) {
-        buttonUnfocus.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.round_button_style_not_selected, null));
-        buttonFocus.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.round_button_selected, null));
+        buttonUnfocus.setBackgroundResource(R.drawable.round_button_style_not_selected);
+        buttonFocus.setBackgroundResource(R.drawable.round_button_selected);
         this.buttonUnfocus = buttonFocus;
     }
 
@@ -113,35 +105,6 @@ public class MindfulnessJournalTodaysEntry extends Fragment implements View.OnCl
             }
         });
 
-        worryEntryText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int lengthBefore, int lengthAfter) {
-                if (lengthAfter > lengthBefore) {
-                    if (s.toString().length() ==1) {
-                        s = "\u2022 " + s;
-                        worryEntryText.setText(s);
-                        worryEntryText.setSelection(worryEntryText.getText().length());
-                    }
-                    if (s.toString().endsWith("\n")) {
-                        s = s.toString().replace("\n", "\n\u2022 ");
-                        s = s.toString().replace("\u2022 \u2022", "\u2022");
-                        worryEntryText.setText(s);
-                        worryEntryText.setSelection(worryEntryText.getText().length());
-                    }
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
-
     }
 
     private void checkIfRunTutorial() {
@@ -161,12 +124,10 @@ public class MindfulnessJournalTodaysEntry extends Fragment implements View.OnCl
                 inputMethodManager.hideSoftInputFromWindow(v.getWindowToken(), 0);
                 database = AppDatabase.getInstance();
                 todaysEntry.setGratitudeEntry(gratitudeTextEntry.getText().toString());
-                todaysEntry.setRuminationEntry(worryEntryText.getText().toString());
                 todaysEntry.setFeelingEntry(buttonUnfocus.getText().toString());
                 todaysEntry.setDailyAffirmation(sharedPreferences.getString(AFFIRMATION_SHARED_PREFERENCE,""));
                 database.gratitudeJournalDao().insertGratitudeJournalEntry(todaysEntry).get();
                 gratitudeTextEntry.clearFocus();
-                worryEntryText.clearFocus();
             } catch (ExecutionException | InterruptedException ex) {
                 ex.printStackTrace();
             } finally {
@@ -186,9 +147,8 @@ public class MindfulnessJournalTodaysEntry extends Fragment implements View.OnCl
             JournalEntry dbTodaysEntry = database.gratitudeJournalDao().getEntryForDate(LocalDate.now()).get();
             if (null != dbTodaysEntry) {
                 gratitudeTextEntry.setText(dbTodaysEntry.getGratitudeEntry());
-                worryEntryText.setText(dbTodaysEntry.getRuminationEntry());
                 Arrays.stream(buttons).filter(button -> dbTodaysEntry.getFeelingEntry().contentEquals(button.getText())).findFirst().ifPresent(toSelect -> {
-                    toSelect.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.round_button_selected, null));
+                    toSelect.setBackgroundResource(R.drawable.round_button_selected);
                     buttonUnfocus = toSelect;
                 });
                 todaysEntry = dbTodaysEntry;
@@ -204,7 +164,6 @@ public class MindfulnessJournalTodaysEntry extends Fragment implements View.OnCl
 
     private void setupUi(View view) {
         gratitudeTextEntry = view.findViewById(R.id.gratitude_entry_text);
-        worryEntryText = view.findViewById(R.id.worry_entry_text);
         saveButton = view.findViewById(R.id.save_button);
         for (int i = 0; i < buttons.length; i++) {
             buttons[i] = view.findViewById(buttonId[i]);

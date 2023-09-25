@@ -4,7 +4,7 @@
         <shape
             android:shape="oval">
             <solid
-                android:color="@color/md_theme_dark_onPrimary"
+                android:color="?attr/colorOnPrimary"
                 />
             <padding
                 android:left="10dp"
@@ -17,7 +17,7 @@
         <shape
             android:shape="oval">
             <solid
-                android:color="@color/md_theme_dark_inversePrimary"
+                android:color="?attr/colorPrimary"
                 />
             <padding
                 android:left="10dp"

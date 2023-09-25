@@ -5,4 +5,5 @@
     android:id="@+id/calendarDayText"
     android:textAlignment="gravity"
     android:gravity="center"
-    android:background="@drawable/calendar_day_background"></TextView>
+    android:background="@drawable/calendar_day_background"
+    />
